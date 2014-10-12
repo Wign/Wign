@@ -1,3 +1,5 @@
 config.codekit
 .sass-cache
 *.css.map
+.DS_Store
+interne.txt

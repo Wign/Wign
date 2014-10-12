@@ -1,0 +1,22 @@
+Setting an Amazon EC2 instance:
+
+/** Setups the Security Groups */
+# To accepting inbound HTTP and HTTPS trafics from whole IP range (default)
+@ http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule
+
+/** Log in the instance */
+
+$ sudo yum update -y
+# Updates the instance with the newest updates
+
+/** Installing LAMP web server (Apache) */
+# Webserver with PHP and mySQL
+@ http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/install-LAMP.html
+
+!! Remember to update the php before adding www group and alter the permissions. It installs 5.3 by default.
+$ sudo yum remove httpd* php*
+$ sudo yum install php55 (or later if it supports it)
+
+
+/** Later: Creating a domain and route it to the server */
+@ http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/creating-migrating.html
