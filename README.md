@@ -7,7 +7,9 @@ The idea of Wign is inspired from a post by Kenneth Andersen in a blog of [Danis
 ## Why github?
 The project was run by DDU and [12K](http://www.12k.dk), but failed due to complicated setup and communication issues with the website provider. Now I've taken over the project, and I will make the code behind the project open source and collaboration-based, as Wign self.
 
-You are therefore invited to take part in the code and fix out issues and other fuzzies in the codes!
+The project is run by voluntary efforts by myself, to contribute to a richer sign language sharing among us danish deaf.
+
+**You** are therefore invited to take part in the code and fix out issues and other fuzzies in the codes!
 
 ## The project
 The project will be run in Amazon EC2 in a Amazon AMI (Free Tier) instance with following:
