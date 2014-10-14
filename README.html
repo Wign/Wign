@@ -1,0 +1,61 @@
+<h1>Wign</h1>
+
+<h2>A collaboration-based danish sign language encyclopedia</h2>
+
+<p>The idea of Wign is inspired from a post by Kenneth Andersen in a blog of <a href="http://www.ddu.dk">Danish Deaf Youth Association</a> (DDU). Wign is a is about a sign language encyclopedia (not to be confused with dictionary!), which everyone can contribute and share with signs for rarely used terms. A social danish sign language platform very alike Wikipedia.</p>
+
+<h2>Why github?</h2>
+
+<p>The project was run by DDU and <a href="http://www.12k.dk">12K</a>, but failed due to complicated setup and communication issues with the website provider. Now I&rsquo;ve taken over the project, and I will make the code behind the project open source and collaboration-based, as Wign self.</p>
+
+<p>You are therefore invited to take part in the code and fix out issues and other fuzzies in the codes!</p>
+
+<h2>The project</h2>
+
+<p>The project will be run in Amazon EC2 in a Amazon AMI (Free Tier) instance with following:
+* PHP 5.4
+* MySQL 5.5
+* Java
+* Red5 Media Server
+* FFMPEG to convert videos to web-friendly formats</p>
+
+<h3>Requirments / functionality of Wign:</h3>
+
+<ul>
+<li>&lt; IE9 - I will focus to support HTML5 <video>` elements and later on (None flash videos!)</li>
+<li>Language: Danish (Maybe english later on)</li>
+<li>Uploading function</li>
+<li>Webcam recording (direct to server and none preprocressing by client)</li>
+<li>Convert all videos to webfriendly formats</li>
+<li>Mobile friendly (mobile first?)</li>
+<li>Search box with word suggestions as we are typing (a la Google)</li>
+<li>List with all words (pagination or only the XX latest words?)</li>
+<li>Oppunity to flag videos as unapporiating</li>
+<li>Oppunity to make a request on missing words (a la Wikipedia)</li>
+</ul>
+
+
+<h3>To Do&rsquo;s</h3>
+
+<ol>
+<li>Welcome screen (Work in process)</li>
+<li>Basic testing with Red5 media server and video recording</li>
+<li>Testing the converting by FFMPEG</li>
+<li>Begin on the website</li>
+<li>HTML &amp; CSS</li>
+<li>mySQL database setup</li>
+<li>PHP frontend
+
+<ul>
+<li>Video upload &amp; webcam record</li>
+<li>Description with text-pull from <a href="http://www.mediawiki.org/wiki/API:Main_page">Wikipedia</a> &amp; <a href="http://ordnet.dk/">Ordnet</a></li>
+<li>Search</li>
+<li>Word suggestion</li>
+</ul>
+</li>
+<li>PHP backend</li>
+</ol>
+
+
+<p>The project is licensed under the <a href="https://github.com/Thanerik/Wign/blob/master/LICENSE">MIT License</a>.
+Copyright &copy; Troels Madsen 2014</p>
