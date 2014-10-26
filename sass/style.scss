@@ -1,28 +1,30 @@
-@import "reset";
+@import "utilities/reset";
+@import "utilities/variables";
+@import "utilities/mixins";
+
+@import "quarks/typography";
+@import "quarks/links";
 
 body, html {
   height: 100%;
   width: 100%;
 }
 
-/* This parent can be any width and height */
 body {
-  text-align: center;
+  background-color: $color-background;
 }
  
-/* The ghost, nudged to maintain perfect centering */
-body:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -0.25em; /* Adjusts for spacing */
+/* The element to be centered */ 
+.centered {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  width: 580px;
+  height: 500px;
 }
 
-/* The element to be centered, can
-   also be of any width and height */ 
-.centered {
-  display: inline-block;
-  vertical-align: middle;
-  width: 300px;
+.wign {
+  display: block;
+  margin: 0 auto;
+  @include rem-fallback(margin-bottom, $baseline);
 }

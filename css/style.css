@@ -63,30 +63,69 @@ html {
        box-sizing: inherit;
 }
 
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 24px;
+  line-height: 2.4rem;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  color: #D8D8D8;
+}
+
+p, h1 {
+  margin-bottom: 24px;
+  margin-bottom: 2.4rem;
+}
+
+.headline {
+  font-size: 36px;
+  font-size: 3.6rem;
+  line-height: 48px;
+  line-height: 4.8rem;
+  color: #B8E986;
+  font-weight: 100;
+  text-align: center;
+  /* Social tegnsprogsenc: */
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+a, a:active, a:visited, a:hover {
+  color: #8CCDF4;
+}
+
+a:hover {
+  color: #4A90E2;
+}
+
 body, html {
   height: 100%;
   width: 100%;
 }
 
-/* This parent can be any width and height */
 body {
-  text-align: center;
+  background-color: #4A4A4A;
 }
 
-/* The ghost, nudged to maintain perfect centering */
-body:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -0.25em;
-  /* Adjusts for spacing */
-}
-
-/* The element to be centered, can
-   also be of any width and height */
+/* The element to be centered */
 .centered {
-  display: inline-block;
-  vertical-align: middle;
-  width: 300px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 580px;
+  height: 500px;
+}
+
+.wign {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 24px;
+  margin-bottom: 2.4rem;
 }

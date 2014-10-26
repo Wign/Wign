@@ -1,0 +1,94 @@
+//*****************
+// Aviable mixins:
+//*****************
+// at-least($width) :: Breakpoint at least $width
+// between($width)  :: Breakpoint at least $width
+// font-size($size) :: The $size (px) of font in px and rem
+//
+//**********************
+// Aviable placeholders
+//**********************
+// clearfix         :: clearfixs float elements
+// visuallyhidden   :: visually hide a element from screen and screen readers
+// 
+
+//
+// Breakpoints
+// Uses {alpha, beta, gamma or delta} as device width
+// Usage: @include at-least($gamma) { extra rules } - or between() {}
+//
+@mixin at-least($width) {
+    @media all and (min-width: $width) {
+        @content;
+    }
+}
+
+@mixin between($min-width, $max-width) {
+    @media all and (min-width: $min-width) and (max-width: $max-width - 1) {
+        @content;
+    }
+}
+
+
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@mixin rem-fallback($property, $values...) {
+  $max: length($values);
+  $pxValues: '';
+  $remValues: '';
+
+  @for $i from 1 through $max {
+    $value: strip-unit(nth($values, $i));
+    $pxValues: #{$pxValues + $value}px;
+
+    @if $i < $max {
+      $pxValues: #{$pxValues + " "};
+    }
+  } 
+
+  @for $i from 1 through $max {
+    $value: strip-unit(nth($values, $i));
+    $remValues: #{$remValues + $value/10}rem;
+
+    @if $i < $max {
+      $remValues: #{$remValues + " "};
+    }
+  } 
+  
+  #{$property}: $pxValues; 
+  #{$property}: $remValues; 
+}
+
+// 
+// Contain floats in parent elemet
+// Usage: @extend %clearfix;
+// 
+%clearfix {
+    *zoom: 1;
+    
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+  
+    &:after {
+        clear: both;
+    }
+}
+
+// 
+// Hides a elemet visually from screen & screen readers
+// Usage: @extend %visuallyhidden;
+// 
+%visuallyhidden {
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+}
