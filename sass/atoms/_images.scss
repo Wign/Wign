@@ -1,0 +1,5 @@
+.wign {
+  display: block;
+  margin: 0 auto;
+  @include rem-fallback(margin-bottom, $baseline);
+}

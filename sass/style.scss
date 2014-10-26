@@ -2,29 +2,9 @@
 @import "utilities/variables";
 @import "utilities/mixins";
 
+@import "quarks/base";
 @import "quarks/typography";
 @import "quarks/links";
 
-body, html {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  background-color: $color-background;
-}
- 
-/* The element to be centered */ 
-.centered {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  width: 580px;
-  height: 500px;
-}
-
-.wign {
-  display: block;
-  margin: 0 auto;
-  @include rem-fallback(margin-bottom, $baseline);
-}
+@import "atoms/layouts";
+@import "atoms/images";

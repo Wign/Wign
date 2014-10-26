@@ -63,6 +63,10 @@ html {
        box-sizing: inherit;
 }
 
+body {
+  background-color: #4A4A4A;
+}
+
 html {
   font-size: 62.5%;
 }
@@ -102,16 +106,6 @@ a:hover {
   color: #4A90E2;
 }
 
-body, html {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  background-color: #4A4A4A;
-}
-
-/* The element to be centered */
 .centered {
   margin: auto;
   position: absolute;
@@ -119,6 +113,9 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
+}
+
+.welcome-screen {
   width: 580px;
   height: 500px;
 }
