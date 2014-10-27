@@ -3,6 +3,10 @@
 interne.txt
 sftp-config.json
 
+# Beta-dir #
+############
+/beta
+
 # CodeKit #
 ###########
 config.codekit
