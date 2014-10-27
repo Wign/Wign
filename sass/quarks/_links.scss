@@ -1,7 +1,9 @@
 a, a:active, a:visited, a:hover {
-    color: $color-link;
+    color: $base-link-color;
+    text-decoration: none;
 }
 
 a:hover {
-    color: $color-link-hover;
+    color: $base-link-color__hover;
+    text-decoration: underline;
 }

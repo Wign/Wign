@@ -1,5 +1,6 @@
 .wign {
+  margin-left: auto;
+  margin-right: auto;
+  @extend %sass-margin-bottom;
   display: block;
-  margin: 0 auto;
-  @include rem-fallback(margin-bottom, $baseline);
 }

@@ -1,10 +1,24 @@
-@import "utilities/reset";
-@import "utilities/variables";
-@import "utilities/mixins";
+//------------------------------------*\
+//  $IMPORTS
+//------------------------------------*/
 
+// Variables to use
+@import "utilities/variables";
+
+/* ULITILITY STYLES */
+@import "utilities/mixins";
+@import "utilities/normalize";
+@import "utilities/reset";
+@import "utilities/shared";
+
+/* QUARKS; unclassed HTML elements etc. */ 
 @import "quarks/base";
 @import "quarks/typography";
 @import "quarks/links";
 
+/* ATOMS; Objects and abstractions */
 @import "atoms/layouts";
 @import "atoms/images";
+
+/* Style trumps; helper and brand classes */
+@import "utilities/debug";
