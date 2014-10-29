@@ -1,5 +1,8 @@
 p {}
 
-h1 {
-  @include rem-fallback(font-size, $h1-size);
-}
+h1 { @include rem-fallback(font-size, $h1-size); }
+h2 { @include rem-fallback(font-size, $h2-size); }
+h3 { @include rem-fallback(font-size, $h3-size); }
+h4 { @include rem-fallback(font-size, $h4-size); }
+h5 { @include rem-fallback(font-size, $h5-size); }
+h6 { @include rem-fallback(font-size, $h6-size); }

@@ -2,6 +2,7 @@
 ###########
 interne.txt
 sftp-config.json
+medoo-min.php
 
 # Beta-dir #
 ############
@@ -10,6 +11,7 @@ sftp-config.json
 # CodeKit #
 ###########
 config.codekit
+.codekit-cache
 
 # SASS #
 ########
