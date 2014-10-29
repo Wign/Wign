@@ -1,19 +1,19 @@
-//*****************
+// ==========================================================================
 // Aviable mixins:
-//*****************
+// ==========================================================================
 // at-least($width) :: Breakpoint at least $width
 // between($width)  :: Breakpoint at least $width
-// font-size($size) :: The $size (px) of font in px and rem
+// rem-fallback(poperty, $size) :: print poperty: $size; in both px and rem
 //
-//**********************
+// ==========================================================================
 // Aviable placeholders
-//**********************
+// ==========================================================================
 // clearfix         :: clearfixs float elements
 // visuallyhidden   :: visually hide a element from screen and screen readers
 // 
 
-//
 // Breakpoints
+// ==========================================================================
 // Uses {alpha, beta, gamma or delta} as device width
 // Usage: @include at-least($gamma) { extra rules } - or between() {}
 //
