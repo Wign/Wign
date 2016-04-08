@@ -1,0 +1,5 @@
+.tagline {
+    position: absolute;
+    right: 0px;
+    @include rem-fallback(font-size, $milli-size);
+}

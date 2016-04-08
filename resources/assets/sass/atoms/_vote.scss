@@ -1,0 +1,43 @@
+.vote {
+    height: 24px;
+    height: 2.4rem;
+    width: 16px;
+    position: relative;
+    display: inline-block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 4px 0px 5px 0px;
+}
+
+.delVote {
+    @extend .vote;
+    background-image: url("/images/thumbs-up-black.png");
+    top: 0px;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.addVote {
+    @extend .vote;
+    background-image: url('/images/hands-up-black.png');
+    top: 0px;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.loadingVote {
+    @extend .vote;
+    width: 24px;
+    background-image: url('/images/loading-black.png');
+    background-size: cover;
+    animation: spin 2s linear infinite;
+}
+
+.voted {
+    background-image: url('/images/thumbs-up-black.png');
+}

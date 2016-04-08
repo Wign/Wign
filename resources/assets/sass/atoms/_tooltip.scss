@@ -1,0 +1,12 @@
+.ui-tooltip {
+    background: $base-ui-color;
+    color: $base-font-color;
+    font-size: 12px;
+    border: none;
+    padding: 0;
+    opacity: 1;
+}
+.ui-tooltip-content {
+    position: relative;
+    padding: 0.5em;
+}

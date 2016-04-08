@@ -7,7 +7,7 @@ The idea of Wign is inspired from a post by Kenneth Andersen in a blog of [Danis
 The process:
 ```
 0%               50%                100%
-[##.....................................]
+[#######...............................]
 ```
 
 The milestones for the proces is at our [To-do](https://github.com/Thanerik/Wign/wiki/To-Do).
@@ -21,4 +21,4 @@ The project is run by voluntary efforts by myself, to contribute to a richer sig
 
 ***
 The project is licensed under the [MIT License](https://github.com/Thanerik/Wign/blob/master/LICENSE).
-Copyright &copy; Troels Madsen 2014
+Copyright &copy; Troels Madsen 2016

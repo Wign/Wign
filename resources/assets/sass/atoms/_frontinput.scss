@@ -1,0 +1,37 @@
+$search-heigh: 50px;
+$submit-width: 100px;
+
+.search-form {
+    position: relative;
+}
+
+.input-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: $submit-width+10px;
+    bottom: 0;
+}
+
+.search-text {
+    font-size: $h4-size;
+    line-height: $search-heigh;
+    width: 100%;
+    background-image: url("/images/lup-grey.png");
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-size: auto 30px;
+    padding: 0px 0px 0px 40px;
+
+    &:focus {
+        background-image: url("/images/lup-black.png");
+    }
+}
+
+.search-submit {
+    width: $submit-width;
+    float: right;
+    
+    line-height: $search-heigh;
+    font-size: $h4-size;
+}
