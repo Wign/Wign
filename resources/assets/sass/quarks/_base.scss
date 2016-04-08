@@ -1,0 +1,26 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-y: scroll;
+}
+
+body {
+    @include rem-fallback(font-size, $base-font-size);
+    padding-top: 100px;
+    line-height: $line-height-ratio;
+    font-family: $base-font-family;
+    color: $base-font-color;
+    font-weight: 400;
+    background-color: $base-background-color;
+    /*
+    background-image: url("/wign/public/images/bobler.svg");
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    //background-size: 10% auto;
+    */
+}

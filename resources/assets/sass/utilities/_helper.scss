@@ -1,0 +1,123 @@
+/*------------------------------------*\
+    $HELPER
+\*------------------------------------*/
+/**
+ * A series of helper classes to use arbitrarily. Only use a helper class if an
+ * element/component doesn’t already have a class to which you could apply this
+ * styling, e.g. if you need to float `.main-nav` left then add `float:left;` to
+ * that ruleset as opposed to adding the `.float--left` class to the markup.
+ *
+ * A lot of these classes carry `!important` as you will always want them to win
+ * out over other selectors.
+ */
+
+
+/**
+ * Add/remove floats
+ */
+.float--right   { float:right!important; }
+.float--left    { float:left !important; }
+.float--none    { float:none !important; }
+
+
+/**
+ * Text alignment
+ */
+.text--left     { text-align:left  !important; }
+.text--center   { text-align:center!important; }
+.text--right    { text-align:right !important; }
+
+
+/**
+ * Font weights
+ */
+.weight--light      { font-weight:300!important; }
+.weight--normal     { font-weight:400!important; }
+.weight--semibold   { font-weight:600!important; }
+
+/**
+ * Add a help cursor to any element that gives the user extra information on
+ * `:hover`.
+ */
+.informative{
+    cursor:help!important;
+}
+
+
+/**
+ * Mute an object by reducing its opacity.
+ */
+.muted{
+    opacity:0.5!important;
+    filter:alpha(opacity = 50)!important;
+}
+
+
+/**
+ * Align items to the right where they imply progression/movement forward, e.g.:
+ *
+   <p class=proceed><a href=#>Read more...</a></p>
+ *
+ */
+.proceed{
+    text-align:right!important;
+}
+
+
+/**
+ * Add a right-angled quote to links that imply movement, e.g.:
+ *
+   <a href=# class=go>Read more</a>
+ *
+ */
+.go:after{
+    content:"\00A0" "\00BB"!important;
+}
+
+
+/**
+ * Apply capital case to an element (usually a `strong`).
+ */
+.caps{
+    text-transform:uppercase!important;
+}
+
+/**
+ * Adding extra margin to the top, giving it a extra space
+ */
+.buffer {
+    margin-top: 5rem;
+}
+
+// 
+// Contain floats in parent elemet
+// Usage: @extend %clearfix;
+// 
+%clearfix {
+    *zoom: 1;
+    
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+  
+    &:after {
+        clear: both;
+    }
+}
+
+/**
+ * Hide content off-screen without resorting to `display:none;`, also provide
+ * breakpoint specific hidden elements.
+ */
+%accessibility,
+%visuallyhidden {
+    border:0!important;
+    clip:rect(0 0 0 0)!important;
+    height:1px!important;
+    margin:-1px!important;
+    overflow:hidden!important;
+    padding:0!important;
+    position: absolute!important;
+    width:1px!important;
+}
