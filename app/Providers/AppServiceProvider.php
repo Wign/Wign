@@ -14,7 +14,6 @@ class AppServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		view()->share([
-			'signCount' => Word::has('signs')->count(),
 			'wignVersion' => '0.7 (beta)',
 			'fbURL' => 'https://www.facebook.com/wign.dk/',
 			'gitURL' => 'https://github.com/Thanerik/Wign',

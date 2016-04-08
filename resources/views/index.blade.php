@@ -38,6 +38,6 @@ $(function() {
 
     </div>
 
-    @include('layout.footer')
+    @include('layout.footer',['signCount' => $signCount])
 
 @stop

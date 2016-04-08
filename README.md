@@ -17,7 +17,7 @@ The project was run by DDU and [12K](http://www.12k.dk), but failed due to compl
 
 The project is run by voluntary efforts by myself, to contribute to a richer sign language sharing among us danish deaf.
 
-**You** are therefore invited to take part in the code and fix out issues and other fuzzies in the codes!
+**You** are therefore invited to take part in the code and fix out issues and other fuzzies in the codes! [To help with the code](https://github.com/Thanerik/Wign/wiki/To-contribute-to-the-project)
 
 ***
 The project is licensed under the [MIT License](https://github.com/Thanerik/Wign/blob/master/LICENSE).
