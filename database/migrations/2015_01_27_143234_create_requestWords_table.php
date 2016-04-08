@@ -12,7 +12,7 @@ class CreateRequestWordsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('requestWords', function($table)
+		Schema::create('request_words', function($table)
     	{
         $table->increments('id')->unique();
         $table->integer('word_id');
