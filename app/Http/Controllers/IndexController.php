@@ -6,7 +6,9 @@ Use App\Word;
 class IndexController extends Controller {
 
 	/**
-	 * Show the main index.
+	 * Show the main index 
+     * 
+     * @link www.wign.dk
 	 * @return View
 	 */
 	public function index() {
@@ -16,7 +18,9 @@ class IndexController extends Controller {
 	}
 
     /**
-     * Show the about page.
+     * Show the about page
+     * 
+     * @link www.wign.dk/om
      * @return View
      */
     public function about() {
@@ -24,7 +28,9 @@ class IndexController extends Controller {
     }
 
     /**
-     * Show the help page.
+     * Show the help page
+     * 
+     * @link www.wign.dk/help
      * @return View
      */
     public function help() {
