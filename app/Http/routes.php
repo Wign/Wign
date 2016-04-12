@@ -9,6 +9,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+$router->get('/blacklist', 'IndexController@blacklist');
 
 $router->get('/', 'IndexController@index');
 $router->post('redirect', 'SearchController@redirect');

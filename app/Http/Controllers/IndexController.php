@@ -1,7 +1,9 @@
 <?php namespace App\Http\Controllers;
 
 Use DB;
+use Illuminate\Http\Request;
 Use App\Word;
+Use App\Blacklist;
 
 class IndexController extends Controller {
 
@@ -35,6 +37,15 @@ class IndexController extends Controller {
      */
     public function help() {
         return view('help');
+    }
+
+    /**
+     * Show the "fuck you" page
+     * 
+     * @return View
+     */
+    public function blacklist() {
+        return view('blacklist');
     }
 
 }
