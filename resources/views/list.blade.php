@@ -5,7 +5,7 @@ Seneste tegn
 @stop
 
 @section('content')
-<h1>Seneste 10 tegn</h1>
+<h1>Seneste 25 tegn</h1> 
     
     <ul>
     @foreach($words as $word)
