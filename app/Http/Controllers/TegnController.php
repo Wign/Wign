@@ -56,9 +56,10 @@ class TegnController extends Controller {
 
     public function visSeneste()
     {
-        $words = Word::has('signs')->latest()->get();
+        $antal = 25;
+        $words = Word::has('signs')->latest($antal)->get();
         
-        return view('list')->with(['words' => $words]);
+        return view('list')->with(['words' => $words, 'antal' => $antal]);
     }
 
     public function visAlle()
