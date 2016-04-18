@@ -1,7 +1,7 @@
 @extends('layout.main')
 
-@section('title')
-Wign
+@section('open_graph')
+    @include('layout.openGraph', ['desc' => 'Wign er en online social tegnsprogsencyklopædi. Altså en form for tegnbank til tegnsprogsbrugere. Her kan du se, oprette og efterlyse tegn for en bestemt ord.'])
 @stop
 
 @section('extra_head_scripts')

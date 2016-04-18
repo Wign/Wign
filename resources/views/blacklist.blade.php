@@ -1,8 +1,6 @@
 @extends('layout.main')
 
-@section('title')
-Wign - Du er blevet blacklistet
-@stop
+@section('title', 'Du er blevet blacklistet')
 
 @section('content')
 

@@ -1,7 +1,8 @@
 @extends('layout.main')
 
-@section('title')
-Om Wign
+@section('title', 'Hjælp')
+@section('open_graph')
+    @include('layout.openGraph', ['title' => 'Hjælp', 'url' => url('/help'), 'desc' => 'Wign\'s hjælpesektion, hvor du kan få hjælp og vejledning i hvordan du kan bruge Wign optimalt.'])
 @stop
 
 @section('content')

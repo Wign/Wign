@@ -1,11 +1,20 @@
 <?php
-    if($word) { $titel = ucfirst($word); }
+    if(isset($word)) {
+        $title = 'Opret et tegn for '.$word;
+        $desc = 'Hjælp os med din bidrag til '.$word.'. Send dit tegn for '.$word.' ind ved at bruge din mobil eller computer.';
+        $url = url('/opret/'.$word);
+    }
+    else {
+        $title = 'Opret et tegn';
+        $desc = 'Hjælp os med din bidrag. Send dit tegn ind ved at bruge din mobil eller computer.';
+        $url = url('/opret');
+    }
 ?>
-
 @extends('layout.main')
 
-@section('title')
-{{ $titel or 'Wign' }}
+@section('title', $title)
+@section('open_graph')
+    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
 @stop
 
 @section('extra_head_scripts')
@@ -52,7 +61,7 @@
 @stop
 
 @section('content')
-<h1>{{ $titel or 'Opret et tegn' }}</h1>
+<h1>{{ $title }}</h1>
     @if(Session::has('message'))
         @if(Session::has('url'))
             <a href="{{ Session::get('url') }}">

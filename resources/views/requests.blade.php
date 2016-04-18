@@ -1,8 +1,10 @@
 @extends('layout.main')
 
-@section('title')
-Wign - Efterlyst tegne
+@section('title', 'Efterlyste tegn')
+@section('open_graph')
+    @include('layout.openGraph', ['title' => 'Efterlyste tegn', 'url' => url('/requests'), 'desc' => 'Alle vores efterlyste tegne. Måske har du tegnet for nogle af de efterlyste ord? Send din bidrag ind!'])
 @stop
+
 
 @section('content')
 <h1>Efterlyste tegn</h1>

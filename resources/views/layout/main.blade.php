@@ -5,13 +5,17 @@
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
+    <head prefix="og: http://ogp.me/ns#">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=0.6"> 
     
-        <title>@yield('title', 'Wign')</title>
-        
+        <title>Wign :: @yield('title', 'Social tegnsprogsencyklopædi')</title>
+
+        @section('open_graph')
+            @include('layout.openGraph')
+        @show
+
         @include('layout.style')
     
         <script>

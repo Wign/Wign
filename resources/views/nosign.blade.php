@@ -1,15 +1,25 @@
 <?php
-if($word) { $titel = ucfirst($word); }
+if(isset($word)) { 
+    $title = 'Vi mangler tegnet for '.ucfirst($word);
+    $desc = 'Wign har desværre ikke tegnet for '.$word.'. Du kan hjælpe Wign med at bidrage med et tegn til '.$word.'.';
+    $url = url('/tegn/'.$word);
+} 
+else { 
+    $title = 'Vi mangler et tegn';
+    $desc = 'Wign har desværre ikke et tegn. Du kan hjælpe Wign med din bidrag.';
+    $url = url('/tegn');
+}
 ?>
 
 @extends('layout.main')
 
-@section('title')
-{{{ $titel or 'Wign' }}}
+@section('title', $title)
+@section('open_graph')
+    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
 @stop
 
 @section('content')
-<h1>{{{ $titel or 'Ukendt' }}}</h1>
+<h1>{{ $title }}</h1>
 <p><span class="brand">Wign</span> har desværre ikke tegnet{{{ isset($word) ? ' for '.$word : ''}}}. Du kan nu enten:
     <ul>
         <li><a href="{{ URL::to('/opret/'.$word) }}" alt="opret tegnet for {{ $word }}">Oprette {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a></li>eller

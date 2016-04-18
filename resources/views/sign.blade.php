@@ -1,11 +1,18 @@
 <?php
-    if($word) { $titel = ucfirst($word->word); }
+    $title = ucfirst($word->word);
+    $desc = 'Wign har tegnet for '.$word->word.'. Kom og prøv at tjekke om vi har andre tegn for '.$word->word.'. Tag en rejse i vores udvalg af tegn, og bliv inspireret.';
+    $url = url('/tegn/'.$word->word);
+    $video = $signs[0]->video_uuid;
+    $video_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/mp4.mp4';
+    $image_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/thumb.png';
+    $image_width = '640';
+    $image_height = '360';
 ?>
-
 @extends('layout.main')
 
-@section('title')
-{{ $titel }}
+@section('title', $title)
+@section('open_graph')
+    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc, 'video' => $video_url, 'image' => $image_url, 'width' => $image_width, 'height' => $image_height])
 @stop
 
 @section('extra_head_scripts')
@@ -26,7 +33,7 @@
 @stop
 
 @section('content')
-<h1>{{ $titel }}</h1>
+<h1>{{ $title }}</h1>
 @if(Session::has('message'))
     @if(Session::has('url'))
         <a href="{{ Session::get('url') }}">

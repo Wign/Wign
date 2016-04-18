@@ -1,7 +1,8 @@
 @extends('layout.main')
 
-@section('title')
-Seneste tegn
+@section('title', 'Seneste '.$antal.' tegn')
+@section('open_graph')
+    @include('layout.openGraph', ['title' => 'Seneste '.$antal.' tegn', 'url' => url('/seneste'), 'desc' => 'De seneste '.$antal.' tegn som er blevet lagt op i Wign. Her kan du få en kort kig i aktivitetet på Wign i den seneste tid.'])
 @stop
 
 @section('content')

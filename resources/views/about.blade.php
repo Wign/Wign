@@ -1,7 +1,8 @@
 @extends('layout.main')
 
-@section('title')
-Om Wign
+@section('title', 'Om Wign')
+@section('open_graph')
+    @include('layout.openGraph', ['title' => 'Om Wign', 'url' => url('/om')])
 @stop
 
 @section('content')
