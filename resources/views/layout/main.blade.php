@@ -16,6 +16,7 @@
             @include('layout.openGraph')
         @show
 
+        @include('layout.icons')
         @include('layout.style')
     
         <script>
