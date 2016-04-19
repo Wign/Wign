@@ -445,7 +445,8 @@ input,
 textarea,
 select,
 .logo-index,
-.sign {
+.sign,
+.msg--flash {
   margin-bottom: 24px;
   margin-bottom: 2.4rem; }
 
@@ -568,6 +569,21 @@ ul, ol, dd {
  * Hide content off-screen without resorting to `display:none;`, also provide
  * breakpoint specific hidden elements.
  */
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
 /* Quarks
 ========================================================================== */
 /*
@@ -648,23 +664,24 @@ label {
     width: 20%; }
 
 input[type="text"], textarea {
-  background: #f2f2f2;
+  background-color: #f2f2f2;
   width: 100%; }
   .ligeform input[type="text"], .ligeform textarea {
     width: 80%; }
   input[type="text"]:focus, textarea:focus {
     outline: none;
     box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
-    background: #FFFFFF; }
+    background-color: #FFFFFF; }
 
 input[type="submit"] {
   background: #B8E986; }
   input[type="submit"]:active {
-    background: #79cb25;
+    background-color: #79cb25;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
     outline: none; }
   input[type="submit"]:disabled {
-    background: #b8d798; }
+    background-color: #b8cca3;
+    color: #999999; }
 
 /* Atoms
 ========================================================================== */
@@ -721,7 +738,14 @@ input[type="submit"] {
 .search-text {
   font-size: 20px;
   line-height: 50px;
-  width: 100%; }
+  width: 100%;
+  background-image: url("/images/lup-grey.png");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  background-size: auto 30px;
+  padding: 0px 0px 0px 40px; }
+  .search-text:focus {
+    background-image: url("/images/lup-black.png"); }
 
 .search-submit {
   width: 100px;
@@ -732,6 +756,11 @@ input[type="submit"] {
 .brand {
   color: #B8E986; }
 
+.hand img {
+  vertical-align: middle;
+  height: 36px;
+  margin-right: 10px; }
+
 .sign {
   display: inline-block;
   border: 4px solid #DDD;
@@ -740,30 +769,38 @@ input[type="submit"] {
   background-color: #DDD;
   color: #000000; }
 
-.vote, .delVote, .addVote {
-  height: 16px;
-  height: 1.6rem;
-  width: 11px;
+.vote, .delVote, .addVote, .loadingVote {
+  height: 24px;
+  height: 2.4rem;
+  width: 16px;
   position: relative;
   display: inline-block;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain; }
+  background-size: contain;
+  margin: 4px 0px 5px 0px; }
 
 .delVote {
-  background-image: url("/wign/public/images/thumbs-up.png");
-  top: 2px; }
+  background-image: url("/images/thumbs-up-black.png");
+  top: 0px; }
   .delVote:hover {
     text-decoration: none; }
 
 .addVote {
-  background-image: url("/wign/public/images/hands-up.png");
-  top: 4px; }
+  background-image: url("/images/hands-up-black.png");
+  top: 0px; }
   .addVote:hover {
     text-decoration: none; }
 
+.loadingVote {
+  width: 24px;
+  background-image: url("/images/loading-black.png");
+  background-size: cover;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; }
+
 .voted {
-  background-image: url("/wign/public/images/thumbs-up.png"); }
+  background-image: url("/images/thumbs-up-black.png"); }
 
 .help {
   float: right; }
@@ -775,8 +812,8 @@ input[type="submit"] {
   float: right; }
 
 .anmeld {
-  height: 16px;
-  padding: 4px 5px 0px 0px; }
+  height: 24px;
+  margin: 4px 5px 5px 0px; }
 
 .ui-tooltip {
   background: #666666;
@@ -789,6 +826,15 @@ input[type="submit"] {
 .ui-tooltip-content {
   position: relative;
   padding: 0.5em; }
+
+.msg--flash {
+  background-color: #B8E986;
+  border: 1px solid #6cb521;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+  color: #000000;
+  padding: 10px;
+  display: block; }
 
 /* Molecules
 ========================================================================== */
