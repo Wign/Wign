@@ -11,7 +11,8 @@ $(function() {
         source: function(request, response) {
             $.getJSON("{{ URL::to('/all_words_json') }}/" + request.term, response)
         },
-        minLength: 2
+        minLength: 2,
+        delay: 0,
     });
 });
 </script>

@@ -75,8 +75,8 @@ class WordController extends Controller {
         }
     }
 
-    public function allWords_JSON($word) {
-        if ($word != null) { $word = strtolower(mellemrum($word)); }
+    public function allWords_JSON($word = "") {
+        if (isset($word)) { $word = strtolower(mellemrum($word)); }
         $words = Word::has('signs')->where('word', 'like', '%'.$word.'%')->get(array('word as label'));
         return Response::json($words);
     }

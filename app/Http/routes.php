@@ -36,7 +36,7 @@ $router->get('help', 'IndexController@help');
 
 $router->get('home', 'HomeController@index'); // Login (Need?)
 
-$router->get('all_words_json/{word}', 'WordController@allWords_JSON'); // JSON list over all words that start or ends with {word}
+$router->get('all_words_json/{word?}', 'WordController@allWords_JSON'); // JSON list over all words that start or ends with {word}
 
 $router->controllers([
 	'auth' => 'Auth\AuthController',
