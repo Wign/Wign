@@ -40,6 +40,16 @@ class IndexController extends Controller {
     }
 
     /**
+     * Show the policy page
+     * 
+     * @link www.wign.dk/retningslinjer
+     * @return View
+     */
+    public function policy() {
+        return view('policy');
+    }
+
+    /**
      * Show the "fuck you" page
      * 
      * @return View

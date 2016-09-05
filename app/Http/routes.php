@@ -28,6 +28,9 @@ $router->post('deleteVote', 'VoteController@deleteVote');
 $router->get('flagSignView/{id}', 'TegnController@flagSignView')->where('id', '[0-9]+'); // Find some better url than "flagSignView"!
 $router->post('flagSign', 'TegnController@flagSign'); // this too...
 
+$router->get('retningslinjer', 'IndexController@policy');
+//$router->get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk
+
 $router->get('opret/{word?}', 'WordController@createWord');
 $router->get('efterlys/{word?}', 'WordController@requestWord');
 
