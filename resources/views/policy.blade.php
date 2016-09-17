@@ -12,7 +12,7 @@
         <ul>
             <li>Ord</li>
             <li>Faste udtryk</li>
-            <li>Højgrad leksikalitet (nogle bogstav undlades under stavelse eller MHS)</li>
+            <li>Højgrad leksikalitet (nogle bogstave undlades under stavelse eller MHS)</li>
         </ul>
 
         <h2>Ikke godkendt</h2>
@@ -22,8 +22,8 @@
             <li>Tegn/ord som kan opdeles yderligere uden at ændre på konteksten</li>
             <li>En hel sætning</li>
             <li>Begreb som staves hele vejen explicit</li>
-            <li>Tegn som allerede findes på www.tegnsprog.dk</li>
-            <li>Tegn der ikke kan ses pga. Nedsat videokvalitet og/eller belysning</li>
+            <li>Tegn som allerede findes på <a href="http://www.tegnsprog.dk">www.tegnsprog.dk</a></li>
+            <li>Tegn der ikke kan ses pga. nedsat videokvalitet og/eller belysning</li>
         </ul>
 
         <h2>Opfordring mht. optagelse</h2>
@@ -39,5 +39,6 @@
             <li>Drej til venstre/højre efter først visning og gentag</li>
             <li>Udfør tegn i rolig tempo</li>
         </ul>
+        <p class="brand">Ved overtrædelse af overstående retningslinjer vil indholdet enten blive rettet eller fjernet uden varsel.</p>
 
 @stop

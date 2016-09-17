@@ -108,6 +108,7 @@
         
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="submit" value="Indsend tegnet" id="btnSubmit">
+        <p><small>Ved indsendelsen bekræfter jeg at jeg har læst og accepteret Wign's <a href="{{ URL::to('/retningslinjer/') }}">retningslinjer</a><small></p>
 
     </form>
 @stop
