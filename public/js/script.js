@@ -3,7 +3,7 @@
 
 $(function() {
 
-    $('.sign a.delVote, .sign a.addVote').on( 'click', function() {
+    $('.sign a.delVote, .sign a.addVote').on( 'click', function(event) {
         event.preventDefault();
         console.log("Klik opdaget!");
 
