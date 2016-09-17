@@ -3,6 +3,7 @@
 Use DB;
 use Illuminate\Http\Request;
 Use App\Word;
+Use App\Sign;
 Use App\Blacklist;
 
 class IndexController extends Controller {
@@ -15,8 +16,9 @@ class IndexController extends Controller {
 	 */
 	public function index() {
         $randomWord = Word::has('signs')->random()->first();
-        $signCount = Word::has('signs')->count();
-		return view('index')->with(['randomWord' => $randomWord, 'signCount' => $signCount]);
+        $signCount = Sign::count();
+        $wordCount = Word::has('signs')->count();
+		return view('index')->with(['randomWord' => $randomWord, 'signCount' => $signCount, 'wordCount' => $wordCount]);
 	}
 
     /**
