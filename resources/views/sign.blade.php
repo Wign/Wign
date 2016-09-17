@@ -65,7 +65,7 @@
         <div class="desc">{{$sign->description}}</div>
     </div>
 @endforeach
-<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right" alt="Lav en ny forslag">Forslå et alternativt tegn</a>
 </div>
+<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right" alt="Lav en ny forslag">Forslå et alternativt tegn</a>
 
 @stop
