@@ -35,10 +35,12 @@ class WordController extends Controller {
     }
     
     public function requestWord($word) {
-        if ($word != null) { $word = strtolower(mellemrum($word)); }
+        if ($word != null) { $word = mellemrum($word); }
 
         $myIP = Request::getClientIp();
-        $hasWord = Word::firstOrCreate(array('word' => $word));
+
+        $hasWord = Word::firstOrCreate(['word' => $word]);
+
         $hasSign = $hasWord->signs->first();
         if($hasSign) {
             $flash = array(
@@ -47,8 +49,8 @@ class WordController extends Controller {
             );
             return redirect('/requests')->with($flash);
         }
-        $hasVote = $hasWord->request->where('ip', $myIP)->first();
         
+        $hasVote = $hasWord->request->where('ip', $myIP)->first();
         if($hasVote) {
             return redirect('/requests')->with('message', 'Du har allerede efterlyst '.$word.'!');
         }
