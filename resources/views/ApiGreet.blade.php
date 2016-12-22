@@ -2,14 +2,14 @@
     <p>We currently offer the following API-calls:</p>
     
     <p>
-        <strong><code>GET http://api.wign.dk/ord/{query}</code></strong><br>
+        <strong><code>GET http://api.wign.dk/words/{query}</code></strong><br>
         JSON<br>
         Return a list of words that begin or end with {query}. Returns empty array if no words is found.<br>
         - It is a good way to search for the right word, for example when using autocompletion.
     </p>
     
     <p>
-        <strong><code>GET http://api.wign.dk/tegn/{word}</code></strong><br>
+        <strong><code>GET http://api.wign.dk/hasSign/{word}</code></strong><br>
         JSON<br>
         Returns whether we has at least one sign for {word}, in the format <code>{word:boolean}</code><br>
         - The boolean value will be <code>true</code> if we have at least one sign, <code>false</code> if we don't have the sign.

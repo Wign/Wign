@@ -96,6 +96,24 @@ class TegnController extends Controller {
         ));
 
         if($signId) { 
+            $tegn = $q['tegn'];
+            $url = "http://wign.dk/tegn/".$tegn;
+            $video = "http://www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
+            $message = [
+                "attachments" => [ [
+                    "fallback" => "Videoen kan ses her: ".$video."!",
+                    "color" => "good",
+                    "pretext" => "Et ny tegn er kommet!",
+                    "title" => $tegn,
+                    "title_link" => $url,
+                    "text" => "Se <".$video."|videoen>!",
+                    "unfurl_links" => true,
+                    "image_url" => "http:".$q['wign01']['qvga']['thumb'],
+                    "thumb_url" => "http:".$q['wign01']['qvga']['small_thumb'],
+                ]],
+            ];
+            ClientHelper::sendJSON($message, 'https://hooks.slack.com/services/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');
+            
             $flash = [
                 'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
                 'url' => URL::to('/opret')

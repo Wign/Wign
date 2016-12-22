@@ -12,7 +12,7 @@
 
 Route::group(['domain' => 'api.wign.dk'], function () {
     Route::get('/', 'ApiController@index');
-    Route::get('signs/{word}', 'ApiController@hasSign');
+    Route::get('hasSign/{word}', 'ApiController@hasSign');
     Route::get('video/{word}', 'ApiController@getSign');
     Route::get('words/{query?}', 'WordController@allWords_JSON');
 });
