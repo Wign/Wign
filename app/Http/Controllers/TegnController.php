@@ -13,7 +13,7 @@ use Redirect;
 class TegnController extends Controller {
 
     public function visTegn($word = null) {
-        if ($word != null) { $word = strtolower(mellemrum($word)); }
+        if ($word != null) { $word = mellemrum($word); }
         $wordData = Word::where('word', $word)->first();
 
         if($wordData['id']) {
@@ -79,7 +79,7 @@ class TegnController extends Controller {
 
         $q = $request->all();
 
-        $hasWord = Word::firstOrCreate(['word' => strtolower($q['tegn'])]);
+        $hasWord = Word::firstOrCreate(['word' => $q['tegn']]);
         $wID = $hasWord->id;
         
         $signId = Sign::create(array(

@@ -13,6 +13,7 @@ $(function() {
         },
         minLength: 2,
         delay: 0,
+        autoFocus: true,
     });
 });
 </script>

@@ -3,5 +3,5 @@
         <input type="text" id="autoComplete" class="search-text" name="tegn" placeholder="Søg efter et tegn, fx. {{ $randomWord['word'] }}">
     </div>
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="submit" class="search-submit" value="Søg">
+    <input type="submit" class="search-submit" value="Søg" id="search-submit">
 </form>

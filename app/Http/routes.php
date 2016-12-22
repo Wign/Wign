@@ -9,6 +9,14 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::group(['domain' => 'api.wign.dk'], function () {
+    Route::get('/', 'ApiController@index');
+    Route::get('signs/{word}', 'ApiController@hasSign');
+    Route::get('video/{word}', 'ApiController@getSign');
+    Route::get('words/{query?}', 'WordController@allWords_JSON');
+});
+
 $router->get('/blacklist', 'IndexController@blacklist');
 
 $router->get('/', 'IndexController@index');
@@ -17,8 +25,8 @@ $router->post('redirect', 'SearchController@redirect');
 $router->get('tegn/{word?}', 'TegnController@visTegn');
 $router->get('seneste', 'TegnController@visSeneste');
 $router->get('alle', 'TegnController@visAlle');
-$router->get('requests', 'WordController@listRequests');
 $router->get('request/{word}', 'WordController@requestWord');
+$router->get('requests', 'WordController@listRequests');
 
 $router->post('gemTegn', 'TegnController@gemTegn');
 
@@ -39,7 +47,7 @@ $router->get('help', 'IndexController@help');
 
 $router->get('home', 'HomeController@index'); // Login (Need?)
 
-$router->get('all_words_json/{word?}', 'WordController@allWords_JSON'); // JSON list over all words that start or ends with {word}
+$router->get('all_words_json/{query?}', 'WordController@allWords_JSON'); // JSON list over all words that start or ends with {word}
 
 $router->controllers([
 	'auth' => 'Auth\AuthController',

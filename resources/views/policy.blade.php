@@ -8,7 +8,9 @@
 @section('content')
     
     <h1>Retningslinjer</h1>
-        <h2>Accepteret</h2>
+        <p>Brug altid det mest udbredt (og helst dansk) oversættelse af ordet i dets grundform (tjek gerne <a href="http://ordnet.dk/">Ordnet.dk</a> og <a href="http://www.ordbogen.com/">Ordbog.com</a> om ordet forefindes på dansk).</p>
+
+        <h2>Acceptabel tegn</h2>
         <ul>
             <li>Ord</li>
             <li>Faste udtryk</li>
@@ -19,6 +21,7 @@
         <ul>
             <li>Utydelig fremvisning af tegn</li>
             <li>Tegn til udelukket intern brug</li>
+            <li>Mere end et tegn pr. video</li>
             <li>Tegn/ord som kan opdeles yderligere uden at ændre på konteksten</li>
             <li>En hel sætning</li>
             <li>Begreb som staves hele vejen explicit</li>
