@@ -1,0 +1,7 @@
+FROM python:2.7
+
+RUN pip install --upgrade --user awsebcli
+RUN pip install --upgrade --user awscli
+ENV PATH "$PATH:~/.local/bin"
+
+CMD bash
