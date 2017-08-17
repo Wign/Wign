@@ -40,9 +40,10 @@ services:
     command: "sh -c 'sleep 30 ; php artisan migrate'"
   aws:
     volumes:
-      - "./:/var/www"
+      - "./:/src"
     environment:
       - AWS_CREDENTIAL_FILE=/src/aws_credentials.txt
+    working_dir: "/src"
     build:
       context: ./
       dockerfile: Dockerfile.aws
