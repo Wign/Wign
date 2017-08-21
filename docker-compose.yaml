@@ -1,43 +1,30 @@
 version: "3"
 services:
+
   app:
     image: wign:app
+    volumes:
+      - "./:/var/www"
     ports:
-      - "8080:8080"
-    # TODO: env_file, list
-    environment:
-      - "DB_HOST=db"
-      - "DB_DATABASE=db"
-      - "DB_USERNAME=user"
-      - "DB_PASSWORD=pass"
-      - "APP_ENV=local"
-      - "APP_DEBUG=true"
-      - "APP_KEY=SomeRandomString"
-      - "CACHE_DRIVER=file"
-      - "SESSION_DRIVER=file"
+      - "8080:80"
+    env_file:
+      - ./app.env
+
   db:
     image: "mysql:5.7"
-
     environment:
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_DATABASE=db"
       - "MYSQL_USER=user"
       - "MYSQL_PASSWORD=pass"
+
   migrater:
     image: wign:app
-    build: .
-    environment:
-      - "DB_HOST=db"
-      - "DB_DATABASE=db"
-      - "DB_USERNAME=user"
-      - "DB_PASSWORD=pass"
-      - "APP_ENV=local"
-      - "APP_DEBUG=true"
-      - "APP_KEY=SomeRandomString"
-      - "CACHE_DRIVER=file"
-      - "SESSION_DRIVER=file"
+    env_file:
+      - ./app.env
     # Waiting for DB to actually initialize. TODO: Consider more graceful solution
     command: "sh -c 'sleep 30 ; php artisan migrate'"
+
   aws:
     volumes:
       - "./:/src"
