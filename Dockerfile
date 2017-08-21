@@ -18,6 +18,12 @@ EXPOSE 80
 ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD . /var/www
 
+# Switch your UID to match the one developing
+ARG userid=1000
+ARG groupid=1000
+RUN usermod -u ${userid} www-data
+RUN groupmod -g ${groupid} www-data
+
 # Don't be root
 RUN chown -R www-data:www-data /var/www
 USER www-data
