@@ -1,9 +1,27 @@
 FROM php:7.0.22-apache
 
 # System dependencies
-RUN apt-get update && apt-get install -y libmcrypt-dev git zip mysql-client
+RUN apt-get update && apt-get install -y libmcrypt-dev git zip mysql-client \
+	libapache2-modsecurity
 RUN docker-php-ext-install -j$(nproc) mcrypt pdo_mysql
 RUN a2enmod rewrite
+
+# Modsecurity
+ADD apache/security2.conf /etc/apache2/mods-available/security2.conf
+RUN mv /etc/modsecurity/modsecurity.conf{-recommended,}
+RUN sed -i \
+	-e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' \
+	-e 's/SecResponseBodyAccess On/SecResponseBodyAccess Off/' \
+	/etc/modsecurity/modsecurity.conf
+
+RUN ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_sql_injection_attacks.conf \
+	/usr/share/modsecurity-crs/activated_rules
+
+RUN ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_xss_attacks.conf \
+	/usr/share/modsecurity-crs/activated_rules
+
+RUN ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_40_generic_attacks.conf \
+	/usr/share/modsecurity-crs/activated_rules
 
 WORKDIR /var/www
 
