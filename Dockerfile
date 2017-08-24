@@ -15,8 +15,11 @@ RUN php -r "unlink('composer-setup.php');"
 
 EXPOSE 80
 
-ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 ADD . /var/www
+
+# Apache
+ADD apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD apache/prod.htaccess /var/www/public/.htaccess
 
 # Switch your UID to match the one developing
 ARG userid=1000

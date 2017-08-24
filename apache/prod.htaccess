@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect Trailing Slashes...
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    RewriteCond %{HTTPS} !=on
+    # This checks to make sure the connection is not already HTTPS
+    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
+    # Redirect non-www to the www version
+    RewriteCond %{HTTP_HOST} !localhost
+    RewriteCond %{HTTP_HOST} !^(.+)\.(.+)\.(.+)
+    RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
