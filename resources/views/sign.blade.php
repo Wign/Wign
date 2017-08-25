@@ -61,7 +61,7 @@
         @else
             <a href="#" class="addVote" title="Jeg bruger dette tegn">&nbsp;</a>
         @endif
-        <a href="{{ URL::to('/flagSignView')."/".$sign->id }}" class="flagSign" title="Rapportér tegnet"><img src="{{ asset('images/flag-black.png') }}" class="anmeld"></a>
+        <a href="{{ URL::to('/flagSignView')."/".$sign->id }}" class="flagSign" title="Rapportér tegnet"><img src="{{ asset('images/flag-black.png',env('HTTPS')) }}" class="anmeld"></a>
         <div class="desc">{{$sign->description}}</div>
     </div>
 @endforeach

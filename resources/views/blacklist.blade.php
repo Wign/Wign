@@ -6,7 +6,7 @@
 
     <div class="buffer">
 
-        <img src="{{asset('images/wign_logo.png')}}" alt="Wign logo" class="wign logo-index" width="269" height="85">
+        <img src="{{asset('images/wign_logo.png',env('HTTPS'))}}" alt="Wign logo" class="wign logo-index" width="269" height="85">
         <h1 class="headline">Fuck dig!</h1>
 
         <p>Din IP-adresse <strong class="brand">{{ Session::get('ip') }}</strong> er blevet sortelistet af følgende årsag:<br><span class="brand">{{ Session::get('reason') }}</span></p>
