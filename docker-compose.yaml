@@ -5,10 +5,13 @@ services:
     image: wign:app
     volumes:
       - "./:/var/www"
+      - "./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf"
+      - "./apache/activated_rules:/usr/share/modsecurity-crs/activated_rules"
     ports:
       - "8080:80"
     env_file:
       - ./app.env
+
 
   db:
     image: "mysql:5.7"
@@ -28,6 +31,7 @@ services:
   aws:
     volumes:
       - "./:/src"
+      - "./.ssh:/root/.ssh"
     environment:
       - AWS_CREDENTIAL_FILE=/src/aws_credentials.txt
     working_dir: "/src"
