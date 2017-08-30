@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.0.*",
+		"laravel/framework": "5.0.5",
 		"aws/aws-sdk-php": "*",
 		"aws/aws-sdk-php-laravel": "*",
         "nikic/php-parser": "~1.3"
