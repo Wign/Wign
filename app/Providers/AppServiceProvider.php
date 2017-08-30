@@ -13,6 +13,11 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		//App::before( function( $request )
+		//{
+		//	Request::setTrustedProxies( [ $request->getClientIp() ] );
+		//});
+
 		view()->share([
 			'wignVersion' => '0.7 (beta)',
 			'fbURL' => 'https://www.facebook.com/wign.dk/',
