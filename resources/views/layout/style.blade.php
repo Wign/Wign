@@ -3,6 +3,6 @@
 
 <link href='//fonts.googleapis.com/css?family=Raleway:100,400' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="{{asset('css/style.css',env('HTTPS'))}}">
+<link rel="stylesheet" href="{{asset('css/style.css')}}">
 
 @yield('extra_head_scripts')

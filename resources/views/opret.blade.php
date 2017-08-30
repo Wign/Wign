@@ -80,7 +80,7 @@
         </ul>
     </div>
     @endif 
-<a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png',env('HTTPS'))}}" title="Klik for yderligere oplysninger og hjælp" class="question"></a>
+<a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}" title="Klik for yderligere oplysninger og hjælp" class="question"></a>
 <?php 
     if($hasSign) {
 ?>
@@ -98,7 +98,7 @@
 ?>
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('TegnController@gemTegn') }}">
         
-        <camera id="wign01" data-app-id="{{ $appID }}" data-maxlength="15" data-txt-message="Hej. Vær sød at gå til <<url>> for at optage din video" style="width:580px;height:326px;" data-cssurl="{{asset('css/cameraTag.css',env('HTTPS'))}}"></camera><br>
+        <camera id="wign01" data-app-id="{{ $appID }}" data-maxlength="15" data-txt-message="Hej. Vær sød at gå til <<url>> for at optage din video" style="width:580px;height:326px;" data-cssurl="{{asset('css/cameraTag.css')}}"></camera><br>
 
         <label for="tegn">Tegn for:</label>
         <input type="text" id="tegn" name="tegn" value="{{ $word }}" placeholder="Skriv ordet"><br>

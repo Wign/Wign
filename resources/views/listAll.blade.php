@@ -10,7 +10,7 @@
     
     <ol>
     @foreach($words as $word)
-        <li><a href="{{{ URL::to('/tegn').'/'.($word->word) }}}">{{{ $word->word }}}</a></li>
+        <li><a href="{{{ URL::to('/tegn').'/'.GenerateUrl($word->word) }}}">{{{ $word->word }}}</a></li>
     @endforeach
     </ol>
     

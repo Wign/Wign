@@ -9,7 +9,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="da_DK" />
 
-<meta property="og:image" content="{{$image or asset('images/wign-fb_image.png',env('HTTPS'))}}" />
+<meta property="og:image" content="{{$image or asset('images/wign-fb_image.png')}}" />
 <meta property="og:image:type" content="{{$image_type or 'image/png'}}" />
 @if (isset($width))
 <meta property="og:image:width" content="{{$width}}" />
