@@ -14,12 +14,13 @@ services:
 
 
   db:
-    image: "mysql:5.7"
+    image: "mysql:5.6"
     environment:
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_DATABASE=db"
       - "MYSQL_USER=user"
       - "MYSQL_PASSWORD=pass"
+    command: " --explicit_defaults_for_timestamp "
 
   migrater:
     image: wign:app
