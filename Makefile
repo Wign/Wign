@@ -11,4 +11,7 @@ up: build
 
 aws-shell:
 	docker-compose run aws bash
+
+clean:
+	rm .built
 .PHONY: aws-shell
