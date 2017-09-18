@@ -1,0 +1,4 @@
+Dockerfile
+docker-compose.yaml
+Dockerfile.aws
+.ssh

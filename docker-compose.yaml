@@ -1,0 +1,41 @@
+version: "3"
+services:
+
+  app:
+    image: wign:app
+    volumes:
+      - "./:/var/www"
+      - "./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf"
+      - "./apache/activated_rules:/usr/share/modsecurity-crs/activated_rules"
+    ports:
+      - "8080:80"
+    env_file:
+      - ./app.env
+
+
+  db:
+    image: "mysql:5.6"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=db"
+      - "MYSQL_USER=user"
+      - "MYSQL_PASSWORD=pass"
+    command: " --explicit_defaults_for_timestamp "
+
+  migrater:
+    image: wign:app
+    env_file:
+      - ./app.env
+    # Waiting for DB to actually initialize. TODO: Consider more graceful solution
+    command: "sh -c 'sleep 30 ; php artisan migrate'"
+
+  aws:
+    volumes:
+      - "./:/src"
+      - "./.ssh:/root/.ssh"
+    environment:
+      - AWS_CREDENTIAL_FILE=/src/aws_credentials.txt
+    working_dir: "/src"
+    build:
+      context: ./
+      dockerfile: Dockerfile.aws
