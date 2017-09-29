@@ -3,7 +3,7 @@ $(function () {
 
     $('.sign a.delVote, .sign a.addVote').on('click', function (event) {
         event.preventDefault();
-        if (_DEBUG) console.log("Klik opdaget!");
+        if (_DEBUG) console.log("Click detected!");
 
         var mode = $(this).attr('class');
         var ajaxURL = '';
@@ -14,11 +14,11 @@ $(function () {
             ajaxURL = delUrl;
         }
         else {
-            console.log("Fejl med &lt;a&gt; class!");
+            console.log("We got a error with &lt;a&gt; class of the add/delete vote button!");
         }
 
         // Spinning animation!
-        $(this).addClass('loadingVote'); // html("Vent...")
+        $(this).addClass('loadingVote');
 
         // Saving this element to later usage
         var signDiv = $(this).parent();
@@ -39,7 +39,7 @@ $(function () {
             success: [
                 function (result) {
                     if (_DEBUG) {
-                        console.log("Ajax request gennemført successfuldt!");
+                        console.log("Ajax request succeed! Result:");
                         console.log(result.msg);
                         console.log(result.votes);
                     }
@@ -52,7 +52,7 @@ $(function () {
                             'cursor': 'pointer',
                             'pointer-events': 'none'
                         });
-                        if (_DEBUG) console.log("fra del til add!");
+                        if (_DEBUG) console.log("CHANGE FROM del TO add!");
                     }
                     else {
                         // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
@@ -60,7 +60,7 @@ $(function () {
                             'cursor': 'pointer',
                             'pointer-events': 'none'
                         });
-                        if (_DEBUG) console.log("fra add til del!");
+                        if (_DEBUG) console.log("CHANGE FROM add TO del!");
                     }
 
                     // Sorts the divs according to the "data-count" attr inside the divs
@@ -74,7 +74,7 @@ $(function () {
                 }
             ],
             error: function () {
-                console.log("FEJL!");
+                console.log("ERROR!");
             }
 
         });
@@ -83,8 +83,8 @@ $(function () {
 });
 
 /**
- * Oversættelse for CameraTag
- * Af: Troels Madsen
+ * Translation of CameraTag to Danish
+ * @author Troels Madsen
  */
 
 CT_i18n = [];
@@ -105,7 +105,7 @@ CT_i18n[13] = "Godkend";
 CT_i18n[14] = "Optag igen";
 CT_i18n[15] = "Se optagelsen";
 CT_i18n[16] = "Vent venligst mens vi flytter pixels rundt";
-CT_i18n[17] = "Uploadet"; //Kaldet Udgivet. Ændret så folk vil trykke på "indsend tegn"
+CT_i18n[17] = "Uploadet"; //Called "Udgivet" before. Changed so people want to click on "Send sign" after it.
 CT_i18n[18] = "Skriv din <b>mobuilnummer</b> nedenunder og vi sender dig en link til optagelse fra mobiltelefon.";
 CT_i18n[19] = "Send link til mobil";
 CT_i18n[20] = "fortryd";
