@@ -2,7 +2,8 @@ FROM php:5.6.31-apache
 
 # System dependencies
 RUN apt-get update && apt-get install -y libmcrypt-dev git zip mysql-client \
-	libapache2-modsecurity
+	libapache2-modsecurity \
+	node npm
 RUN docker-php-ext-install -j$(nproc) mcrypt pdo_mysql
 RUN a2enmod rewrite
 
@@ -27,6 +28,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
+# Install gulp
+RUN npm install --global gulp-cli
+
 EXPOSE 80
 
 ADD . /var/www
@@ -48,5 +52,11 @@ USER www-data
 # Install dependencies
 RUN php composer.phar update
 RUN php composer.phar install
+
+# Install node dependencies - @TODO ERROR HERE!!
+RUN npm install
+
+# Run gulp / Laravel Elixir
+RUN gulp --production
 
 USER root

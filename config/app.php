@@ -139,7 +139,7 @@ return [
 		/*
 		 * Package Service Providers...
 		 */
-		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // Maybe only load it on non-productive environments?
 
 		/*
 		 * Application Service Providers...
