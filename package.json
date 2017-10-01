@@ -1,5 +1,14 @@
 {
+  "name": "Wign",
+  "version": "0.8.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wign/Wign.git"
+  },
   "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.4.0",
     "node-sass": "~4.5.3",
     "laravel-elixir": "*"
   }

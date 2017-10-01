@@ -16,15 +16,13 @@ html {
   -ms-text-size-adjust: 100%;
   /* 2 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */
-}
+  /* 2 */ }
 
 /**
  * Remove default margin.
  */
 body {
-  margin: 0;
-}
+  margin: 0; }
 
 /* HTML5 display definitions
    ========================================================================== */
@@ -47,8 +45,7 @@ menu,
 nav,
 section,
 summary {
-  display: block;
-}
+  display: block; }
 
 /**
  * 1. Correct `inline-block` display not defined in IE 8/9.
@@ -61,8 +58,7 @@ video {
   display: inline-block;
   /* 1 */
   vertical-align: baseline;
-  /* 2 */
-}
+  /* 2 */ }
 
 /**
  * Prevent modern browsers from displaying `audio` without controls.
@@ -70,8 +66,7 @@ video {
  */
 audio:not([controls]) {
   display: none;
-  height: 0;
-}
+  height: 0; }
 
 /**
  * Address `[hidden]` styling not present in IE 8/9/10.
@@ -79,8 +74,7 @@ audio:not([controls]) {
  */
 [hidden],
 template {
-  display: none;
-}
+  display: none; }
 
 /* Links
    ========================================================================== */
@@ -88,16 +82,14 @@ template {
  * Remove the gray background color from active links in IE 10.
  */
 a {
-  background-color: transparent;
-}
+  background-color: transparent; }
 
 /**
  * Improve readability when focused and also mouse hovered in all browsers.
  */
 a:active,
 a:hover {
-  outline: 0;
-}
+  outline: 0; }
 
 /* Text-level semantics
    ========================================================================== */
@@ -105,23 +97,20 @@ a:hover {
  * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
  */
 abbr[title] {
-  border-bottom: 1px dotted;
-}
+  border-bottom: 1px dotted; }
 
 /**
  * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
  */
 b,
 strong {
-  font-weight: bold;
-}
+  font-weight: bold; }
 
 /**
  * Address styling not present in Safari and Chrome.
  */
 dfn {
-  font-style: italic;
-}
+  font-style: italic; }
 
 /**
  * Address variable `h1` font-size and margin within `section` and `article`
@@ -129,23 +118,20 @@ dfn {
  */
 h1 {
   font-size: 2em;
-  margin: 0.67em 0;
-}
+  margin: 0.67em 0; }
 
 /**
  * Address styling not present in IE 8/9.
  */
 mark {
   background: #ff0;
-  color: #000;
-}
+  color: #000; }
 
 /**
  * Address inconsistent and variable font size in all browsers.
  */
 small {
-  font-size: 80%;
-}
+  font-size: 80%; }
 
 /**
  * Prevent `sub` and `sup` affecting `line-height` in all browsers.
@@ -155,16 +141,13 @@ sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
-  vertical-align: baseline;
-}
+  vertical-align: baseline; }
 
 sup {
-  top: -0.5em;
-}
+  top: -0.5em; }
 
 sub {
-  bottom: -0.25em;
-}
+  bottom: -0.25em; }
 
 /* Embedded content
    ========================================================================== */
@@ -172,15 +155,13 @@ sub {
  * Remove border when inside `a` element in IE 8/9/10.
  */
 img {
-  border: 0;
-}
+  border: 0; }
 
 /**
  * Correct overflow not hidden in IE 9/10/11.
  */
 svg:not(:root) {
-  overflow: hidden;
-}
+  overflow: hidden; }
 
 /* Grouping content
    ========================================================================== */
@@ -188,23 +169,20 @@ svg:not(:root) {
  * Address margin not present in IE 8/9 and Safari.
  */
 figure {
-  margin: 1em 40px;
-}
+  margin: 1em 40px; }
 
 /**
  * Address differences between Firefox and other browsers.
  */
 hr {
   box-sizing: content-box;
-  height: 0;
-}
+  height: 0; }
 
 /**
  * Contain overflow in all browsers.
  */
 pre {
-  overflow: auto;
-}
+  overflow: auto; }
 
 /**
  * Address odd `em`-unit font size rendering in all browsers.
@@ -214,8 +192,7 @@ kbd,
 pre,
 samp {
   font-family: monospace, monospace;
-  font-size: 1em;
-}
+  font-size: 1em; }
 
 /* Forms
    ========================================================================== */
@@ -239,15 +216,13 @@ textarea {
   font: inherit;
   /* 2 */
   margin: 0;
-  /* 3 */
-}
+  /* 3 */ }
 
 /**
  * Address `overflow` set to `hidden` in IE 8/9/10/11.
  */
 button {
-  overflow: visible;
-}
+  overflow: visible; }
 
 /**
  * Address inconsistent `text-transform` inheritance for `button` and `select`.
@@ -257,8 +232,7 @@ button {
  */
 button,
 select {
-  text-transform: none;
-}
+  text-transform: none; }
 
 /**
  * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
@@ -274,16 +248,14 @@ input[type="submit"] {
   -webkit-appearance: button;
   /* 2 */
   cursor: pointer;
-  /* 3 */
-}
+  /* 3 */ }
 
 /**
  * Re-set default cursor for disabled elements.
  */
 button[disabled],
 html input[disabled] {
-  cursor: default;
-}
+  cursor: default; }
 
 /**
  * Remove inner padding and border in Firefox 4+.
@@ -291,16 +263,14 @@ html input[disabled] {
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 /**
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
  * the UA stylesheet.
  */
 input {
-  line-height: normal;
-}
+  line-height: normal; }
 
 /**
  * It's recommended that you don't attempt to style these elements.
@@ -314,8 +284,7 @@ input[type="radio"] {
   box-sizing: border-box;
   /* 1 */
   padding: 0;
-  /* 2 */
-}
+  /* 2 */ }
 
 /**
  * Fix the cursor style for Chrome's increment/decrement buttons. For certain
@@ -324,8 +293,7 @@ input[type="radio"] {
  */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
+  height: auto; }
 
 /**
  * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
@@ -336,8 +304,7 @@ input[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
   /* 2 */
-  box-sizing: content-box;
-}
+  box-sizing: content-box; }
 
 /**
  * Remove inner padding and search cancel button in Safari and Chrome on OS X.
@@ -346,8 +313,7 @@ input[type="search"] {
  */
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
+  -webkit-appearance: none; }
 
 /**
  * Define consistent border, margin, and padding.
@@ -355,8 +321,7 @@ input[type="search"]::-webkit-search-decoration {
 fieldset {
   border: 1px solid #c0c0c0;
   margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
+  padding: 0.35em 0.625em 0.75em; }
 
 /**
  * 1. Correct `color` not being inherited in IE 8/9/10/11.
@@ -366,23 +331,20 @@ legend {
   border: 0;
   /* 1 */
   padding: 0;
-  /* 2 */
-}
+  /* 2 */ }
 
 /**
  * Remove default vertical scrollbar in IE 8/9/10/11.
  */
 textarea {
-  overflow: auto;
-}
+  overflow: auto; }
 
 /**
  * Don't inherit the `font-weight` (applied by a rule above).
  * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
  */
 optgroup {
-  font-weight: bold;
-}
+  font-weight: bold; }
 
 /* Tables
    ========================================================================== */
@@ -391,13 +353,11 @@ optgroup {
  */
 table {
   border-collapse: collapse;
-  border-spacing: 0;
-}
+  border-spacing: 0; }
 
 td,
 th {
-  padding: 0;
-}
+  padding: 0; }
 
 /*------------------------------------*    $RESET
 \*------------------------------------*/
@@ -409,8 +369,7 @@ th {
     * Let’s make the box model all nice, shall we...?
     */
 *, *:before, *:after {
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 /**
  * The usual...
@@ -422,36 +381,31 @@ form, fieldset, legend,
 table, th, td, caption,
 hr {
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 /**
  * Give a help cursor to elements that give extra info on `:hover`.
  */
 abbr[title], dfn[title] {
-  cursor: help;
-}
+  cursor: help; }
 
 /**
  * Remove underlines from potentially troublesome elements.
  */
 u, ins {
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 /**
  * Apply faux underline via `border-bottom`.
  */
 ins {
-  border-bottom: 1px solid;
-}
+  border-bottom: 1px solid; }
 
 /**
  * So that `alt` text is visually offset if images don’t load.
  */
 img {
-  font-style: italic;
-}
+  font-style: italic; }
 
 /**
  * Give form elements some cursor interactions...
@@ -462,16 +416,14 @@ textarea,
 button,
 select,
 option {
-  cursor: pointer;
-}
+  cursor: pointer; }
 
 .text-input:active,
 .text-input:focus,
 textarea:active,
 textarea:focus {
   cursor: text;
-  outline: none;
-}
+  outline: none; }
 
 /*------------------------------------*    $SHARED
 \*------------------------------------*/
@@ -496,8 +448,7 @@ select,
 .sign,
 .msg--flash {
   margin-bottom: 24px;
-  margin-bottom: 2.4rem;
-}
+  margin-bottom: 2.4rem; }
 
 /**
  * Doubled up `margin-bottom` helper class.
@@ -513,8 +464,7 @@ select,
  */
 hr {
   margin-bottom: 22px;
-  margin-bottom: 2.2rem;
-}
+  margin-bottom: 2.2rem; }
 
 /**
  * Where `margin-left` is concerned we want to try and indent certain elements
@@ -522,8 +472,7 @@ hr {
  */
 ul, ol, dd {
   margin-bottom: 48px;
-  margin-bottom: 4.8rem;
-}
+  margin-bottom: 4.8rem; }
 
 /*------------------------------------*    $HELPER
 \*------------------------------------*/
@@ -540,62 +489,51 @@ ul, ol, dd {
  * Add/remove floats
  */
 .float--right {
-  float: right !important;
-}
+  float: right !important; }
 
 .float--left {
-  float: left !important;
-}
+  float: left !important; }
 
 .float--none {
-  float: none !important;
-}
+  float: none !important; }
 
 /**
  * Text alignment
  */
 .text--left {
-  text-align: left  !important;
-}
+  text-align: left  !important; }
 
 .text--center {
-  text-align: center !important;
-}
+  text-align: center !important; }
 
 .text--right {
-  text-align: right !important;
-}
+  text-align: right !important; }
 
 /**
  * Font weights
  */
 .weight--light {
-  font-weight: 300 !important;
-}
+  font-weight: 300 !important; }
 
 .weight--normal {
-  font-weight: 400 !important;
-}
+  font-weight: 400 !important; }
 
 .weight--semibold {
-  font-weight: 600 !important;
-}
+  font-weight: 600 !important; }
 
 /**
  * Add a help cursor to any element that gives the user extra information on
  * `:hover`.
  */
 .informative {
-  cursor: help !important;
-}
+  cursor: help !important; }
 
 /**
  * Mute an object by reducing its opacity.
  */
 .muted {
   opacity: 0.5 !important;
-  filter: alpha(opacity=50) !important;
-}
+  filter: alpha(opacity=50) !important; }
 
 /**
  * Align items to the right where they imply progression/movement forward, e.g.:
@@ -604,8 +542,7 @@ ul, ol, dd {
  *
  */
 .proceed {
-  text-align: right !important;
-}
+  text-align: right !important; }
 
 /**
  * Add a right-angled quote to links that imply movement, e.g.:
@@ -614,47 +551,29 @@ ul, ol, dd {
  *
  */
 .go:after {
-  content: " " "»" !important;
-}
+  content: " " "»" !important; }
 
 /**
  * Apply capital case to an element (usually a `strong`).
  */
 .caps {
-  text-transform: uppercase !important;
-}
+  text-transform: uppercase !important; }
 
 /**
  * Adding extra margin to the top, giving it a extra space
  */
 .buffer {
-  margin-top: 5rem;
-}
+  margin-top: 5rem; }
 
 /**
  * Hide content off-screen without resorting to `display:none;`, also provide
  * breakpoint specific hidden elements.
  */
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
 @keyframes spin {
   from {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
+    transform: rotate(0deg); }
   to {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
+    transform: rotate(360deg); } }
 
 /* Quarks
 ========================================================================== */
@@ -665,13 +584,11 @@ ul, ol, dd {
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-}
+  height: 100%; }
 
 html {
   font-size: 62.5%;
-  overflow-y: scroll;
-}
+  overflow-y: scroll; }
 
 body {
   font-size: 16px;
@@ -687,48 +604,39 @@ body {
     background-repeat: no-repeat;
     background-position: bottom left;
     //background-size: 10% auto;
-    */
-}
+    */ }
 
 h1 {
   font-size: 36px;
-  font-size: 3.6rem;
-}
+  font-size: 3.6rem; }
 
 h2 {
   font-size: 30px;
-  font-size: 3rem;
-}
+  font-size: 3rem; }
 
 h3 {
   font-size: 24px;
-  font-size: 2.4rem;
-}
+  font-size: 2.4rem; }
 
 h4 {
   font-size: 20px;
-  font-size: 2rem;
-}
+  font-size: 2rem; }
 
 h5 {
   font-size: 16px;
-  font-size: 1.6rem;
-}
+  font-size: 1.6rem; }
 
 h6 {
   font-size: 14px;
-  font-size: 1.4rem;
-}
+  font-size: 1.4rem; }
 
 a, a:active, a:visited, a:hover {
   color: #8CCDF4;
-  text-decoration: none;
-}
+  text-decoration: none; }
 
 a:hover {
   color: #4A90E2;
-  text-decoration: underline;
-}
+  text-decoration: underline; }
 
 input, textarea, select {
   font-family: "Raleway", sans-serif;
@@ -737,48 +645,34 @@ input, textarea, select {
   padding: 0px 10px;
   border: 0px;
   border-radius: 5px;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
-}
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5); }
 
 label {
-  display: block;
-}
-
-.ligeform label {
-  float: left;
-  padding-right: 10px;
-  width: 20%;
-}
+  display: block; }
+  .ligeform label {
+    float: left;
+    padding-right: 10px;
+    width: 20%; }
 
 input[type="text"], textarea {
   background-color: #f2f2f2;
-  width: 100%;
-}
-
-.ligeform input[type="text"], .ligeform textarea {
-  width: 80%;
-}
-
-input[type="text"]:focus, textarea:focus {
-  outline: none;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
-  background-color: #FFFFFF;
-}
+  width: 100%; }
+  .ligeform input[type="text"], .ligeform textarea {
+    width: 80%; }
+  input[type="text"]:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+    background-color: #FFFFFF; }
 
 input[type="submit"] {
-  background: #B8E986;
-}
-
-input[type="submit"]:active {
-  background-color: #79cb25;
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
-  outline: none;
-}
-
-input[type="submit"]:disabled {
-  background-color: #b8cca3;
-  color: #999999;
-}
+  background: #B8E986; }
+  input[type="submit"]:active {
+    background-color: #79cb25;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    outline: none; }
+  input[type="submit"]:disabled {
+    background-color: #b8cca3;
+    color: #999999; }
 
 /* Atoms
 ========================================================================== */
@@ -792,53 +686,45 @@ input[type="submit"]:disabled {
   min-height: 100%;
   margin: 0px auto;
   padding: 10px;
-  position: relative;
-}
+  position: relative; }
 
 .wign {
   width: 269px;
-  height: auto;
-}
+  height: auto; }
 
 .logo-index {
   margin-left: auto;
   margin-right: auto;
-  display: block;
-}
+  display: block; }
 
 .logo-banner {
   float: left;
   height: 50px;
   width: auto;
-  margin: 25px;
-}
+  margin: 25px; }
 
 .headline {
   color: #B8E986;
   font-weight: 100;
   text-align: center;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
-  line-height: 4.5rem;
-}
+  line-height: 4.5rem; }
 
 .tagline {
   position: absolute;
   right: 0px;
   font-size: 12px;
-  font-size: 1.2rem;
-}
+  font-size: 1.2rem; }
 
 .search-form {
-  position: relative;
-}
+  position: relative; }
 
 .input-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   right: 110px;
-  bottom: 0;
-}
+  bottom: 0; }
 
 .search-text {
   font-size: 20px;
@@ -848,29 +734,23 @@ input[type="submit"]:disabled {
   background-repeat: no-repeat;
   background-position: 5px center;
   background-size: auto 30px;
-  padding: 0px 0px 0px 40px;
-}
-
-.search-text:focus {
-  background-image: url("/images/lup-black.png");
-}
+  padding: 0px 0px 0px 40px; }
+  .search-text:focus {
+    background-image: url("/images/lup-black.png"); }
 
 .search-submit {
   width: 100px;
   float: right;
   line-height: 50px;
-  font-size: 20px;
-}
+  font-size: 20px; }
 
 .brand {
-  color: #B8E986;
-}
+  color: #B8E986; }
 
 .hand img {
   vertical-align: middle;
   height: 36px;
-  margin-right: 10px;
-}
+  margin-right: 10px; }
 
 .sign {
   display: inline-block;
@@ -878,8 +758,7 @@ input[type="submit"]:disabled {
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
   border-radius: 5px 5px 0px 0px;
   background-color: #DDD;
-  color: #000000;
-}
+  color: #000000; }
 
 .vote, .delVote, .addVote, .loadingVote {
   height: 24px;
@@ -890,55 +769,41 @@ input[type="submit"]:disabled {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  margin: 4px 0px 5px 0px;
-}
+  margin: 4px 0px 5px 0px; }
 
 .delVote {
   background-image: url("/images/thumbs-up-black.png");
-  top: 0px;
-}
-
-.delVote:hover {
-  text-decoration: none;
-}
+  top: 0px; }
+  .delVote:hover {
+    text-decoration: none; }
 
 .addVote {
   background-image: url("/images/hands-up-black.png");
-  top: 0px;
-}
-
-.addVote:hover {
-  text-decoration: none;
-}
+  top: 0px; }
+  .addVote:hover {
+    text-decoration: none; }
 
 .loadingVote {
   width: 24px;
   background-image: url("/images/loading-black.png");
   background-size: cover;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
+  animation: spin 2s linear infinite; }
 
 .voted {
-  background-image: url("/images/thumbs-up-black.png");
-}
+  background-image: url("/images/thumbs-up-black.png"); }
 
 .help {
-  float: right;
-}
+  float: right; }
 
 .question {
-  height: 20px;
-}
+  height: 20px; }
 
 .flagSign {
-  float: right;
-}
+  float: right; }
 
 .anmeld {
   height: 24px;
-  margin: 4px 5px 5px 0px;
-}
+  margin: 4px 5px 5px 0px; }
 
 .ui-tooltip {
   background: #666666;
@@ -946,13 +811,11 @@ input[type="submit"]:disabled {
   font-size: 12px;
   border: none;
   padding: 0;
-  opacity: 1;
-}
+  opacity: 1; }
 
 .ui-tooltip-content {
   position: relative;
-  padding: 0.5em;
-}
+  padding: 0.5em; }
 
 .msg--flash {
   background-color: #B8E986;
@@ -961,8 +824,7 @@ input[type="submit"]:disabled {
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
   color: #000000;
   padding: 10px;
-  display: block;
-}
+  display: block; }
 
 /* Molecules
 ========================================================================== */
@@ -978,23 +840,19 @@ input[type="submit"]:disabled {
   width: 100%;
   height: 100px;
   background-color: #4A4A4A;
-  z-index: 9999;
-}
+  z-index: 9999; }
 
 .menu {
   padding: 0px 25px;
-  text-align: right;
-}
+  text-align: right; }
 
 .menu li {
   display: inline-block;
   line-height: 100px;
-  padding: 0px 10px;
-}
+  padding: 0px 10px; }
 
 .menu a {
-  color: #B8E986;
-}
+  color: #B8E986; }
 
 .footer {
   position: absolute;
@@ -1004,8 +862,7 @@ input[type="submit"]:disabled {
   text-align: center;
   padding: 10px 10px 20px 10px;
   background-color: #4A4A4A;
-  z-index: 9999;
-}
+  z-index: 9999; }
 
 /* Style trumps; helper and brand classes */
 
