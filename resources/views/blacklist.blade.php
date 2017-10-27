@@ -1,18 +1,19 @@
 @extends('layout.main')
 
-@section('title', 'Du er blevet blacklistet')
+@section('title', 'Du er på vores sortliste')
 
 @section('content')
 
     <div class="buffer">
 
         <img src="{{asset('images/wign_logo.png')}}" alt="Wign logo" class="wign logo-index" width="269" height="85">
-        <h1 class="headline">Fuck dig!</h1>
+        <h1 class="headline">Desværre</h1>
 
-        <p>Din IP-adresse <strong class="brand">{{ Session::get('ip') }}</strong> er blevet sortelistet af følgende årsag:<br><span class="brand">{{ Session::get('reason') }}</span></p>
-        <p>Vi tolererer desværre slet ikke den slags her på Wign, og derfor er du blevet forbudt adgang hertil fremover.</p>
-        <p>Mener du at du ikke har gjort det og vil gerne have en ord indført, kan du kontakte os på <a href="mailto:{{ $email }}">mail</a>.</p>
-        <p>Ha ikke en god dag. Farvel!</p>
+        <p>Din IP-adresse <strong class="brand">{{ Session::get('ip') }}</strong> er på vores sortliste af følgende årsag:<br><span class="brand">{{ Session::get('reason') }}</span></p>
+        <p>Vi tolererer desværre ikke upassede adfærd på Wign. Vi har valgt at indføre en nul-tolerance, og derfor er du blevet afvist adgangen til Wign.</p>
+        <p>Er det tale om en fejl, og vil du have adgangen igen, så er du mere end velkommen til at kontakte os på <a href="mailto:{{ $email }}">mail</a>.</p>
+        <p>Ha en god dag</p>
+        <p>Med hilsen fra<br>Os fra Wign</p>
 
     </div>
 

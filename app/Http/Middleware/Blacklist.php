@@ -19,17 +19,13 @@ class Blacklist {
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next) {
-		
-		$myip = $request->ip();
-		$blacklistes = $this->blip->get();
 
-		foreach($blacklistes as $blacklisted) {
-			if($blacklisted->ip == $myip & $request->path() != "blacklist") {
-			//if($blacklisted->ip == $myip) {
-				return redirect()->action('IndexController@blacklist')->with(['ip' => $blacklisted->ip, 'reason' => $blacklisted->reason]);
-			}
+		$myip = $request->ip();
+		$blacklist = $this->blip->where('ip', $myip)->first();
+
+		if($blacklist != null & $request->path() != "blacklist") {
+			return redirect()->action('IndexController@blacklist')->with( array( 'ip' => $blacklist->ip, 'reason' => $blacklist->reason ) );
 		}
-		
 		return $next($request);
 	}
 
