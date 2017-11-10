@@ -1,5 +1,5 @@
 <?php
-    $title = ucfirst($word->word);
+    $title = $word->word;
     $desc = 'Wign har tegnet for '.$word->word.'. Kom og prøv at tjekke om vi har andre tegn for '.$word->word.'. Tag en rejse i vores udvalg af tegn, og bliv inspireret.';
     $url = url('/tegn/'.$word->word);
     $video = $signs[0]->video_uuid;
@@ -19,8 +19,8 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
-    var addUrl = "{{ URL::to('/createVote') }}";
-    var delUrl = "{{ URL::to('/deleteVote') }}";
+    var addUrl = "{{ URL::to('/createVote') }}"; // Used in another script file
+    var delUrl = "{{ URL::to('/deleteVote') }}"; // Used in another script file
 
     $(function() {
         $( document ).tooltip({
@@ -44,8 +44,6 @@
     @endif
 @endif
 
-{{-- <p>{{ $word->description }}</p> // Ordet har ikke beskrivelse. Kun hver tegn! --}}
-
 <div id="signs">
 <?php $myIP = Request::getClientIp(); ?>
 @foreach($signs as $sign)
@@ -66,6 +64,6 @@
     </div>
 @endforeach
 </div>
-<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right" alt="Lav en ny forslag">Forslå et alternativt tegn</a>
+<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right" title="Lav en ny forslag">Forslå et alternativt tegn</a>
 
 @stop

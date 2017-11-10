@@ -28,10 +28,8 @@ class TegnController extends Controller {
                 WHERE signs.word_id = '.$wordData["id"].' AND signs.deleted_at IS NULL
                 GROUP BY signs.id 
                 ORDER BY sign_count DESC
-            '));
+            ')); // @TODO : Ikke sikker - bedre med regulær expression - eller bygge query først.
 
-            // $signs = Word::find($wordData['id'])->signs;
-            //if(count($signs2) = 0) {return view('opret')->with('word', $wordData);}
             return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
         }
         else {
@@ -39,7 +37,7 @@ class TegnController extends Controller {
                 $words = Word::has('signs')->lists('word');
 
                 for($i = 0; $i < count($words); $i++) {
-                    $tempArr[$i] = levenshtein($word, $words[$i]);
+                    $tempArr[$i] = levenshtein($word, $words[$i]); // @TODO : ÆNDRE DET!!
                 }
                 asort($tempArr);
                 
@@ -112,7 +110,7 @@ class TegnController extends Controller {
                     "thumb_url" => "http:".$q['wign01']['qvga']['small_thumb'],
                 ]],
             ];
-            ClientHelper::sendJSON($message, 'https://hooks.slack.com/services/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');
+            ClientHelper::sendJSON($message, config('social.slack.webHook'));
             
             $flash = [
                 'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
@@ -165,8 +163,8 @@ class TegnController extends Controller {
             }
             else {
                 $flash = [
-                'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt Troels. På forhånd tak.',
-                'url' => 'mailto:troels@t-troels.dk'
+                'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
+                'url' => 'mailto:'.config('wign.email')
                 ];
                 return Redirect::to('/flagSignView/'.$q['id'])->with($flash);
             }

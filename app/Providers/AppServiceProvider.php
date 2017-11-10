@@ -1,8 +1,6 @@
 <?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Word;
-
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -17,14 +15,6 @@ class AppServiceProvider extends ServiceProvider {
 		//{
 		//	Request::setTrustedProxies( [ $request->getClientIp() ] );
 		//});
-
-		view()->share([
-			'wignVersion' => '0.7 (beta)',
-			'fbURL' => 'https://www.facebook.com/wign.dk/',
-			'gitURL' => 'https://github.com/Thanerik/Wign',
-			'email' => 'troels@t-troels.dk',
-			'appID' => 'a-49088bd0-39cc-0132-ccc4-12313914f10b'
-			]);
 	}
 
 	/**
