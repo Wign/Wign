@@ -20,24 +20,28 @@ if ( isset( $word ) ) {
 @section('content')
     <h1>{{ $title }}</h1>
     <p><span class="brand">Wign</span> har desværre ikke tegnet{{{ isset($word) ? ' for '.$word : ''}}}.
-        Du kan nu enten:
-    <ul>
-        <li><a href="{{ URL::to('/opret/'.$word) }}"
-               title="opret tegnet for {{ $word }}">Oprette {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a></li>
-        eller
-        <li><a href="{{ URL::to('/request/'.$word) }}">Efterlyse {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a>
-        </li>
-    </ul>
-    </p>
-
-    @if($word)
-        <p>
-        <h3>Eller mente du et af disse tegn?</h3>
-        <ul>
-            @foreach($suggestions as $suggest)
-                <li><a href="{{ URL::to('/tegn/'.$suggest) }}">{{ $suggest }}</a></li>
-            @endforeach
-        </ul>
+        @if (isset($word))
+            Du kan nu enten:
+            <ul>
+                <li><a href="{{ URL::to('/opret/'.$word) }}"
+                       title="opret tegnet for {{ $word }}">Oprette {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a></li>
+                eller
+                <li><a href="{{ URL::to('/request/'.$word) }}">Efterlyse {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a>
+                </li>
+            </ul>
+        @else
+            <br><a href="{{ URL::to('/opret/') }}" title="Opret et tegn">Opret et tegn</a>
+        @endif
         </p>
-    @endif
+
+        @if(isset($suggestions))
+            <p>
+            <h3>Eller mente du et af disse tegn?</h3>
+            <ul>
+                @foreach($suggestions as $suggest)
+                    <li><a href="{{ URL::to('/tegn/'.$suggest) }}">{{ $suggest }}</a></li>
+                @endforeach
+            </ul>
+            </p>
+        @endif
 @stop
