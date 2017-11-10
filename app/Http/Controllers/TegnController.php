@@ -20,15 +20,17 @@ class TegnController extends Controller {
             $hasSigns = Sign::where('word_id', $wordData['id'])->count();
         }
         if($wordData['id'] && $hasSigns) {
-        
+
             $signs2 = DB::select(DB::raw('
                 SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
-                WHERE signs.word_id = '.$wordData["id"].' AND signs.deleted_at IS NULL
+                WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
                 GROUP BY signs.id 
                 ORDER BY sign_count DESC
-            ')); // @TODO : Ikke sikker - bedre med regulær expression - eller bygge query først.
+            '), array('wordID' => $wordData["id"]));
+
+	        //dd($signs2[0]);
 
             return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
         }
@@ -95,8 +97,8 @@ class TegnController extends Controller {
 
         if($signId) { 
             $tegn = $q['tegn'];
-            $url = "http://wign.dk/tegn/".$tegn;
-            $video = "http://www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
+            $url = URL::to('/tegn/'.$tegn);
+            $video = "//www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
             $message = [
                 "attachments" => [ [
                     "fallback" => "Videoen kan ses her: ".$video."!",
@@ -106,8 +108,8 @@ class TegnController extends Controller {
                     "title_link" => $url,
                     "text" => "Se <".$video."|videoen>!",
                     "unfurl_links" => true,
-                    "image_url" => "http:".$q['wign01']['qvga']['thumb'],
-                    "thumb_url" => "http:".$q['wign01']['qvga']['small_thumb'],
+                    "image_url" => "https:".$q['wign01']['qvga']['thumb'],
+                    "thumb_url" => "https:".$q['wign01']['qvga']['small_thumb'],
                 ]],
             ];
             ClientHelper::sendJSON($message, config('social.slack.webHook'));
