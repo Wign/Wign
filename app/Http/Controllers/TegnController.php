@@ -2,7 +2,7 @@
 
 use App\Word;
 use App\Sign;
-use App\Helpers\ClientHelper;
+use App\Helpers\Helper;
 
 use DB;
 use URL;
@@ -13,7 +13,7 @@ use Redirect;
 class TegnController extends Controller {
 
     public function visTegn($word = null) {
-        if ($word != null) { $word = mellemrum($word); }
+        if ($word != null) { $word = Helper::underscoreToSpace($word); }
         $wordData = Word::where('word', $word)->first();
 
         if($wordData['id']) {
@@ -112,7 +112,7 @@ class TegnController extends Controller {
                     "thumb_url" => "https:".$q['wign01']['qvga']['small_thumb'],
                 ]],
             ];
-            ClientHelper::sendJSON($message, config('social.slack.webHook'));
+            Helper::sendJSON($message, config('social.slack.webHook'));
             
             $flash = [
                 'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
@@ -133,7 +133,7 @@ class TegnController extends Controller {
 
     public function flagSign(Request $request) {
         // Check if client is bot. If true, reject the flagging!
-        $bot = ClientHelper::detect_bot();
+        $bot = Helper::detect_bot();
         if($bot) {
             $flash = [
                 'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!'

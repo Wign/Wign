@@ -23,7 +23,6 @@
 			"App\\": "app/"
 		},
 		"files": [
-			"app/Library/helpers.php"
 		]
 	},
 	"scripts": {

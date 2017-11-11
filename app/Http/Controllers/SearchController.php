@@ -2,6 +2,7 @@
 
 use Input;
 use Redirect;
+use App\Helpers\Helper;
 
 class SearchController extends Controller {
 
@@ -11,7 +12,7 @@ class SearchController extends Controller {
      */
     public function redirect()
     {
-        $q = GenerateUrl(Input::get('tegn'));
+        $q = Helper::makeUrlString(Input::get('tegn'));
         return Redirect::to('/tegn/'.$q);
     }
 }
