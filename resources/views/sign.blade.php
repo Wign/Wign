@@ -2,7 +2,7 @@
     $title = $word->word;
     $desc = 'Wign har tegnet for '.$word->word.'. Kom og prøv at tjekke om vi har andre tegn for '.$word->word.'. Tag en rejse i vores udvalg af tegn, og bliv inspireret.';
     $url = url('/tegn/'.$word->word);
-    $video = $signs[0]->uuid;
+    $video = $signs[0]->video_uuid;
     $video_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/mp4.mp4';
     $image_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/thumb.png';
     $image_width = '640';
@@ -52,7 +52,7 @@
     $hasVote = in_array($myIP, $IPs);
 ?>
     <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
-        <video id="video_{{ $sign->id }}" data-uuid="{{ $sign->uuid }}" data-options='{"mute":true, "controls":true}'></video>
+        <video id="video_{{ $sign->id }}" data-uuid="{{ $sign->video_uuid }}" data-options='{"mute":true, "controls":true}'></video>
         <span class="count">{{ $sign->sign_count }}</span>
         @if($hasVote)
             <a href="#" class="delVote" title="Jeg bruger ikke det tegn">&nbsp;</a>

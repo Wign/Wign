@@ -41,7 +41,7 @@ class ApiController extends Controller {
 		if(isset($word)) {
 			$word = Helper::underscoreToSpace($word);
 			$result = Word::join( 'signs', 'words.id', '=', 'signs.word_id' )->where( 'words.word', $word )->whereNull( 'signs.deleted_at' )->get( array(
-				'uuid as videoID',
+				'video_uuid as videoID',
 				'description',
 				'thumbnail_url as thumb',
 				'signs.created_at'
