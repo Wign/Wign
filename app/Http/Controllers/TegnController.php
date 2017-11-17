@@ -2,7 +2,7 @@
 
 use App\Word;
 use App\Sign;
-use App\Helpers\ClientHelper;
+use App\Helpers\Helper;
 
 use DB;
 use URL;
@@ -13,25 +13,25 @@ use Redirect;
 class TegnController extends Controller {
 
     public function visTegn($word = null) {
-        if ($word != null) { $word = mellemrum($word); }
+        if ($word != null) { $word = Helper::underscoreToSpace($word); }
         $wordData = Word::where('word', $word)->first();
 
         if($wordData['id']) {
             $hasSigns = Sign::where('word_id', $wordData['id'])->count();
         }
         if($wordData['id'] && $hasSigns) {
-        
+
             $signs2 = DB::select(DB::raw('
                 SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
-                WHERE signs.word_id = '.$wordData["id"].' AND signs.deleted_at IS NULL
+                WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
                 GROUP BY signs.id 
                 ORDER BY sign_count DESC
-            '));
+            '), array('wordID' => $wordData["id"]));
 
-            // $signs = Word::find($wordData['id'])->signs;
-            //if(count($signs2) = 0) {return view('opret')->with('word', $wordData);}
+	        //dd($signs2[0]);
+
             return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
         }
         else {
@@ -39,7 +39,7 @@ class TegnController extends Controller {
                 $words = Word::has('signs')->lists('word');
 
                 for($i = 0; $i < count($words); $i++) {
-                    $tempArr[$i] = levenshtein($word, $words[$i]);
+                    $tempArr[$i] = levenshtein($word, $words[$i]); // @TODO : ÆNDRE DET!!
                 }
                 asort($tempArr);
                 
@@ -97,8 +97,8 @@ class TegnController extends Controller {
 
         if($signId) { 
             $tegn = $q['tegn'];
-            $url = "http://wign.dk/tegn/".$tegn;
-            $video = "http://www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
+            $url = URL::to('/tegn/'.$tegn);
+            $video = "//www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
             $message = [
                 "attachments" => [ [
                     "fallback" => "Videoen kan ses her: ".$video."!",
@@ -108,11 +108,11 @@ class TegnController extends Controller {
                     "title_link" => $url,
                     "text" => "Se <".$video."|videoen>!",
                     "unfurl_links" => true,
-                    "image_url" => "http:".$q['wign01']['qvga']['thumb'],
-                    "thumb_url" => "http:".$q['wign01']['qvga']['small_thumb'],
+                    "image_url" => "https:".$q['wign01']['qvga']['thumb'],
+                    "thumb_url" => "https:".$q['wign01']['qvga']['small_thumb'],
                 ]],
             ];
-            ClientHelper::sendJSON($message, 'https://hooks.slack.com/services/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');
+            Helper::sendJSON($message, config('social.slack.webHook'));
             
             $flash = [
                 'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
@@ -133,7 +133,7 @@ class TegnController extends Controller {
 
     public function flagSign(Request $request) {
         // Check if client is bot. If true, reject the flagging!
-        $bot = ClientHelper::detect_bot();
+        $bot = Helper::detect_bot();
         if($bot) {
             $flash = [
                 'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!'
@@ -165,8 +165,8 @@ class TegnController extends Controller {
             }
             else {
                 $flash = [
-                'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt Troels. På forhånd tak.',
-                'url' => 'mailto:troels@t-troels.dk'
+                'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
+                'url' => 'mailto:'.config('wign.email')
                 ];
                 return Redirect::to('/flagSignView/'.$q['id'])->with($flash);
             }

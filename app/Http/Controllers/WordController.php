@@ -2,7 +2,7 @@
 
 use App\Word;
 use App\RequestWord;
-use App\Helpers\ClientHelper;
+use App\Helpers\Helper;
 
 use DB;
 use URL;
@@ -35,7 +35,7 @@ class WordController extends Controller {
     }
     
     public function requestWord($word) {
-        if ($word != null) { $word = mellemrum($word); }
+        if ($word != null) { $word = Helper::underscoreToSpace($word); }
 
         $myIP = Request::getClientIp();
 
@@ -57,7 +57,7 @@ class WordController extends Controller {
             
         else {
             // Check if client is bot. If true, reject the creation!
-            $bot = ClientHelper::detect_bot();
+            $bot = Helper::detect_bot();
             if($bot) {
                 $flash = [
                     'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din anmoding!'
@@ -78,9 +78,8 @@ class WordController extends Controller {
     }
 
     public function allWords_JSON($word = "") {
-        if (isset($word)) { $word = mellemrum($word); }
-        $words = Word::has('signs')->where('word', 'like', '%'.$word.'%')->get(array('word as label'));
-        return $words;
+        if (isset($word)) { $word = Helper::underscoreToSpace($word); }
+		return Word::getQueriedWord($word)->get(array('word as label'));
     }
 
     public function likeWords($word) {

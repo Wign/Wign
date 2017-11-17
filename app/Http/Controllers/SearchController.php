@@ -2,17 +2,17 @@
 
 use Input;
 use Redirect;
+use App\Helpers\Helper;
 
 class SearchController extends Controller {
 
     /**
      * Redirects the search queries to /tegn/{word}
-     * @return Redirect [description]
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function redirect()
     {
-        $q = null;
-        $q = GenerateUrl(Input::get('tegn'));
+        $q = Helper::makeUrlString(Input::get('tegn'));
         return Redirect::to('/tegn/'.$q);
     }
 }

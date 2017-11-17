@@ -2,3 +2,4 @@ Dockerfile
 docker-compose.yaml
 Dockerfile.aws
 .ssh
+/public/css/style.css

@@ -10,10 +10,11 @@
 |
 */
 
-Route::group(['domain' => 'api.wign.dk'], function () {
+$domain = env('APP_DOMAIN', 'wign.dk');
+Route::group(['domain' => 'api.'.$domain], function () {
     Route::get('/', 'ApiController@index');
-    Route::get('hasSign/{word}', 'ApiController@hasSign');
-    Route::get('video/{word}', 'ApiController@getSign');
+    Route::get('hasSign/{word?}', 'ApiController@hasSign');
+    Route::get('video/{word?}', 'ApiController@getSign');
     Route::get('words/{query?}', 'WordController@allWords_JSON');
 });
 

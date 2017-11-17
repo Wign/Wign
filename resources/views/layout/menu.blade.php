@@ -8,6 +8,6 @@
         <li><a href="{{ URL::to('/seneste') }}">Seneste tegn</a></li>
         <li><a href="{{ URL::to('/alle') }}">Alle tegn</a></li> {{-- Request fra Ragna. Bliver der indtil videre. Indtil der bliver til en alt for uoverskuelige liste --}}
         <li><a href="{{ URL::to('/om') }}">Om Wign</a></li>
-        <li><span class="brand">v{{ $wignVersion }}</span></li>
+        <li><span class="brand">v{{ config('wign.version') }}</span></li>
     </ul>
 </div>

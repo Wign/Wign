@@ -1,6 +1,6 @@
 <?php namespace App\Helpers;
 
-class ClientHelper {
+class Helper {
 
     /**
      * A helper function to detect the most suspicious bots/crawlers
@@ -14,6 +14,18 @@ class ClientHelper {
             return FALSE;
         }
     }
+
+	public static function underscoreToSpace($s) {
+		return trim(str_replace("_", " ", $s));
+	}
+
+	public static function makeUrlString($s) {
+		//Converts all spaces to underscore (_) and lowercase the string
+		$s = preg_replace('/\s/', '_', strtolower($s));
+
+		//Removes "-" or "_" in the beginning or in the end of the string
+		return preg_replace('/^(-|_)/', '', preg_replace('/(-|_)$/', '', $s));
+	}
 
     public static function sendJSON($message, $url) {
         $data_string = json_encode($message);

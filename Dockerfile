@@ -27,6 +27,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
+# Install Node & npm
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    && apt-get install -y nodejs
+
 EXPOSE 80
 
 ADD . /var/www
@@ -48,5 +52,14 @@ USER www-data
 # Install dependencies
 RUN php composer.phar update
 RUN php composer.phar install
+
+# Install gulp globally
+#RUN npm install --global gulp-cli
+
+# Install node dependencies
+RUN npm install
+
+# Run gulp / Laravel Elixir
+RUN npx gulp --production
 
 USER root
