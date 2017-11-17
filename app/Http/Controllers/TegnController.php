@@ -35,19 +35,36 @@ class TegnController extends Controller {
             return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
         }
         else {
+        	$suggestWords = array();
             if($word) {
-                $words = Word::has('signs')->lists('word');
+            	$max_levenshtein = 5;
+            	$min_levenshtein = PHP_INT_MAX;
+                $words = Word::withSign()->lists('word');
+                $tempArr = array();
 
                 for($i = 0; $i < count($words); $i++) {
-                    $tempArr[$i] = levenshtein($word, $words[$i]); // @TODO : ÆNDRE DET!!
-                }
-                asort($tempArr);
-                
-                foreach ($tempArr as $key => $value) {
-                    $sortedArr[] = $words[$key];
-                }
+                	$levenDist = levenshtein(strtolower($word), strtolower($words[$i]));
+                	if($levenDist > 5 || $levenDist > $min_levenshtein) {
+                		continue;
+	                }
+	                else {
+		                $tempArr[$i] = $levenDist;
+	                    if(count($tempArr) == $max_levenshtein) {
+		                    asort($tempArr);
+		                    $min_levenshtein = array_pop($tempArr);
+	                    }
+                    }
+                };
 
-                $suggestWords = array_slice($sortedArr, 0, 5, true);
+                if(empty($tempArr)) {
+	                $suggestWords = null;
+                }
+                else {
+	                asort($tempArr);
+	                foreach ($tempArr as $key => $value) {
+		                $suggestWords[] = $words[$key];
+	                }
+                }
             }
             else { $suggestWords = null; }
             return view('nosign')->with(['word' => $word, 'suggestions' => $suggestWords]);
