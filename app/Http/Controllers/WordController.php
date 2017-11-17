@@ -79,8 +79,7 @@ class WordController extends Controller {
 
     public function allWords_JSON($word = "") {
         if (isset($word)) { $word = Helper::underscoreToSpace($word); }
-        $words = Word::has('signs')->where('word', 'like', '%'.$word.'%')->get(array('word as label'));
-        return $words;
+		return Word::getQueriedWord($word)->get(array('word as label'));
     }
 
     public function likeWords($word) {

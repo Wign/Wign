@@ -5,7 +5,8 @@
     <strong><code>GET http://api.wign.dk/words/{query}</code></strong><br>
     JSON<br>
     Return a list of words that begin or end with {query}. Returns empty array if no words is found.<br>
-    - It is a good way to search for the right word, for example when using autocompletion.
+    Returns a full list of words if no {word} is provided.<br>
+    - It is a good way to search for the right word, for example when using auto-completion.
 </p>
 
 <p>
@@ -20,8 +21,7 @@
     <strong><code>GET http://api.wign.dk/video/{word}</code></strong><br>
     JSON<br>
     Returns a list of sign elements of {word}, including the following relevant data: <code>videoID, description, thumb,
-        created_at</code>. Returns empty array if no words is found. Returns a full list of words if no {word} is
-    provided.<br>
+        created_at</code>.<br>Returns empty array if no words is found, or no {word} is provided.<br>
     - <code>VideoID</code> to show the video element. <code>description</code> of the video is provided by the "author"
     of the video. <code>thumb</code> is the thumbnail picture of the video in .png. <code>created_at</code> is the date
     of creation of the video.
