@@ -13,15 +13,14 @@ use Redirect;
 class TegnController extends Controller {
 
     public function visTegn($word = null) {
-        if ($word != null) { $word = Helper::underscoreToSpace($word); }
-        $wordData = Word::where('word', $word)->first();
+	    if ($word != null) { $word = Helper::underscoreToSpace($word); }
 
+	    $wordData = Word::where('word', $word)->first();
         if($wordData['id']) {
             $hasSigns = Sign::where('word_id', $wordData['id'])->count();
-        }
-        if($wordData['id'] && $hasSigns) {
 
-            $signs2 = DB::select(DB::raw('
+            if($hasSigns) {
+	            $signs2 = DB::select(DB::raw('
                 SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
@@ -30,43 +29,13 @@ class TegnController extends Controller {
                 ORDER BY sign_count DESC
             '), array('wordID' => $wordData["id"]));
 
-	        //dd($signs2[0]);
+	            //dd($signs2[0]);
 
-            return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
+	            return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
+            }
         }
         else {
-        	$suggestWords = array();
-            if($word) {
-            	$max_levenshtein = 5;
-            	$min_levenshtein = PHP_INT_MAX;
-                $words = Word::withSign()->lists('word');
-                $tempArr = array();
-
-                for($i = 0; $i < count($words); $i++) {
-                	$levenDist = levenshtein(strtolower($word), strtolower($words[$i]));
-                	if($levenDist > 5 || $levenDist > $min_levenshtein) {
-                		continue;
-	                }
-	                else {
-		                $tempArr[$i] = $levenDist;
-	                    if(count($tempArr) == $max_levenshtein) {
-		                    asort($tempArr);
-		                    $min_levenshtein = array_pop($tempArr);
-	                    }
-                    }
-                };
-
-                if(empty($tempArr)) {
-	                $suggestWords = null;
-                }
-                else {
-	                asort($tempArr);
-	                foreach ($tempArr as $key => $value) {
-		                $suggestWords[] = $words[$key];
-	                }
-                }
-            }
-            else { $suggestWords = null; }
+	        $suggestWords = $this->findAlikeWords($word);
             return view('nosign')->with(['word' => $word, 'suggestions' => $suggestWords]);
         }
     }
@@ -189,5 +158,51 @@ class TegnController extends Controller {
             }
         }
     }
+
+	/**
+	 * Searching for words that looks alike the queried $word
+	 * Current uses Levenshtein distance, and return the 5 words with the least distance to $word
+	 * @param $word - the query string
+	 *
+	 * @return array|null - array with words as value
+	 */
+	private function findAlikeWords($word) {
+		if(empty($word)){
+			return null;
+		}
+		else {
+			$max_levenshtein = 5;
+			$min_levenshtein = PHP_INT_MAX;
+			$words = Word::withSign()->get();
+			$tempArr = array();
+
+			foreach($words as $compareWord) {
+				$levenDist = levenshtein(strtolower($word), strtolower($compareWord->word));
+				if($levenDist > 5 || $levenDist > $min_levenshtein) {
+					continue;
+				}
+				else {
+					$tempArr[$compareWord->word] = $levenDist;
+					if(count($tempArr) == $max_levenshtein+1) {
+						asort($tempArr);
+						$min_levenshtein = array_pop($tempArr);
+					}
+				}
+			};
+
+			if(empty($tempArr)) {
+				return null; // There are none word with nearly the same "sounding" as $word
+			}
+
+			else {
+				asort($tempArr);
+				$suggestWords = [];
+				foreach ($tempArr as $key => $value) {
+					$suggestWords[] = $key;
+				}
+				return $suggestWords;
+			}
+		}
+	}
 
 }
