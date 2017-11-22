@@ -1,10 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-Use DB;
-use Illuminate\Http\Request;
 Use App\Word;
 Use App\Sign;
-Use App\Blacklist;
 
 class IndexController extends Controller {
 
@@ -15,7 +12,7 @@ class IndexController extends Controller {
 	 * @return View
 	 */
 	public function index() {
-        $randomWord = Word::has('signs')->random()->first();
+		$randomWord = Word::has('signs')->random()->first();
         $signCount = Sign::count();
         $wordCount = Word::has('signs')->count();
 		return view('index')->with(['randomWord' => $randomWord, 'signCount' => $signCount, 'wordCount' => $wordCount]);

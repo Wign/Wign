@@ -15,7 +15,7 @@ Route::group(['domain' => 'api.'.$domain], function () {
     Route::get('/', 'ApiController@index');
     Route::get('hasSign/{word?}', 'ApiController@hasSign');
     Route::get('video/{word?}', 'ApiController@getSign');
-    Route::get('words/{query?}', 'WordController@allWords_JSON');
+    Route::get('words/{query?}', 'ApiController@getWords');
 });
 
 $router->get('/blacklist', 'IndexController@blacklist');
@@ -48,7 +48,7 @@ $router->get('help', 'IndexController@help');
 
 $router->get('home', 'HomeController@index'); // Login (Need?)
 
-$router->get('all_words_json/{query?}', 'WordController@allWords_JSON'); // JSON list over all words that start or ends with {word}
+$router->get('all_words_json/{query?}', 'ApiController@getWords'); //@TODO: Remove it - we can move over to api.wign.dk for this.
 
 $router->controllers([
 	'auth' => 'Auth\AuthController',

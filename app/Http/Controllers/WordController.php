@@ -7,7 +7,6 @@ use App\Helpers\Helper;
 use DB;
 use URL;
 use Request;
-use Response;
 
 class WordController extends Controller {
 
@@ -75,11 +74,6 @@ class WordController extends Controller {
                 }
             }
         }
-    }
-
-    public function allWords_JSON($word = "") {
-        if (isset($word)) { $word = Helper::underscoreToSpace($word); }
-		return Word::getQueriedWord($word)->get(array('word as label'));
     }
 
     public function likeWords($word) {

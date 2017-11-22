@@ -6,7 +6,6 @@ use App\Helpers\Helper;
 
 use DB;
 use URL;
-use Input;
 use Illuminate\Http\Request;
 use Redirect;
 
