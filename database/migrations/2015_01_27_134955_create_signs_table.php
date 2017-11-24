@@ -28,6 +28,7 @@ class CreateSignsTable extends Migration {
         $table->string('flag_reason');
         $table->text('flag_comment');
         $table->string('flag_ip');
+        $table->string('flag_email');
         $table->timestamps();
         $table->softDeletes();
     	});

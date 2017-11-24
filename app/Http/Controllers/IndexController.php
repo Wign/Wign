@@ -6,10 +6,12 @@ Use App\Sign;
 class IndexController extends Controller {
 
 	/**
-	 * Show the main index 
-     * 
+	 * Show the main index
+	 *
+	 * Using a random word, # of signs, and # of words from DB
+	 *
      * @link www.wign.dk
-	 * @return View
+	 * @return \Illuminate\View\View
 	 */
 	public function index() {
 		$randomWord = Word::has('signs')->random()->first();
@@ -22,17 +24,17 @@ class IndexController extends Controller {
      * Show the about page
      * 
      * @link www.wign.dk/om
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function about() {
         return view('about');
-    }
+    } // @TODO: Change it to "about".
 
     /**
      * Show the help page
      * 
      * @link www.wign.dk/help
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function help() {
         return view('help');
@@ -42,16 +44,17 @@ class IndexController extends Controller {
      * Show the policy page
      * 
      * @link www.wign.dk/retningslinjer
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function policy() {
         return view('policy');
-    }
+    } // @TODO Chnge it to "policy"
 
     /**
-     * Show the "fuck you" page
-     * 
-     * @return View
+     * Show the "You're blacklisted" page
+     *
+     * @link www.wign.dk/blacklist
+     * @return \Illuminate\View\View
      */
     public function blacklist() {
         return view('blacklist');

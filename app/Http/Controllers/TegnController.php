@@ -18,7 +18,7 @@ class TegnController extends Controller {
 
 		$wordData = Word::where( 'word', $word )->first();
 		if ( $wordData['id'] ) {
-			$hasSigns = Sign::where( 'word_id', $wordData['id'] )->count();
+			$hasSigns = Sign::where( 'word_id', $wordData['id'] )->where( 'flag_reason', '' )->count();
 
 			if ( $hasSigns ) {
 				$signs2 = DB::select( DB::raw( '
@@ -30,15 +30,13 @@ class TegnController extends Controller {
                 ORDER BY sign_count DESC
             ' ), array( 'wordID' => $wordData["id"] ) );
 
-				//dd($signs2[0]);
+				//dd($signs2);
 
 				return view( 'sign' )->with( array( 'word' => $wordData, 'signs' => $signs2 ) );
 			}
-		} else {
-			$suggestWords = $this->findAlikeWords( $word );
-
-			return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 		}
+		$suggestWords = $this->findAlikeWords( $word );
+		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
 
 	public function visSeneste() {

@@ -11,7 +11,7 @@ class Sign extends Model {
 
     // MASS ASSIGNMENT ------------------------------------------
     // define which attributes are mass assignable (for security)
-    protected $fillable = array('word_id', 'description', 'video_uuid', 'camera_uuid', 'recorded_from', 'video_url', 'video_url_mp4', 'video_url_webm', 'thumbnail_url', 'small_thumbnail_url', 'plays', 'ip', 'flag_rason', 'flag_comment', 'flag_ip');
+    protected $fillable = array('word_id', 'description', 'video_uuid', 'camera_uuid', 'recorded_from', 'video_url', 'video_url_mp4', 'video_url_webm', 'thumbnail_url', 'small_thumbnail_url', 'plays', 'ip', 'flag_rason', 'flag_comment', 'flag_ip', 'flag_email');
 
     // DEFINING RELATIONSHIPS -----------------------------------
     public function word()
