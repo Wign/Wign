@@ -11,194 +11,199 @@ use Redirect;
 
 class TegnController extends Controller {
 
-    public function visTegn($word = null) {
-	    if ($word != null) { $word = Helper::underscoreToSpace($word); }
+	public function visTegn( $word = null ) {
+		if ( $word != null ) {
+			$word = Helper::underscoreToSpace( $word );
+		}
 
-	    $wordData = Word::where('word', $word)->first();
-        if($wordData['id']) {
-            $hasSigns = Sign::where('word_id', $wordData['id'])->count();
+		$wordData = Word::where( 'word', $word )->first();
+		if ( $wordData['id'] ) {
+			$hasSigns = Sign::where( 'word_id', $wordData['id'] )->count();
 
-            if($hasSigns) {
-	            $signs2 = DB::select(DB::raw('
+			if ( $hasSigns ) {
+				$signs2 = DB::select( DB::raw( '
                 SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
                 WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
                 GROUP BY signs.id 
                 ORDER BY sign_count DESC
-            '), array('wordID' => $wordData["id"]));
+            ' ), array( 'wordID' => $wordData["id"] ) );
 
-	            //dd($signs2[0]);
+				//dd($signs2[0]);
 
-	            return view('sign')->with(array('word' => $wordData, 'signs' => $signs2));
-            }
-        }
-        else {
-	        $suggestWords = $this->findAlikeWords($word);
-            return view('nosign')->with(['word' => $word, 'suggestions' => $suggestWords]);
-        }
-    }
+				return view( 'sign' )->with( array( 'word' => $wordData, 'signs' => $signs2 ) );
+			}
+		} else {
+			$suggestWords = $this->findAlikeWords( $word );
 
-    public function visSeneste()
-    {
-        $antal = 25;
-        $words = Word::has('signs')->latest($antal)->get();
-        
-        return view('list')->with(['words' => $words, 'antal' => $antal]);
-    }
+			return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
+		}
+	}
 
-    public function visAlle()
-    {
-        $words = Word::has('signs')->orderBy('word')->get();
-        
-        return view('listAll')->with(['words' => $words]);
-    }
+	public function visSeneste() {
+		$antal = 25;
+		$words = Word::has( 'signs' )->latest( $antal )->get();
 
-    public function gemTegn(Request $request)
-    {
-        $this->validate($request, [
-            'tegn' => 'required|string',
-            'beskr' => 'string',
-            'wign01.video_uuid' => 'required' 
-        ]);
+		return view( 'list' )->with( [ 'words' => $words, 'antal' => $antal ] );
+	}
 
-        $q = $request->all();
+	public function visAlle() {
+		$words = Word::has( 'signs' )->orderBy( 'word' )->get();
 
-        $hasWord = Word::firstOrCreate(['word' => $q['tegn']]);
-        $wID = $hasWord->id;
-        
-        $signId = Sign::create(array(
-            'word_id' => $wID,
-            'description' => $q['beskr'],
-            'video_uuid' => $q['wign01']['video_uuid'],
-            'camera_uuid' => '',
-            'video_url' => $q['wign01']['qvga']['video'],
-            'video_url_mp4' => $q['wign01']['qvga']['mp4'],
-            'video_url_webm' => $q['wign01']['qvga']['webm'],
-            'thumbnail_url' => $q['wign01']['qvga']['thumb'],
-            'small_thumbnail_url' => $q['wign01']['qvga']['small_thumb'],
-            'ip' => $request->ip()
-        ));
+		return view( 'listAll' )->with( [ 'words' => $words ] );
+	}
 
-        if($signId) { 
-            $tegn = $q['tegn'];
-            $url = URL::to('/tegn/'.$tegn);
-            $video = "//www.cameratag.com/videos/".$q['wign01']['video_uuid']."/qvga/mp4.mp4";
-            $message = [
-                "attachments" => [ [
-                    "fallback" => "Videoen kan ses her: ".$video."!",
-                    "color" => "good",
-                    "pretext" => "Et ny tegn er kommet!",
-                    "title" => $tegn,
-                    "title_link" => $url,
-                    "text" => "Se <".$video."|videoen>!",
-                    "unfurl_links" => true,
-                    "image_url" => "https:".$q['wign01']['qvga']['thumb'],
-                    "thumb_url" => "https:".$q['wign01']['qvga']['small_thumb'],
-                ]],
-            ];
-            Helper::sendJSON($message, config('social.slack.webHook'));
-            
-            $flash = [
-                'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
-                'url' => URL::to('/opret')
-            ];
-            return redirect('/tegn/'.$q['tegn'])->with($flash);
-        }
-    }
+	public function gemTegn( Request $request ) {
+		$this->validate( $request, [
+			'tegn'        => 'required|string',
+			'beskr'       => 'string',
+			'wign01_uuid' => 'required'
+		] );
 
-    public function flagSignView($id) { 
+		$q = $request->all();
 
-        $word = Sign::where('id', $id)->first()->word;
-        $img = Sign::where('id', $id)->pluck('small_thumbnail_url');
+		$hasWord = Word::firstOrCreate( [ 'word' => $q['tegn'] ] ); //@TODO Change the id of the field to 'sign' - and 'beskr' => 'description'!
+		$wordID  = $hasWord->id;
 
-        return view('form.flagSign')->with(['id' => $id, 'img' => $img, 'word' => $word]); 
+		// Define the values for easier fetch
+		$sign        = $q['tegn'];
+		$description = $q['beskr'];
+		$video_uuid  = $q['wign01_uuid'];
+		$video_url   = $q['wign01_vga_mp4'];
+		$thumb       = $q['wign01_vga_thumb'];
+		$thumb_small = $q['wign01_qvga_thumb'];
 
-    }
+		$signId = Sign::create( array(
+			'word_id'             => $wordID,
+			'description'         => $description,
+			'video_uuid'          => $video_uuid,
+			'video_url'           => $video_url,
+			'thumbnail_url'       => $thumb,
+			'small_thumbnail_url' => $thumb_small,
+			'ip'                  => $request->ip()
+		) );
 
-    public function flagSign(Request $request) {
-        // Check if client is bot. If true, reject the flagging!
-        $bot = Helper::detect_bot();
-        if($bot) {
-            $flash = [
-                'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!'
-            ];
-            return redirect('/')->with($flash);
-        }
+		if ( $signId ) {
+			$url     = URL::to( '/tegn/' . $sign );
+			$video   = 'https:' . $video_url;
+			$message = [
+				"attachments" => [
+					[
+						"fallback"     => "Videoen kan ses her: " . $video . "!",
+						"color"        => "good",
+						"pretext"      => "Et ny tegn er kommet!",
+						"title"        => $sign,
+						"title_link"   => $url,
+						"text"         => "Se <" . $video . "|videoen>!",
+						"unfurl_links" => true,
+						"image_url"    => "https:" . $thumb,
+						"thumb_url"    => "https:" . $thumb_small,
+					]
+				],
+			];
+			Helper::sendJSON( $message, config( 'social.slack.webHook' ) );
 
-        $this->validate($request, [
-            'content' => 'required',
-            'email' => 'email'
-        ]);
+			$flash = [
+				'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
+				'url'     => URL::to( '/opret' )
+			];
 
-        $q = $request->all(); // content, commentar, id, email
+			return redirect( '/tegn/' . $q['tegn'] )->with( $flash );
+		}
+	}
 
-        $theSign = Sign::where('id', $q['id'])->first();
-        
-        $theSign->flag_reason = $q['content'];
-        $theSign->flag_comment = $q['commentar'];
-        $theSign->flag_email = $q['email'];
-        $theSign->flag_ip = $request->ip();
+	public function flagSignView( $id ) {
 
-        $saved = $theSign->save();
+		$word = Sign::where( 'id', $id )->first()->word;
+		$img  = Sign::where( 'id', $id )->pluck( 'small_thumbnail_url' );
 
-        if($saved) {
-            $deleted = $theSign->delete();
-            
-            if($deleted) {
-                return Redirect::to('/')->with('message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.');
-            }
-            else {
-                $flash = [
-                'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
-                'url' => 'mailto:'.config('wign.email')
-                ];
-                return Redirect::to('/flagSignView/'.$q['id'])->with($flash);
-            }
-        }
-    }
+		return view( 'form.flagSign' )->with( [ 'id' => $id, 'img' => $img, 'word' => $word ] );
+
+	}
+
+	public function flagSign( Request $request ) {
+		// Check if client is bot. If true, reject the flagging!
+		$bot = Helper::detect_bot();
+		if ( $bot ) {
+			$flash = [
+				'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!'
+			];
+
+			return redirect( '/' )->with( $flash );
+		}
+
+		$this->validate( $request, [
+			'content' => 'required',
+			'email'   => 'email'
+		] );
+
+		$q = $request->all(); // content, commentar, id, email
+
+		$theSign = Sign::where( 'id', $q['id'] )->first();
+
+		$theSign->flag_reason  = $q['content'];
+		$theSign->flag_comment = $q['commentar'];
+		$theSign->flag_email   = $q['email'];
+		$theSign->flag_ip      = $request->ip();
+
+		$saved = $theSign->save();
+
+		if ( $saved ) {
+			$deleted = $theSign->delete();
+
+			if ( $deleted ) {
+				return Redirect::to( '/' )->with( 'message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.' );
+			} else {
+				$flash = [
+					'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
+					'url'     => 'mailto:' . config( 'wign.email' )
+				];
+
+				return Redirect::to( '/flagSignView/' . $q['id'] )->with( $flash );
+			}
+		}
+	}
 
 	/**
 	 * Searching for words that looks alike the queried $word
 	 * Current uses Levenshtein distance, and return the 5 words with the least distance to $word
+	 *
 	 * @param $word - the query string
 	 *
 	 * @return array|null - array with words as value
 	 */
-	private function findAlikeWords($word) {
-		if(empty($word)){
+	private function findAlikeWords( $word ) {
+		if ( empty( $word ) ) {
 			return null;
-		}
-		else {
+		} else {
 			$max_levenshtein = 5;
 			$min_levenshtein = PHP_INT_MAX;
-			$words = Word::withSign()->get();
-			$tempArr = array();
+			$words           = Word::withSign()->get();
+			$tempArr         = array();
 
-			foreach($words as $compareWord) {
-				$levenDist = levenshtein(strtolower($word), strtolower($compareWord->word));
-				if($levenDist > 5 || $levenDist > $min_levenshtein) {
+			foreach ( $words as $compareWord ) {
+				$levenDist = levenshtein( strtolower( $word ), strtolower( $compareWord->word ) );
+				if ( $levenDist > 5 || $levenDist > $min_levenshtein ) {
 					continue;
-				}
-				else {
-					$tempArr[$compareWord->word] = $levenDist;
-					if(count($tempArr) == $max_levenshtein+1) {
-						asort($tempArr);
-						$min_levenshtein = array_pop($tempArr);
+				} else {
+					$tempArr[ $compareWord->word ] = $levenDist;
+					if ( count( $tempArr ) == $max_levenshtein + 1 ) {
+						asort( $tempArr );
+						$min_levenshtein = array_pop( $tempArr );
 					}
 				}
 			};
 
-			if(empty($tempArr)) {
+			if ( empty( $tempArr ) ) {
 				return null; // There are none word with nearly the same "sounding" as $word
-			}
-
-			else {
-				asort($tempArr);
+			} else {
+				asort( $tempArr );
 				$suggestWords = [];
-				foreach ($tempArr as $key => $value) {
+				foreach ( $tempArr as $key => $value ) {
 					$suggestWords[] = $key;
 				}
+
 				return $suggestWords;
 			}
 		}
