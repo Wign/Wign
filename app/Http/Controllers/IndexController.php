@@ -14,7 +14,7 @@ class IndexController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function index() {
-		$randomWord = Word::has('signs')->random()->first();
+		$randomWord = Word::has('signs')->random(1)->first();
         $signCount = Sign::count();
         $wordCount = Word::has('signs')->count();
 		return view('index')->with(['randomWord' => $randomWord, 'signCount' => $signCount, 'wordCount' => $wordCount]);
@@ -48,7 +48,7 @@ class IndexController extends Controller {
      */
     public function policy() {
         return view('policy');
-    } // @TODO Chnge it to "policy"
+    } // @TODO Change the web address to "policy"
 
     /**
      * Show the "You're blacklisted" page

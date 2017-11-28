@@ -23,19 +23,19 @@ $router->get('/blacklist', 'IndexController@blacklist');
 $router->get('/', 'IndexController@index');
 $router->post('redirect', 'SearchController@redirect');
 
-$router->get('tegn/{word?}', 'TegnController@visTegn');
-$router->get('seneste', 'TegnController@visSeneste');
-$router->get('alle', 'TegnController@visAlle');
+$router->get('tegn/{word?}', 'SignController@showSign');
+$router->get('seneste', 'SignController@visSeneste');
+$router->get('alle', 'SignController@visAlle');
 $router->get('request/{word}', 'WordController@requestWord');
 $router->get('requests', 'WordController@listRequests');
 
-$router->post('gemTegn', 'TegnController@gemTegn');
+$router->post('gemTegn', 'SignController@gemTegn');
 
 $router->post('createVote', 'VoteController@createVote');
 $router->post('deleteVote', 'VoteController@deleteVote');
 
-$router->get('flagSignView/{id}', 'TegnController@flagSignView')->where('id', '[0-9]+'); // Find some better url than "flagSignView"!
-$router->post('flagSign', 'TegnController@flagSign'); // this too...
+$router->get('flagSignView/{id}', 'SignController@flagSignView')->where('id', '[0-9]+'); // Find some better url than "flagSignView"!
+$router->post('flagSign', 'SignController@flagSign'); // this too...
 
 $router->get('retningslinjer', 'IndexController@policy');
 //$router->get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk

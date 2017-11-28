@@ -5,23 +5,38 @@ use App\Sign;
 use App\Helpers\Helper;
 
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use URL;
-use Illuminate\Http\Request;
+use Request;
 use Redirect;
 
-class TegnController extends Controller {
+class SignController extends Controller {
 
-	public function visTegn( $word = null ) {
-		if ( $word != null ) {
-			$word = Helper::underscoreToSpace( $word );
+	/**
+	 * Show the sign page.
+	 * Display all the signs if $word is non-null and does exist in database
+	 * Otherwise show the 'no sign' page
+	 *
+	 * @link www.wign.dk/tegn/
+	 *
+	 * @param string $word - a nullable string with the query $word
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showSign( $word = null ) {
+		if ( empty( trim( $word ) ) ) {
+			return view( 'nosign' );
 		}
 
-		$wordData = Word::where( 'word', $word )->first();
-		if ( $wordData['id'] ) {
-			$hasSigns = Sign::where( 'word_id', $wordData['id'] )->where( 'flag_reason', '' )->count();
+		$word = Helper::underscoreToSpace( $word );
 
-			if ( $hasSigns ) {
-				$signs2 = DB::select( DB::raw( '
+		$wordData = Word::where( 'word', $word )->first();
+		$wordID   = $wordData['id'];
+
+		// If word exist in database
+		if ( $wordID && $this->hasSign( $wordID ) ) {
+			// Query the database for the signs AND the number of votes they have and true if the user've voted it.
+			$signs = DB::select( DB::raw( '
                 SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
@@ -30,12 +45,16 @@ class TegnController extends Controller {
                 ORDER BY sign_count DESC
             ' ), array( 'wordID' => $wordData["id"] ) );
 
-				//dd($signs2);
+			// Has the user voted for the signs?
+			$signs = $this->hasVoted( $signs );
+			// @TODO add a select clause (in later version) to only fetch the needed keys from the collection.
 
-				return view( 'sign' )->with( array( 'word' => $wordData, 'signs' => $signs2 ) );
-			}
+			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs ) );
 		}
+
+		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
 		$suggestWords = $this->findAlikeWords( $word );
+
 		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
 
@@ -163,6 +182,10 @@ class TegnController extends Controller {
 		}
 	}
 
+	private function hasSign( $id ) {
+		return Sign::findByWordID( $id )->count() > 0;
+	}
+
 	/**
 	 * Searching for words that looks alike the queried $word
 	 * Current uses Levenshtein distance, and return the 5 words with the least distance to $word
@@ -205,6 +228,39 @@ class TegnController extends Controller {
 				return $suggestWords;
 			}
 		}
+	}
+
+	/**
+	 * Inserting a boolean value for each sign, which tells whether the user have voted the sign or not.
+	 *
+	 * @param Collection $signs
+	 *
+	 * @return Collection updated with the values
+	 */
+	private function hasVoted( $signs ) {
+		$myIP = Request::getClientIp();
+		foreach ( $signs as $sign ) {
+			$count = count( $sign->votesIP );
+
+			$result = false;
+			if ( $count == 0 ) {
+				continue;
+			} else if ( $count == 1 ) {
+				if ( $sign->votesIP == $myIP ) {
+					$result = true;
+				}
+			} else {
+				foreach ( $sign->votesIP as $vote ) {
+					if ( $vote == $myIP ) {
+						$result = true;
+						break;
+					}
+				}
+			}
+			$sign->voted = $result;
+		}
+
+		return $signs;
 	}
 
 }
