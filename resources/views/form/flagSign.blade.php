@@ -18,7 +18,7 @@
 @endif
 <img src="{{ $img }}">
 
-<form id="flagSign" method="POST" action="{{ URL::action('TegnController@flagSign') }}">
+<form id="flagSign" method="POST" action="{{ URL::action('SignController@flagSign') }}">
     <label for="content">Hvad rapporter du videoen for?</label>
     <select name="content">
         <option value="Ikke tegn">Indholder ikke tegn</option>

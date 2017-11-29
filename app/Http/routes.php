@@ -23,13 +23,16 @@ $router->get('/blacklist', 'IndexController@blacklist');
 $router->get('/', 'IndexController@index');
 $router->post('redirect', 'SearchController@redirect');
 
-$router->get('tegn/{word?}', 'SignController@showSign');
-$router->get('seneste', 'SignController@visSeneste');
-$router->get('alle', 'SignController@visAlle');
-$router->get('request/{word}', 'WordController@requestWord');
+$router->get('tegn/{word?}', 'SignController@showSign'); // @TODO change it to ../sign
+$router->get('seneste', 'SignController@showRecent'); // @TODO change it to ../recent
+$router->get('alle', 'SignController@showAll'); // @TODO change it to ../all
 $router->get('requests', 'WordController@listRequests');
 
-$router->post('gemTegn', 'SignController@gemTegn');
+// @TODO TWO requests pages! Change it to one!
+$router->get('request/{word}', 'WordController@requestWord');
+$router->get('efterlys/{word?}', 'WordController@requestWord');
+
+$router->post('saveSign', 'SignController@saveSign');
 
 $router->post('createVote', 'VoteController@createVote');
 $router->post('deleteVote', 'VoteController@deleteVote');
@@ -37,14 +40,14 @@ $router->post('deleteVote', 'VoteController@deleteVote');
 $router->get('flagSignView/{id}', 'SignController@flagSignView')->where('id', '[0-9]+'); // Find some better url than "flagSignView"!
 $router->post('flagSign', 'SignController@flagSign'); // this too...
 
-$router->get('retningslinjer', 'IndexController@policy');
+$router->get('retningslinjer', 'IndexController@policy'); // @TODO change it to ../policy
 //$router->get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk
 
 $router->get('opret/{word?}', 'WordController@createWord');
-$router->get('efterlys/{word?}', 'WordController@requestWord');
 
-$router->get('om', 'IndexController@about');
-$router->get('help', 'IndexController@help');
+
+$router->get('om', 'IndexController@about'); // @TODO change it to ../about
+$router->get('help', 'IndexController@help'); // @TODO change it to ../help
 
 $router->get('home', 'HomeController@index'); // Login (Need?)
 

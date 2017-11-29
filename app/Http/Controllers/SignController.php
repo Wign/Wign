@@ -5,10 +5,10 @@ use App\Sign;
 use App\Helpers\Helper;
 
 use DB;
-use Illuminate\Database\Eloquent\Collection;
 use URL;
-use Request;
 use Redirect;
+use Illuminate\Database\Eloquent\Collection;
+use \Illuminate\Http\Request;
 
 class SignController extends Controller {
 
@@ -16,8 +16,6 @@ class SignController extends Controller {
 	 * Show the sign page.
 	 * Display all the signs if $word is non-null and does exist in database
 	 * Otherwise show the 'no sign' page
-	 *
-	 * @link www.wign.dk/tegn/
 	 *
 	 * @param string $word - a nullable string with the query $word
 	 *
@@ -37,7 +35,7 @@ class SignController extends Controller {
 		if ( $wordID && $this->hasSign( $wordID ) ) {
 			// Query the database for the signs AND the number of votes they have and true if the user've voted it.
 			$signs = DB::select( DB::raw( '
-                SELECT signs.*, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
+                SELECT signs.id, signs.video_uuid, signs.description, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
                 WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
@@ -47,7 +45,6 @@ class SignController extends Controller {
 
 			// Has the user voted for the signs?
 			$signs = $this->hasVoted( $signs );
-			// @TODO add a select clause (in later version) to only fetch the needed keys from the collection.
 
 			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs ) );
 		}
@@ -58,96 +55,108 @@ class SignController extends Controller {
 		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
 
-	public function visSeneste() {
-		$antal = 25;
-		$words = Word::has( 'signs' )->latest( $antal )->get();
+	/**
+	 * Show the recent # words which have been assigned with a sign
+	 *
+	 * @param int $number of recent results
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showRecent( $number = 25 ) {
+		$words = Word::withSign()->latest( $number )->get();
 
-		return view( 'list' )->with( [ 'words' => $words, 'antal' => $antal ] );
+		return view( 'list' )->with( [ 'words' => $words, 'antal' => $number ] );
 	}
 
-	public function visAlle() {
-		$words = Word::has( 'signs' )->orderBy( 'word' )->get();
+	/**
+	 * Show all words with assigned sign, sorted by word ASC
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showAll() {
+		$words = Word::withSign()->orderBy( 'word' )->get();
 
 		return view( 'listAll' )->with( [ 'words' => $words ] );
 	}
 
-	public function gemTegn( Request $request ) {
+	/**
+	 * Validate and save the sign created by the user (And send a Slack message).
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function saveSign( \Illuminate\Http\Request $request ) {
+		// Validating the incoming request
 		$this->validate( $request, [
-			'tegn'        => 'required|string',
-			'beskr'       => 'string',
+			'word'        => 'required|string',
+			'description' => 'string',
 			'wign01_uuid' => 'required'
 		] );
 
 		$q = $request->all();
 
-		$hasWord = Word::firstOrCreate( [ 'word' => $q['tegn'] ] ); //@TODO Change the id of the field to 'sign' - and 'beskr' => 'description'!
-		$wordID  = $hasWord->id;
+		$findWord = Word::firstOrCreate( [ 'word' => $q['word'] ] );
+		$wordID   = $findWord->id;
+		$word     = $q['word'];
 
-		// Define the values for easier fetch
-		$sign        = $q['tegn'];
-		$description = $q['beskr'];
-		$video_uuid  = $q['wign01_uuid'];
-		$video_url   = $q['wign01_vga_mp4'];
-		$thumb       = $q['wign01_vga_thumb'];
-		$thumb_small = $q['wign01_qvga_thumb'];
-
-		$signId = Sign::create( array(
+		$sign = Sign::create( array(
 			'word_id'             => $wordID,
-			'description'         => $description,
-			'video_uuid'          => $video_uuid,
-			'video_url'           => $video_url,
-			'thumbnail_url'       => $thumb,
-			'small_thumbnail_url' => $thumb_small,
+			'description'         => $q['description'],
+			'video_uuid'          => $q['wign01_uuid'],
+			'video_url'           => $q['wign01_vga_mp4'],
+			'thumbnail_url'       => $q['wign01_vga_thumb'],
+			'small_thumbnail_url' => $q['wign01_qvga_thumb'],
 			'ip'                  => $request->ip()
 		) );
 
-		if ( $signId ) {
-			$url     = URL::to( '/tegn/' . $sign );
-			$video   = 'https:' . $video_url;
-			$message = [
-				"attachments" => [
-					[
-						"fallback"     => "Videoen kan ses her: " . $video . "!",
-						"color"        => "good",
-						"pretext"      => "Et ny tegn er kommet!",
-						"title"        => $sign,
-						"title_link"   => $url,
-						"text"         => "Se <" . $video . "|videoen>!",
-						"unfurl_links" => true,
-						"image_url"    => "https:" . $thumb,
-						"thumb_url"    => "https:" . $thumb_small,
-					]
-				],
-			];
-			Helper::sendJSON( $message, config( 'social.slack.webHook' ) );
+		if ( $sign ) {
+			$this->sendSlack( $word, $sign );
 
 			$flash = [
 				'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
-				'url'     => URL::to( '/opret' )
 			];
-
-			return redirect( '/tegn/' . $q['tegn'] )->with( $flash );
+		} else {
+			// Something went wrong! The sign isn't created!
+			$flash = [
+				'message' => 'Et eller andet gik galt og vi kunne ikke gemme din tegn! Vi er ked af det. Prøv igen ved at trykke her.',
+			];
 		}
+		$flash['url'] = URL::to( config( 'wign.urlPath.create' ) );
+
+		return redirect( config( 'wign.urlPath.sign' ) . '/' . $word )->with( $flash );
 	}
 
+	/**
+	 * Show the view which the user can flag a certain sign for e.g. offensive content.
+	 *
+	 * @param integer $id
+	 *
+	 * @return \Illuminate\View\View
+	 */
 	public function flagSignView( $id ) {
+		$sign = Sign::where( 'id', $id )->first();
 
-		$word = Sign::where( 'id', $id )->first()->word;
-		$img  = Sign::where( 'id', $id )->pluck( 'small_thumbnail_url' );
-
-		return view( 'form.flagSign' )->with( [ 'id' => $id, 'img' => $img, 'word' => $word ] );
+		return view( 'form.flagSign' )->with( [
+			'id'   => $id,
+			'img'  => $sign->small_thumbnail_url,
+			'word' => $sign->word
+		] );
 
 	}
 
+	/**
+	 * Perform bot-check, validate and flag the sign for the reason - hiding the sign until someone take a look at it.
+	 * Redirects the user to the front page with a flash message.
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function flagSign( Request $request ) {
 		// Check if client is bot. If true, reject the flagging!
-		$bot = Helper::detect_bot();
-		if ( $bot ) {
-			$flash = [
-				'message' => 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!'
-			];
-
-			return redirect( '/' )->with( $flash );
+		if ( Helper::detect_bot() ) {
+			return redirect( '/' )->with( 'message', 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!' );
 		}
 
 		$this->validate( $request, [
@@ -166,24 +175,37 @@ class SignController extends Controller {
 
 		$saved = $theSign->save();
 
+		$success = false;
+
 		if ( $saved ) {
 			$deleted = $theSign->delete();
-
 			if ( $deleted ) {
-				return Redirect::to( '/' )->with( 'message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.' );
-			} else {
-				$flash = [
-					'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
-					'url'     => 'mailto:' . config( 'wign.email' )
-				];
-
-				return Redirect::to( '/flagSignView/' . $q['id'] )->with( $flash );
+				$success = true;
 			}
+		}
+
+		if($success) {
+			return Redirect::to( '/' )->with( 'message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.' );
+		}
+		else {
+			$flash = [
+				'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
+				'url'     => 'mailto:' . config( 'wign.email' )
+			];
+
+			return Redirect::to( config('wign.urlPath.sign') . '/' . $saved->word )->with( $flash );
 		}
 	}
 
-	private function hasSign( $id ) {
-		return Sign::findByWordID( $id )->count() > 0;
+	/**
+	 * Returns true if the word ID has at least one sign attached to it, otherwise false.
+	 *
+	 * @param $wordID
+	 *
+	 * @return bool
+	 */
+	private function hasSign( $wordID ) {
+		return Sign::findByWordID( $wordID )->count() > 0;
 	}
 
 	/**
@@ -231,7 +253,8 @@ class SignController extends Controller {
 	}
 
 	/**
-	 * Inserting a boolean value for each sign, which tells whether the user have voted the sign or not.
+	 * Updates the collection, inserting a key with a boolean value for each sign,
+	 * which tells whether the user have voted the sign or not.
 	 *
 	 * @param Collection $signs
 	 *
@@ -261,6 +284,34 @@ class SignController extends Controller {
 		}
 
 		return $signs;
+	}
+
+	/**
+	 * Nice little function to send a Slack greet using webhook each time a new sign is posted on Wign.
+	 * It's to keep us busy developers awake! Thank you for your contribution!
+	 *
+	 * @param String $word
+	 * @param Collection $sign - the $sign object, from which we can extract the information from.
+	 */
+	private function sendSlack( $word, $sign ) {
+		$url     = URL::to( config( 'wign.urlPath.sign' ) . '/' . $word );
+		$video   = 'https:' . $sign->video_url;
+		$message = [
+			"attachments" => [
+				[
+					"fallback"     => "Videoen kan ses her: " . $video . "!",
+					"color"        => "good",
+					"pretext"      => "Et ny tegn er kommet!",
+					"title"        => $word,
+					"title_link"   => $url,
+					"text"         => "Se <" . $video . "|videoen>!",
+					"unfurl_links" => true,
+					"image_url"    => "https:" . $sign->thumbnail_url,
+					"thumb_url"    => "https:" . $sign->small_thumbnail_url,
+				]
+			],
+		];
+		Helper::sendJSON( $message, config( 'social.slack.webHook' ) );
 	}
 
 }

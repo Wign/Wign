@@ -50,7 +50,7 @@
     <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
         <video id="video_{{ $sign->id }}" data-uuid="{{ $sign->video_uuid }}" data-options='{"mute":true, "controls":true}'></video>
         <span class="count">{{ $sign->sign_count }}</span>
-        @if($sign->voted)
+        @if(isset($sign->voted))
             <a href="#" class="delVote" title="Jeg bruger ikke det tegn">&nbsp;</a>
         @else
             <a href="#" class="addVote" title="Jeg bruger dette tegn">&nbsp;</a>
