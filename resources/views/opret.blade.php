@@ -79,25 +79,17 @@ if ( isset( $word ) ) {
         </ul>
     </span>
     @endif
-    <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
+    <!-- <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
                                                        title="Klik for yderligere oplysninger og hjælp"
-                                                       class="question"></a>
-	<?php
-	if(isset($hasSign)) {
-	?>
+                                                       class="question"></a> -->
+	@if(isset($hasSign) && $hasSign == 1)
     <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
         tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
-	<?php
-	}
-	else {
-	if(isset($word)) {
-	?>
+	@elseif(isset($word))
     <p>Wign har ikke tegnet{{ $word ? ' for "'.$word.'"' : ''}} endnu.<br>
-		<?php } ?>
+	@else
         Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
-	<?php
-	}
-	?>
+	@endif
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
 
         <camera id="wign01" data-app-id="{{ config('wign.cameratag.id') }}" data-maxlength="15"
@@ -106,7 +98,7 @@ if ( isset( $word ) ) {
         <br>
 
         <label for="word">Tegn for:</label>
-        <input type="text" id="word" name="word" value="{{ $word }}" placeholder="Skriv ordet"><br>
+        <input type="text" id="word" name="word" value="{{ isset($word) ? $word : "" }}" placeholder="Skriv ordet"><br>
 
         <label for="description">Beskrivelse:</label>
         <textarea id="description" name="description" placeholder="Skriv lidt om tegnet"></textarea><br>

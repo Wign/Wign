@@ -38,39 +38,45 @@ $(function () {
             dataType: 'json',
             success: [
                 function (result) {
-                    if (_DEBUG) {
-                        console.log("Ajax request succeed! Result:");
-                        console.log(result.msg);
-                        console.log(result.votes);
-                    }
+                    if (result.status = 'success') {
+                        if (_DEBUG) {
+                            console.log("Ajax request succeed! Result:");
+                            console.log(result.msg);
+                            console.log(result.votes);
+                        }
 
-                    signDiv.attr('data-count', result.votes); // Update data-count in parent div
-                    signDiv.find('span.count').text(result.votes); // Change the text inside the div
-                    if (signDiv.find('a').hasClass('delVote')) {
-                        // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
-                        signDiv.find('a.delVote').addClass('addVote').removeClass('delVote loadingVote').removeAttr("href").css({
-                            'cursor': 'pointer',
-                            'pointer-events': 'none'
-                        });
-                        if (_DEBUG) console.log("CHANGE FROM del TO add!");
+                        signDiv.attr('data-count', result.votes); // Update data-count in parent div
+                        signDiv.find('span.count').text(result.votes); // Change the text inside the div
+                        if (signDiv.find('a').hasClass('delVote')) {
+                            // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
+                            signDiv.find('a.delVote').addClass('addVote').removeClass('delVote loadingVote').removeAttr("href").css({
+                                'cursor': 'pointer',
+                                'pointer-events': 'none'
+                            });
+                            if (_DEBUG) console.log("CHANGE FROM del TO add!");
+                        }
+                        else {
+                            // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
+                            signDiv.find('a.addVote').addClass('delVote').removeClass('addVote loadingVote').removeAttr("href").css({
+                                'cursor': 'pointer',
+                                'pointer-events': 'none'
+                            });
+                            if (_DEBUG) console.log("CHANGE FROM add TO del!");
+                        }
+
+                        // Sorts the divs according to the "data-count" attr inside the divs
+                        $('.sign').sort(function (a, b) {
+                            if (_DEBUG) console.log("Sorting the divs");
+                            var contentA = parseInt($(a).attr('data-count'));
+                            var contentB = parseInt($(b).attr('data-count'));
+                            return contentA < contentB ? 1 : -1;
+                        }).appendTo("#signs");
+
                     }
                     else {
-                        // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
-                        signDiv.find('a.addVote').addClass('delVote').removeClass('addVote loadingVote').removeAttr("href").css({
-                            'cursor': 'pointer',
-                            'pointer-events': 'none'
-                        });
-                        if (_DEBUG) console.log("CHANGE FROM add TO del!");
+                        console.log("ERROR!");
+                        console.log(result.msg);
                     }
-
-                    // Sorts the divs according to the "data-count" attr inside the divs
-                    $('.sign').sort(function (a, b) {
-                        if (_DEBUG) console.log("Sorting the divs");
-                        var contentA = parseInt($(a).attr('data-count'));
-                        var contentB = parseInt($(b).attr('data-count'));
-                        return contentA < contentB ? 1 : -1;
-                    }).appendTo("#signs");
-
                 }
             ],
             error: function () {
@@ -92,16 +98,16 @@ if (typeof(CT_i18n) == "undefined") {
     CT_i18n = []
 }
 CT_i18n = [];
-CT_i18n[0] = CT_i18n[0]   || "Til at optage med din mobiltelefon, besøg venligst <<url>> i browseren på din mobil.";
-CT_i18n[1] = CT_i18n[1]   || "Din mobiltelefon understøtter ikke uploading af video";
-CT_i18n[2] = CT_i18n[2]   || "Tjek venligst at du har Flash Player 11 eller højere installeret";
-CT_i18n[3] = CT_i18n[3]   || "Ude af stand til at indlejre videooptager. Tjek venligst at du har Flash Player 11 eller højere installeret";
-CT_i18n[4] = CT_i18n[4]   || "Vælg en metode til at sende din tegn";
-CT_i18n[5] = CT_i18n[5]   || "optag fra webcam";
-CT_i18n[6] = CT_i18n[6]   || "upload en fil";
-CT_i18n[7] = CT_i18n[7]   || "optag fra mobil";
-CT_i18n[8] = CT_i18n[8]   || "vink til kameraet";
-CT_i18n[9] = CT_i18n[9]   || "optager om";
+CT_i18n[0] = CT_i18n[0] || "Til at optage med din mobiltelefon, besøg venligst <<url>> i browseren på din mobil.";
+CT_i18n[1] = CT_i18n[1] || "Din mobiltelefon understøtter ikke uploading af video";
+CT_i18n[2] = CT_i18n[2] || "Tjek venligst at du har Flash Player 11 eller højere installeret";
+CT_i18n[3] = CT_i18n[3] || "Ude af stand til at indlejre videooptager. Tjek venligst at du har Flash Player 11 eller højere installeret";
+CT_i18n[4] = CT_i18n[4] || "Vælg en metode til at sende din tegn";
+CT_i18n[5] = CT_i18n[5] || "optag fra webcam";
+CT_i18n[6] = CT_i18n[6] || "upload en fil";
+CT_i18n[7] = CT_i18n[7] || "optag fra mobil";
+CT_i18n[8] = CT_i18n[8] || "vink til kameraet";
+CT_i18n[9] = CT_i18n[9] || "optager om";
 CT_i18n[10] = CT_i18n[10] || "uploader...";
 CT_i18n[11] = CT_i18n[11] || "klik for at stop optagelsen";
 CT_i18n[12] = CT_i18n[12] || "klik for at springe gennemse over";

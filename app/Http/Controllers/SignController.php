@@ -65,7 +65,7 @@ class SignController extends Controller {
 	public function showRecent( $number = 25 ) {
 		$words = Word::withSign()->latest( $number )->get();
 
-		return view( 'list' )->with( [ 'words' => $words, 'antal' => $number ] );
+		return view( 'list' )->with( [ 'words' => $words, 'number' => $number ] );
 	}
 
 	/**
@@ -80,13 +80,33 @@ class SignController extends Controller {
 	}
 
 	/**
+	 * Display the "create a sign" view with the relevant data attached.
+	 * If a word is set, it's checked if it already has a sign to it.
+	 *
+	 * @param String $word the queried word. Nullable.
+	 *
+	 * @return \Illuminate\View\View of "create a sign"
+	 */
+	public function createSign( $word = null ) {
+		if ( empty( $word ) ) {
+			return view( config( 'wign.urlPath.create' ) );
+		}
+
+		$hasSign         = Word::where( 'word', $word )->withSign()->first();
+		$data['hasSign'] = empty( $hasSign ) ? 0 : 1;
+		$data['word']    = $word;
+
+		return view( config( 'wign.urlPath.create' ) )->with( $data );
+	}
+
+	/**
 	 * Validate and save the sign created by the user (And send a Slack message).
 	 *
 	 * @param \Illuminate\Http\Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function saveSign( \Illuminate\Http\Request $request ) {
+	public function saveSign( Request $request ) {
 		// Validating the incoming request
 		$this->validate( $request, [
 			'word'        => 'required|string',
@@ -261,7 +281,7 @@ class SignController extends Controller {
 	 * @return Collection updated with the values
 	 */
 	private function hasVoted( $signs ) {
-		$myIP = Request::getClientIp();
+		$myIP = \Request::getClientIp();
 		foreach ( $signs as $sign ) {
 			$count = count( $sign->votesIP );
 

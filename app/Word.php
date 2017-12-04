@@ -23,6 +23,10 @@ class Word extends Model {
 		return $query->has( 'signs' );
 	}
 
+	public function scopeWithoutSign( $query ) {
+		return $query->where(\DB::raw('(SELECT count(*) FROM signs WHERE signs.word_id = words.id)'), '<=', 0);
+	}
+
 	public function scopeLatest( $query, $antal = 25 ) {
 		return $query->orderBy( 'updated_at', 'desc' )->take( $antal );
 	}

@@ -26,11 +26,13 @@ $router->post('redirect', 'SearchController@redirect');
 $router->get('tegn/{word?}', 'SignController@showSign'); // @TODO change it to ../sign
 $router->get('seneste', 'SignController@showRecent'); // @TODO change it to ../recent
 $router->get('alle', 'SignController@showAll'); // @TODO change it to ../all
-$router->get('requests', 'WordController@listRequests');
+$router->get('requests', 'RequestController@showList');
+
+$router->get('opret/{word?}', 'SignController@createSign'); //@TODO change it to ../create
 
 // @TODO TWO requests pages! Change it to one!
-$router->get('request/{word}', 'WordController@requestWord');
-$router->get('efterlys/{word?}', 'WordController@requestWord');
+//$router->get('efterlys/{word?}', 'WordController@requestWord');
+$router->get('request/{word?}', 'RequestController@store');
 
 $router->post('saveSign', 'SignController@saveSign');
 
@@ -43,7 +45,6 @@ $router->post('flagSign', 'SignController@flagSign'); // this too...
 $router->get('retningslinjer', 'IndexController@policy'); // @TODO change it to ../policy
 //$router->get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk
 
-$router->get('opret/{word?}', 'WordController@createWord');
 
 
 $router->get('om', 'IndexController@about'); // @TODO change it to ../about
