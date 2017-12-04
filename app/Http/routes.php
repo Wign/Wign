@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,51 +10,47 @@
 |
 */
 
-$domain = env('APP_DOMAIN', 'wign.dk');
-Route::group(['domain' => 'api.'.$domain], function () {
-    Route::get('/', 'ApiController@index');
-    Route::get('hasSign/{word?}', 'ApiController@hasSign');
-    Route::get('video/{word?}', 'ApiController@getSign');
-    Route::get('words/{query?}', 'ApiController@getWords');
-});
+// The routes for our api
+$domain = env( 'APP_DOMAIN', 'wign.dk' );
+Route::group( [ 'domain' => 'api.' . $domain ], function () {
+	Route::get( '/', 'ApiController@index' );
+	Route::get( 'hasSign/{word?}', 'ApiController@hasSign' );
+	Route::get( 'video/{word?}', 'ApiController@getSign' );
+	Route::get( 'words/{query?}', array( 'as' => 'words', 'uses' => 'ApiController@getWords' ) );
+} );
 
-$router->get('/blacklist', 'IndexController@blacklist');
+// First, the blacklist if someone is on it
+$router->get( config( 'wign.urlPath.blacklist' ), 'IndexController@blacklist' );
 
-$router->get('/', 'IndexController@index');
-$router->post('redirect', 'SearchController@redirect');
+// Index and static pages
+$router->get( '/', 'IndexController@index' );
+$router->get( config( 'wign.urlPath.about' ), 'IndexController@about' );
+$router->get( config( 'wign.urlPath.help' ), 'IndexController@help' );
 
-$router->get('tegn/{word?}', 'SignController@showSign'); // @TODO change it to ../sign
-$router->get('seneste', 'SignController@showRecent'); // @TODO change it to ../recent
-$router->get('alle', 'SignController@showAll'); // @TODO change it to ../all
-$router->get('requests', 'RequestController@showList');
+// Search route
+$router->post( 'redirect', 'SearchController@redirect' );
 
-$router->get('opret/{word?}', 'SignController@createSign'); //@TODO change it to ../create
+// Dynamic routes
+$router->get( config( 'wign.urlPath.sign' ) . '/{word?}', 'SignController@showSign' );
+$router->get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
+$router->get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
+$router->get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
-// @TODO TWO requests pages! Change it to one!
-//$router->get('efterlys/{word?}', 'WordController@requestWord');
-$router->get('request/{word?}', 'RequestController@store');
+$router->get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' );
+$router->get( config( 'wign.urlPath.createRequest' ) . '/{word?}', 'RequestController@store' );
 
-$router->post('saveSign', 'SignController@saveSign');
-
-$router->post('createVote', 'VoteController@createVote');
-$router->post('deleteVote', 'VoteController@deleteVote');
-
-$router->get('flagSignView/{id}', 'SignController@flagSignView')->where('id', '[0-9]+'); // Find some better url than "flagSignView"!
-$router->post('flagSign', 'SignController@flagSign'); // this too...
-
-$router->get('retningslinjer', 'IndexController@policy'); // @TODO change it to ../policy
+$router->get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
 //$router->get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk
+$router->get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
 
+// Post routes
+$router->post( 'saveSign', 'SignController@saveSign' );
+$router->post( 'createVote', 'VoteController@createVote' );
+$router->post( 'deleteVote', 'VoteController@deleteVote' );
+$router->post( 'flagSign', 'SignController@flagSign' ); // this too...
 
-
-$router->get('om', 'IndexController@about'); // @TODO change it to ../about
-$router->get('help', 'IndexController@help'); // @TODO change it to ../help
-
-$router->get('home', 'HomeController@index'); // Login (Need?)
-
-$router->get('all_words_json/{query?}', 'ApiController@getWords'); //@TODO: Remove it - we can move over to api.wign.dk for this.
-
-$router->controllers([
-	'auth' => 'Auth\AuthController',
+$router->get( 'home', 'HomeController@index' ); // Login (Need?)
+$router->controllers( [
+	'auth'     => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
-]);
+] );

@@ -84,6 +84,6 @@ class ApiController extends Controller {
 			$word = Helper::underscoreToSpace( $word );
 		}
 
-		return Word::getQueriedWord( $word )->get( array( 'word as label' ) );
+		return response(Word::getQueriedWord( $word )->get( array( 'word as label' ) ))->header('Access-Control-Allow-Origin', '*');
 	}
 }

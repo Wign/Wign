@@ -9,11 +9,11 @@
 $(function() {
     $( "#autoComplete" ).autocomplete({
         source: function(request, response) {
-            $.getJSON("{{ URL::to('/all_words_json') }}/" + request.term, response)
+            $.getJSON("{{ route('words') }}/" + request.term, response)
         },
         minLength: 2,
         delay: 0,
-        autoFocus: true,
+        autoFocus: true
     });
 });
 </script>
