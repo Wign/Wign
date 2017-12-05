@@ -42,7 +42,7 @@ class Sign extends Model {
 	// CREATE SCOPES -----------------------------------------------
 	// It makes it easier to make some certain queries
 	public function scopeNoFlagged( $query ) {
-		return $query->where( 'flag_reason', '' );
+		return $query->whereNull( 'flag_reason' );
 	}
 
 	public function scopeFindByWordID( $query, $id ) {
