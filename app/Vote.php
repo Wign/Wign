@@ -14,4 +14,10 @@ class Vote extends Model {
         return $this->belongsTo('App\Sign');
     }
 
+	// CREATE SCOPES -----------------------------------------------
+	// It makes it easier to make some certain queries
+	public function scopeCountVotes( $query, $signID ) {
+		return $query->where( 'sign_id', $signID )->count();
+	}
+
 }

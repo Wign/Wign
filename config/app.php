@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => env('APP_DEBUG'),
+	'debug' => env( 'APP_DEBUG' ),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
 	|
 	*/
 
-	'key' => env('APP_KEY', 'SomeRandomString'),
+	'key' => env( 'APP_KEY', 'SomeRandomString' ),
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -139,7 +139,7 @@ return [
 		/*
 		 * Package Service Providers...
 		 */
-		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // Maybe only load it on non-productive environments?
 
 		/*
 		 * Application Service Providers...
@@ -197,6 +197,7 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+		'Helper'    => App\Helpers\Helper::class // Adding our own helper class as alias - so we can call it without using "Use Helper"
 
 	],
 

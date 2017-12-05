@@ -17,7 +17,7 @@ class CreateSignsTable extends Migration {
         $table->increments('id')->unique();
         $table->integer('word_id');
         $table->text('description');
-        $table->string('uuid');
+        $table->string('video_uuid');
         $table->string('camera_uuid');
         $table->string('recorded_from');
         $table->string('video_url');
@@ -28,6 +28,7 @@ class CreateSignsTable extends Migration {
         $table->string('flag_reason');
         $table->text('flag_comment');
         $table->string('flag_ip');
+        $table->string('flag_email');
         $table->timestamps();
         $table->softDeletes();
     	});

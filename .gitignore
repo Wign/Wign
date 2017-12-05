@@ -79,6 +79,10 @@ config.codekit
 .sass-cache/
 *.css.map
 
+### CSS ###
+# Removing the style.css from git. It's manuallt produced using Laravel elixir
+/public/css/style.css
+
 
 ### Vagrant ###
 .vagrant/

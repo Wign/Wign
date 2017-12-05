@@ -14,22 +14,18 @@ class Blacklist {
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
-	 * @return mixed
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  \Closure $next
+	 * @return mixed either redirects the user to the blacklist page, or continue with the Closure
 	 */
 	public function handle($request, Closure $next) {
-		
-		$myip = $request->ip();
-		$blacklistes = $this->blip->get();
 
-		foreach($blacklistes as $blacklisted) {
-			if($blacklisted->ip == $myip & $request->path() != "blacklist") {
-			//if($blacklisted->ip == $myip) {
-				return redirect()->action('IndexController@blacklist')->with(['ip' => $blacklisted->ip, 'reason' => $blacklisted->reason]);
-			}
+		$myip = $request->ip();
+		$blacklist = $this->blip->where('ip', $myip)->first();
+
+		if($blacklist != null & $request->path() != "blacklist") {
+			return redirect()->action('IndexController@blacklist')->with( array( 'ip' => $blacklist->ip, 'reason' => $blacklist->reason ) );
 		}
-		
 		return $next($request);
 	}
 

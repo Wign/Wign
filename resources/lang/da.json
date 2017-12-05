@@ -1,0 +1,8 @@
+{
+  "I love programming.": "Jeg elsker koding.",
+  "Hello, :name": "Hej, :name", // Hej, kenneth
+  "Hello, :Name": "Hej, :Name", // Hej, Kenneth
+  "Hello, :NAME": "Hej, :NAME", // Hej, KENNETH
+  "Goodbye, :name. You've uploaded :count videos while you was here": "Farvel, :name. Du har uploadet :count videoer mens du var her",
+  "Your cow is here": "Din ko er her|Jeres ko er her" // Pluralization
+}
