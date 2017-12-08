@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-
+    {{-- Opret gerne en separat fil til oversættelse af disse --}}
     <h1>Retningslinjer</h1>
     <p>Brug altid det mest udbredt (og helst dansk) oversættelse af ordet i dets grundform (tjek gerne <a
                 href="{{config('externalurl.ordnet.url')}}">{{config('externalurl.ordnet.text')}}</a> og <a
