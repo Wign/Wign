@@ -19,8 +19,12 @@ class Word extends Model {
 
 	// CREATE SCOPES -----------------------------------------------
 	// It makes it easier to make some certain queries
-	public function scopeWordWithSign( $query ) {
+	public function scopeWithSign( $query ) {
 		return $query->has( 'signs' );
+	}
+
+	public function scopeWithoutSign( $query ) {
+		return $query->where(\DB::raw('(SELECT count(*) FROM signs WHERE signs.word_id = words.id)'), '<=', 0);
 	}
 
 	public function scopeLatest( $query, $antal = 25 ) {
@@ -28,7 +32,7 @@ class Word extends Model {
 	}
 
 	public function scopeRandom( $query, $antal = 1 ) {
-		$totalRows = static::wordWithSign()->count() - 1;
+		$totalRows = static::withSign()->count() - 1;
 		$skip      = $totalRows > 0 ? mt_rand( 0, $totalRows ) : 0;
 
 		return $query->skip( $skip )->take( $antal );
@@ -36,9 +40,9 @@ class Word extends Model {
 
 	public function scopeGetQueriedWord( $query, $word = null ) {
 		if ( isset( $word ) ) {
-			return $query->wordWithSign()->where( 'word', 'like', '%' . $word . '%' );
+			return $query->withSign()->where( 'word', 'like', '%' . $word . '%' );
 		} else {
-			return $query->wordWithSign();
+			return $query->withSign();
 		}
 	}
 }

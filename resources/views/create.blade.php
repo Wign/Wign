@@ -79,36 +79,29 @@ if ( isset( $word ) ) {
         </ul>
     </span>
     @endif
-    <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
+    <!-- <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
                                                        title="Klik for yderligere oplysninger og hjælp"
-                                                       class="question"></a>
-	<?php
-	if($hasSign) {
-	?>
-    <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Tjek om dit tegn findes allerede, eller tilføj et nyt tegn på {{ $word }}-listen:</p>
-	<?php
-	}
-	else {
-	if($word) {
-	?>
-    <p>Wign har ikke noget tegn for{{ isset($word) ? ' for "'.$word.'"' : ''}} endnu.<br>
-		<?php } ?>
+                                                       class="question"></a> -->
+	@if(isset($hasSign) && $hasSign == 1)
+    <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
+        tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
+	@elseif(isset($word))
+    <p>Wign har ikke tegnet{{ $word ? ' for "'.$word.'"' : ''}} endnu.<br>
+	@else
         Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
-	<?php
-	}
-	?>
-    <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('TegnController@gemTegn') }}">
+	@endif
+    <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
 
         <camera id="wign01" data-app-id="{{ config('wign.cameratag.id') }}" data-maxlength="15"
                 data-txt-message="Hej. Vær sød at gå til <<url>> for at optage din video"
                 style="width:580px;height:326px;"></camera>
         <br>
 
-        <label for="tegn">Tegn for:</label>
-        <input type="text" id="tegn" name="tegn" value="{{ $word }}" placeholder="Skriv ordet"><br>
+        <label for="word">Tegn for:</label>
+        <input type="text" id="word" name="word" value="{{ isset($word) ? $word : "" }}" placeholder="Skriv ordet"><br>
 
-        <label for="beskrivelse">Beskrivelse:</label>
-        <textarea id="beskrivelse" name="beskr" placeholder="Skriv lidt om tegnet"></textarea><br>
+        <label for="description">Beskrivelse:</label>
+        <textarea id="description" name="description" placeholder="Skriv lidt om tegnet"></textarea><br>
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="submit" value="Indsend tegnet" id="btnSubmit">

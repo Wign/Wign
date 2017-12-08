@@ -14,9 +14,9 @@ class Blacklist {
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
-	 * @return mixed
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  \Closure $next
+	 * @return mixed either redirects the user to the blacklist page, or continue with the Closure
 	 */
 	public function handle($request, Closure $next) {
 

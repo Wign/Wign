@@ -2,12 +2,6 @@ branch-defaults:
   master:
     environment: wign-prod
     group_suffix: null
-  yaccFixes:
-    environment: wign-prod
-environment-defaults:
-  wign-prod:
-    branch: null
-    repository: null
 global:
   application_name: wign
   branch: null

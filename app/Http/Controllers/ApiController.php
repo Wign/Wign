@@ -3,118 +3,87 @@
 use App\Helpers\Helper;
 use App\Word;
 
-use Response;
+use Illuminate\Database\Eloquent\Collection;
 
 class ApiController extends Controller {
 
 	/**
-	 * Display a listing of the resource.
+	 * Display a greeting and short documentation of the API.
 	 *
-	 * @return view
+	 * @link https://api.wign.dk/
+	 *
+	 * @return \Illuminate\View\View
 	 */
-	public function index()
-	{
-		return view('ApiGreet');
+	public function index() {
+		return view( 'ApiGreet' );
 	}
 
 	/**
-	 * Checks whether we has a sign for the word
-	 * @param  String $word - the query word
-	 * @return boolean       JSON object with {word:boolean}
+	 * Checks whether we have at least one sign attached to the word
+	 *
+	 * @link https://api.wign.dk/hasSign/$word
+	 *
+	 * @param string $word the query word
+	 *
+	 * @return array with [$word => boolean]. If signs exist, it returns [$word => true]
 	 */
-	public function hasSign($word)
-	{
-		if (isset($word)) { $word = Helper::underscoreToSpace($word); }
-		$numWords = Word::where('word', $word)->count();
-		$result[$word] = $numWords > 0;
+	public function hasSign( $word ) {
+		if ( empty( $word ) ) {
+			return array( $word => false );
+		}
+		$word            = Helper::underscoreToSpace( $word );
+		$numWords        = Word::where( 'word', $word )->count();
+		$result[ $word ] = $numWords > 0;
+
 		return $result;
 	}
 
 	/**
-	 * Send a list of video id's for the signs for the queried word.
-	 * If none query is provided, give a complete list of words.
-	 * @param  String $word - the query word
-	 * @return Response       List all JSON objects
+	 * Returns a list of video data for the signs of the queried $word.
+	 *
+	 * It finds all signs attached to $word, and for each signs it fetch their data and
+	 * returns them. Returns empty array if no words is found, or no $word is provided.
+	 *
+	 * @link https://api.wign.dk/video/$word
+	 *
+	 * @param string $word - the query word
+	 *
+	 * @return Collection with all video data, or an empty Collection if none $word is provided
 	 */
-	public function getSign($word = null)
-	{
-		if(isset($word)) {
-			$word = Helper::underscoreToSpace($word);
+	public function getSign( $word = null ) {
+		if ( isset( $word ) ) {
+			$word   = Helper::underscoreToSpace( $word );
 			$result = Word::join( 'signs', 'words.id', '=', 'signs.word_id' )->where( 'words.word', $word )->whereNull( 'signs.deleted_at' )->get( array(
 				'video_uuid as videoID',
 				'description',
 				'thumbnail_url as thumb',
 				'signs.created_at'
 			) );
+		} else {
+			$result = new Collection;
 		}
-		else{
-			$result = array();
-		}
+
 		return $result;
 	}
 
 	/**
-	 * Show the form for creating a new resource.
+	 * Find all words like the query $word.
 	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
+	 * Returns a list of words that begin or end with $word. Returns empty array if no words is found.
+	 * Returns a full list of words if no $word is provided. It is a good way to search for the right word,
+	 * for example when using auto-completion.
 	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
+	 * @link https://api.wign.dk/words/$word
 	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
+	 * @param string $word
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @return Collection
 	 */
-	public function edit($id)
-	{
-		//
-	}
+	public function getWords( $word = "" ) {
+		if ( isset( $word ) ) {
+			$word = Helper::underscoreToSpace( $word );
+		}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
+		return response(Word::getQueriedWord( $word )->get( array( 'word as label' ) ))->header('Access-Control-Allow-Origin', '*');
 	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 }
