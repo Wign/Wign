@@ -5,7 +5,7 @@ if ( isset( $word ) ) {
 	$url   = url( '/opret/' . $word );
 } else {
 	$title = 'Opret et tegn';
-	$desc  = 'Hjælp os med din bidrag. Send dit tegn ind ved at bruge din mobil eller computer.';
+	$desc  = 'Hjælp os med din bidrag. Send dit tegn ind ved brug af din mobil eller computer.';
 	$url   = url( '/opret' );
 }
 ?>
@@ -31,7 +31,7 @@ if ( isset( $word ) ) {
 
             // Set a alert on before unload
             $(window).bind('beforeunload', function () {
-                return 'Pas på! Din video er ikke blevet lagt op endnu!\nHusk at klikke på "Indsend tegnet". Tak!';
+                return 'Pas på! Din video er ikke blevet lagt op endnu!\nHusk klik på "Indsend tegnet".';
             });
         });
 
@@ -85,14 +85,13 @@ if ( isset( $word ) ) {
 	<?php
 	if($hasSign) {
 	?>
-    <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
-        tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
+    <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Tjek om dit tegn findes allerede, eller tilføj et nyt tegn på {{ $word }}-listen:</p>
 	<?php
 	}
 	else {
 	if($word) {
 	?>
-    <p>Wign har ikke tegnet{{ isset($word) ? ' for "'.$word.'"' : ''}} endnu.<br>
+    <p>Wign har ikke noget tegn for{{ isset($word) ? ' for "'.$word.'"' : ''}} endnu.<br>
 		<?php } ?>
         Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
 	<?php

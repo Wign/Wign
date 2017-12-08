@@ -19,6 +19,7 @@
 @endif
 <ul>
 @foreach($requests as $request)
+    {{-- ental: stemme, flertal: stemmer --}}
     <li><a href="{{ URL::to('/tegn/'.$request->word) }}" alt="{{ $request->word }}">{{ $request->word }}</a> - {{ $request->request_count }} stemmer</li>
 @endforeach
 </ul>

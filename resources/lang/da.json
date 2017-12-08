@@ -1,8 +1,119 @@
 {
-  "I love programming.": "Jeg elsker koding.",
-  "Hello, :name": "Hej, :name", // Hej, kenneth
-  "Hello, :Name": "Hej, :Name", // Hej, Kenneth
-  "Hello, :NAME": "Hej, :NAME", // Hej, KENNETH
-  "Goodbye, :name. You've uploaded :count videos while you was here": "Farvel, :name. Du har uploadet :count videoer mens du var her",
-  "Your cow is here": "Din ko er her|Jeres ko er her" // Pluralization
+  "CAMERATAG"
+
+  "FOOTER"
+  "Wign has :signCount sign | Wign has :signCount signs": "Wign har nu :signCount tegn,",
+  "and :wordCount word | and :wordCount words": "fordelt over :wordCount ord",
+  "visit our Facebook page": "besøg vores Facebook side",
+
+  "ICONS"
+  "MAIN"
+
+  "MENU"
+  "Submit a sign": "Send et tegn",
+  "Look for signs": "Efterlyste tegn",
+  "New signs": "Seneste tegn",
+  "All signs": "Alle tegn",
+
+  "OPENGRAPH"
+
+  "SEARCH"
+  "Seek a sign, i.e. :word": "Søg efter et tegn, fx. :word",
+  "Search": "Søg",
+
+  "STYLE"
+
+  "ABOUT"
+  "About Wign": "Om Wign",
+
+  "APIGREET"
+  "APP"
+
+  "BLACKLIST"
+  "You are on the blacklist": "Du er på vores sortliste",
+  "We are sorry": "Desværre",
+  "Your IP-address (:IP) appears on our blacklist in the following reasons: :reason": "Din IP-adresse :IP er på vores sortliste af følgende årsag: :reason",
+  "": "Vi tolererer desværre ikke upassede adfærd på Wign. Vi har valgt at indføre en nul-tolerance, og derfor er du
+      blevet afvist adgangen til Wign.",
+  "": "Er det tale om en fejl, og vil du have adgangen igen, så er du mere end velkommen til at kontakte os på :mail.",
+
+  "CREATE"
+  "": "Opret et tegn for ",
+  "": "Hjælp os med din bidrag til :word. Send dit tegn for :word ind ved brug af din mobil eller computer.",
+  "New sign": "Opret et tegn",
+  "Please help us to expand Wign by sending your new sign below.": "Du kan hjælpe os med at oprette et ny tegn nedenunder.",
+  "": "Pas på! Din video er ikke blevet lagt op endnu!",
+  "": "Klik for yderligere oplysninger og hjælp",
+  "": "Wign har allerede tegnet for :word. Tjek om dit tegn allerede findes, ellers tilføj tegnet",
+  "": "Wign har ikke noget tegn for :word endnu.",
+  "": "Du kan hjælpe os med at oprette et ny tegn nedenunder.",
+  "": "Hej. Vær sød at gå til :url for at optage din video",
+  "Sign by this word:": "Tegn for:",
+  "sign": "tegn",
+  "Type the word": "Skriv ordet",
+  "Description:": "Beskrivelse:",
+  "Descript something about this sign": "Skriv lidt om tegnet",
+  "Submit": "Indsend tegnet",
+  "By submitting I agree to the Terms and Conditions": "Ved indsendelsen bekræfter jeg at jeg har læst og accepteret Wign's retningslinjer",
+
+  "HELP"
+  "Help": "Hjælp",
+  "": "'Wign's hjælpesektion, hvor du kan få hjælp og vejledning i hvordan du kan bruge Wign optimalt.",
+  "The page is working on process...": "Siden er under arbejdet...",
+  "We are sorry that there are not any tutorials or video tutorials right now.": "Der er derfor desværre ikke en guide eller hjælepvideo på siden lige nu.",
+  "": "Finder du nogle fejl på siden er du velkommen til at indsende en fejlbesked på vores :github side, eller sende en mail til os.",
+  "": "Du er også selvfølgelig velkommen til at skrive på vores Facebook side",
+  "Thank you for your patience.": "Tak for din tålmodighed.",
+
+  "HOME"
+  "You are logged in!": "Du er logget ind!",
+
+  "INDEX"
+  "": "Wign er en online social tegnsprogsencyklopædi. Altså en form for tegnbank til tegnsprogsbrugere. Her kan du se, oprette og efterlyse tegn for en bestemt ord.",
+  "Social encyclopedia of sign language": "Social tegnsprogsencyklopædi",
+
+  "LIST"
+  ":count most recently signs": "Seneste :count tegn",
+  "": "De seneste :count tegn, som er blevet lagt op i Wign. Her kan du få et kig sneste aktivitetet på Wign .",
+  "All the signs": "Alle vores tegn",
+  "Take a look at the signs": "Se alle vores tegn",
+
+  "LISTALL"
+  "All signs": "Alle tegn",
+  "": "Oversigt over alle de tegn som er blevet lagt op i Wign. Her kan du få en samlet overblik over hvad Wign egentligt rummer.",
+
+  "NOSIGN"
+  "We need a sign for this word, :word": "Vi mangler tegnet for :word",
+  "": "Wign har desværre ikke tegnet for :word. Du kan hjælpe Wign med at bidrage med et tegn til ordet.",
+  "We need a sign": "Vi mangler et tegn",
+  "": "Wign har desværre ikke et tegn. Du kan hjælpe Wign med din bidrag.",
+  "": "Wign har desværre ikke tegnet",
+  "": "Wign har desværre ikke noget tegn til :word",
+  "You can either": "Du kan nu enten:",
+  "submit sign of :word": "Læg et tegn for :word",
+  "or": "eller",
+  "": "Efterlyse tegnet for :word",
+  "Submit a new sign": "Opret et tegn",
+  "": "Eller mener du et af disse tegn?",
+
+  "POLICY"
+  "Guidelines": "Retningslinjer",
+  "Guidelines for the use of Wign": "Vores retningslinjer for brug af Wign",
+
+  "REQUESTS"
+  "Look for signs": "Efterlyste tegn",
+  "": "Alle vores efterlyste tegne. Måske har du tegnet for nogle af de efterlyste ord? Send din bidrag ind!",
+  "request | requests": "stemme | stemmer",
+
+  "SIGN"
+  "Wign got a sign": "Wign har tegnet for :word.",
+  "Let us check if there are other sign for this word": "Kom og prøv at tjekke om vi har andre tegn for ordet.",
+  "": "Tag en rejse i vores udvalg af tegn, og bliv inspireret.",
+  "": "Jeg bruger ikke det tegn",
+  "": "Jeg bruger det tegn",
+  "": "Rapportér tegnet",
+  "": "anmeld",
+  "": "Forslå et alternativt tegn",
+
+  "WELCOME"
 }

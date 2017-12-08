@@ -7,11 +7,11 @@
 
 @section('content')
 <h1>Alle tegn</h1>
-    
+
     <ol>
     @foreach($words as $word)
         <li><a href="{{{ URL::to('/tegn').'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a></li>
     @endforeach
     </ol>
-    
+
 @stop

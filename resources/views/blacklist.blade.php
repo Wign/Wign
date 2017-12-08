@@ -15,9 +15,6 @@
             blevet afvist adgangen til Wign.</p>
         <p>Er det tale om en fejl, og vil du have adgangen igen, så er du mere end velkommen til at kontakte os på <a
                     href="mailto:{{ config('wign.email') }}">mail</a>.</p>
-        <p>Ha en god dag</p>
-        <p>Med hilsen fra<br>Os fra Wign</p>
-
     </div>
 
 @stop

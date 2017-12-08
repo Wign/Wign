@@ -47,7 +47,7 @@
 <div id="signs">
 <?php $myIP = Request::getClientIp(); ?>
 @foreach($signs as $sign)
-<?php 
+<?php
     $IPs = explode(",", $sign->votesIP);
     $hasVote = in_array($myIP, $IPs);
 ?>
@@ -55,7 +55,7 @@
         <video id="video_{{ $sign->id }}" data-uuid="{{ $sign->video_uuid }}" data-options='{"mute":true, "controls":true}'></video>
         <span class="count">{{ $sign->sign_count }}</span>
         @if($hasVote)
-            <a href="#" class="delVote" title="Jeg bruger ikke det tegn">&nbsp;</a>
+            <a href="#" class="delVote" title="Jeg bruger ikke dette tegn">&nbsp;</a>
         @else
             <a href="#" class="addVote" title="Jeg bruger dette tegn">&nbsp;</a>
         @endif
@@ -64,6 +64,6 @@
     </div>
 @endforeach
 </div>
-<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right" title="Lav en ny forslag">Forslå et alternativt tegn</a>
+<a href="{{ URL::to('/opret/'.$word->word) }}" class="float--right">Forslå et alternativt tegn</a>
 
 @stop
