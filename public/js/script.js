@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 $(function () {
     var _DEBUG = false;
 
@@ -25,11 +31,10 @@ $(function () {
         var signID = signDiv.data('id');
 
         var formData = {
-            '_token': $('meta[name="csrf-token"]').attr('content'),
-            'sign': signID
+            'sign': signID,
+            '_token': $('meta[name="csrf-token"]').attr('content')
         };
-        if (_DEBUG) console.log("Token: " + formData['_token'] + " - sign: " + formData['sign']);
-
+        if (_DEBUG) console.log("Sign ID: " + formData['sign']);
 
         $.ajax({
             url: ajaxURL,
@@ -38,6 +43,7 @@ $(function () {
             dataType: 'json',
             success: [
                 function (result) {
+                console.log(result);
                     if (result.status = 'success') {
                         if (_DEBUG) {
                             console.log("Ajax request succeed! Result:");
@@ -79,8 +85,9 @@ $(function () {
                     }
                 }
             ],
-            error: function () {
+            error: function (exception) {
                 console.log("ERROR!");
+                console.log("Exception:" + exception);
             }
 
         });

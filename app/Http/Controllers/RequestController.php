@@ -22,7 +22,7 @@ class RequestController extends Controller {
             ON words.id = request_words.word_id
             WHERE (SELECT count(*) FROM request_words WHERE request_words.word_id = words.id) >= 1 
                 AND (SELECT count(*) FROM signs WHERE signs.word_id = words.id) <= 0
-            GROUP BY words.id
+            GROUP BY words.word
             ORDER BY request_count DESC, words.word ASC
         ' ) );
 

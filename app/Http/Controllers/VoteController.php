@@ -1,10 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\Vote;
-use Request;
-use Redirect;
+use Illuminate\Http\Request;
 use Response;
-use Input;
 
 class VoteController extends Controller {
 
@@ -12,21 +10,24 @@ class VoteController extends Controller {
 	 * Insert a vote (like) of the sign into database, linked to the IP address of the user.
 	 * It utilize the POST input to gain the sign id.
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response a JSON response with status,
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse a JSON response with status,
 	 * message and resulting number of signs if it succeed
 	 */
-	public function createVote() {
-
-		$q = Input::all();
+	public function createVote( Request $request ) {
+		
+		$signID = $request->get( 'sign' );
+		$IP     = $request->getClientIp();
 
 		$vote = Vote::create( array(
-			'sign_id' => $q['sign'],
-			'ip'      => Request::getClientIp()
+			'sign_id' => $signID,
+			'ip'      => $IP
 		) );
 
 		if ( $vote ) {
 
-			$votes = Vote::countVotes( $q['sign'] );
+			$votes = Vote::countVotes( $signID );
 
 			$response = array(
 				'status' => 'success',
@@ -47,18 +48,20 @@ class VoteController extends Controller {
 	 * Removes a vote (like) of the sign from database, linked to the IP address of the user.
 	 * It utilize the POST input to gain the sign id.
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response a JSON response with status,
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse a JSON response with status,
 	 * message and resulting number of signs if it succeed
 	 */
-	public function deleteVote() {
-		$q    = Input::all();
-		$myIP = Request::getClientIp();
+	public function deleteVote( Request $request ) {
+		$signID = $request->get( 'sign' );
+		$myIP   = $request->getClientIp();
 
-		$vote = Vote::where( 'sign_id', '=', $q['sign'] )->where( 'ip', '=', $myIP )->delete();
+		$vote = Vote::where( 'sign_id', $signID )->where( 'ip', $myIP )->delete();
 
 		if ( $vote ) {
 
-			$votes = Vote::countVotes( $q['sign'] );
+			$votes = Vote::countVotes( $signID );
 
 			$response = array(
 				'status' => 'success',

@@ -1,18 +1,21 @@
-FROM php:5.6.31-apache
+FROM php:7.2-apache
 
 # System dependencies
-RUN apt-get update && apt-get install -y libmcrypt-dev git zip mysql-client \
+RUN apt-get update && apt-get install -y openssl git zip unzip \
 	libapache2-modsecurity
-RUN docker-php-ext-install -j$(nproc) mcrypt pdo_mysql
+# Stopping installing extenstions for a while...
+RUN docker-php-ext-install -j$(nproc) pdo_mysql
 RUN a2enmod rewrite
 
 # Modsecurity
 ADD apache/security2.conf /etc/apache2/mods-available/security2.conf
 RUN mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 RUN sed -i \
-	-e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' \
+#-e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' \ NOT NOW! MUST DETECT ALL RULES TO REMOVE FIRST
 	-e 's/SecResponseBodyAccess On/SecResponseBodyAccess Off/' \
 	/etc/modsecurity/modsecurity.conf
+
+RUN mkdir /usr/share/modsecurity-crs/activated_rules/
 
 RUN ln -s /usr/share/modsecurity-crs/base_rules/modsecurity_crs_41_sql_injection_attacks.conf \
 	/usr/share/modsecurity-crs/activated_rules
@@ -27,9 +30,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
-# Install Node & npm
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs
+# Install Node & npm :: Not needed in Docker enviroment
+# RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+#    && apt-get install -y nodejs
 
 EXPOSE 80
 
@@ -53,13 +56,12 @@ USER www-data
 RUN php composer.phar update
 RUN php composer.phar install
 
-# Install gulp globally
-#RUN npm install --global gulp-cli
+# Optimizing Laravel
+RUN php artisan config:cache
+RUN php artisan route:cache
 
-# Install node dependencies
-RUN npm install
-
-# Run gulp / Laravel Elixir
-RUN npx gulp --production
+# Install node dependencies and run gulp :: Not need in Docker enviroment
+# RUN npm install
+# RUN npx gulp --production
 
 USER root

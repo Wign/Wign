@@ -24,6 +24,7 @@ class SignController extends Controller {
 	public function showSign( $word = null ) {
 		if ( empty( trim( $word ) ) ) {
 			return view( 'nosign' );
+			// @TODO: Redirect user to index with flash that the sign don't exist
 		}
 
 		$word = Helper::underscoreToSpace( $word );
@@ -39,7 +40,7 @@ class SignController extends Controller {
                 FROM signs LEFT JOIN votes
                 ON signs.id = votes.sign_id
                 WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
-                GROUP BY signs.id 
+                GROUP BY signs.id, signs.video_uuid, signs.description
                 ORDER BY sign_count DESC
             ' ), array( 'wordID' => $wordData["id"] ) );
 
@@ -204,16 +205,15 @@ class SignController extends Controller {
 			}
 		}
 
-		if($success) {
+		if ( $success ) {
 			return Redirect::to( '/' )->with( 'message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.' );
-		}
-		else {
+		} else {
 			$flash = [
 				'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
 				'url'     => 'mailto:' . config( 'wign.email' )
 			];
 
-			return Redirect::to( config('wign.urlPath.sign') . '/' . $saved->word )->with( $flash );
+			return Redirect::to( config( 'wign.urlPath.sign' ) . '/' . $saved->word )->with( $flash );
 		}
 	}
 
@@ -283,15 +283,13 @@ class SignController extends Controller {
 	private function hasVoted( $signs ) {
 		$myIP = \Request::getClientIp();
 		foreach ( $signs as $sign ) {
-			$count = count( $sign->votesIP );
-
-			$result = false;
-			if ( $count == 0 ) {
+			if ( empty( $sign->votesIP ) ) {
 				continue;
-			} else if ( $count == 1 ) {
-				if ( $sign->votesIP == $myIP ) {
-					$result = true;
-				}
+			}
+			$result = false;
+
+			if ( ! is_array( $sign->votesIP ) && $sign->votesIP == $myIP ) {
+				$result = true;
 			} else {
 				foreach ( $sign->votesIP as $vote ) {
 					if ( $vote == $myIP ) {
@@ -300,7 +298,7 @@ class SignController extends Controller {
 					}
 				}
 			}
-			$sign->voted = $result;
+		$sign->voted = $result;
 		}
 
 		return $signs;

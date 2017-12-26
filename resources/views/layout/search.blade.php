@@ -2,6 +2,6 @@
     <div class="input-wrapper">
         <input type="text" id="autoComplete" class="search-text" name="word" placeholder="Søg efter et tegn, fx. {{ $randomWord['word'] }}">
     </div>
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    {{ csrf_field() }}
     <input type="submit" class="search-submit" value="Søg" id="search-submit">
 </form>
