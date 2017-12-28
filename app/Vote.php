@@ -16,6 +16,10 @@ class Vote extends Model {
 
 	// CREATE SCOPES -----------------------------------------------
 	// It makes it easier to make some certain queries
+	/**
+	 * @method static countVotes($query, $signID)
+	 */
+
 	public function scopeCountVotes( $query, $signID ) {
 		return $query->where( 'sign_id', $signID )->count();
 	}
