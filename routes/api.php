@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // The routes for our api
 Route::group( [
 	'domain' => 'api.' . env( 'APP_DOMAIN', 'wign.dk' ),
-	'middleware'=>['auth.basic:api','throttle:100000'],
+	'middleware'=>['throttle:100000'],
 	],
 	function () {
 		Route::get( '/', 'ApiController@index' );

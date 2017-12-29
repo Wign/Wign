@@ -2,6 +2,26 @@
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Word
+ *
+ * @property int $id
+ * @property string $word
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RequestWord[] $request
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sign[] $signs
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word getQueriedWord($word = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word latest($num = 25)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word random($num = 1)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withSign()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
+ * @mixin \Eloquent
+ */
 class Word extends Model {
 
 	// MASS ASSIGNMENT ------------------------------------------
@@ -22,7 +42,6 @@ class Word extends Model {
 	/**
 	 * Scopes down to words WITH signs
 	 *
-	 * @method static withSign( $query )
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
@@ -35,7 +54,6 @@ class Word extends Model {
 	/**
 	 * Scope to words without signs
 	 *
-	 * @method static withoutSign( $query )
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
@@ -48,7 +66,6 @@ class Word extends Model {
 	/**
 	 * Scope to the latest $num words
 	 *
-	 * @method static latest( $query, $num = 25 )
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 * @param int $num the number of latest signs
 	 *
@@ -62,7 +79,6 @@ class Word extends Model {
 	/**
 	 * Chose $num random words
 	 *
-	 * @method static random( $query, $num = 1 )
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 * @param int $num of random words
 	 *
@@ -78,7 +94,6 @@ class Word extends Model {
 	/**
 	 * Scopes to words that looks alike $word (That have $word in its string)
 	 *
-	 * @method static getQueriedWord( $query, $word = null )
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 * @param string $word the query word
 	 *

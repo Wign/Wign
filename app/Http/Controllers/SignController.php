@@ -111,7 +111,7 @@ class SignController extends Controller {
 		// Validating the incoming request
 		$this->validate( $request, [
 			'word'        => 'required|string',
-			'description' => 'string',
+			'description' => 'nullable|string',
 			'wign01_uuid' => 'required'
 		] );
 

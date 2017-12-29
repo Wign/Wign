@@ -27,9 +27,9 @@ class ApiController extends Controller {
 	 *
 	 * @return array with [$word => boolean]. If signs exist, it returns [$word => true]
 	 */
-	public function hasSign( $word ) {
+	public function hasSign( $word = null ) {
 		if ( empty( $word ) ) {
-			return array( $word => false );
+			return array();
 		}
 		$word            = Helper::underscoreToSpace( $word );
 		$numWords        = Word::where( 'word', $word )->count();
