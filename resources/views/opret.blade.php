@@ -82,14 +82,14 @@ if ( isset( $word ) ) {
     <!-- <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
                                                        title="Klik for yderligere oplysninger og hjælp"
                                                        class="question"></a> -->
-	@if(isset($hasSign) && $hasSign == 1)
-    <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
-        tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
-	@elseif(isset($word))
-    <p>Wign har ikke tegnet{{ $word ? ' for "'.$word.'"' : ''}} endnu.<br>
-	@else
-        Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
-	@endif
+    @if(isset($hasSign) && $hasSign == 1)
+        <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
+            tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
+    @elseif(isset($word))
+        <p>Wign har ikke tegnet{{ $word ? ' for "'.$word.'"' : ''}} endnu.<br>
+            @else
+                Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
+    @endif
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
 
         <camera id="wign01" data-app-id="{{ config('wign.cameratag.id') }}" data-maxlength="15"
@@ -108,7 +108,7 @@ if ( isset( $word ) ) {
         <p>
             <small>Ved indsendelsen bekræfter jeg at jeg har læst og accepteret Wign's <a
                         href="{{ URL::to('/retningslinjer/') }}">retningslinjer</a>
-                <small>
+            </small>
         </p>
 
     </form>
