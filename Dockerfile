@@ -1,7 +1,7 @@
 FROM php:7.2-apache
 
 # System dependencies
-RUN apt-get update && apt-get install -y openssl git zip unzip \
+RUN apt-get update && apt-get install -y openssl git zip unzip mysql-client \
 	libapache2-modsecurity
 # Stopping installing extenstions for a while...
 RUN docker-php-ext-install -j$(nproc) pdo_mysql
