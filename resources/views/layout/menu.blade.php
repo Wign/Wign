@@ -1,6 +1,6 @@
 <div class="banner">
     @if (Request::path() !== '/')
-        <a href="{{ URL::to('/') }}"><img src="{{asset('images/wign_logo.png')}}" alt="Wign logo" class="wign logo-banner"></a>
+        <a href="{{ URL::to('/') }}"><img src="{{asset('images/wign_logo_new.png')}}" alt="Wign logo" class="wign logo-banner"></a>
     @endif
     <ul class="menu">
         <li><a href="{{ URL::to('/opret') }}">Send et tegn</a></li>
