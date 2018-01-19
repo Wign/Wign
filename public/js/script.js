@@ -213,4 +213,5 @@ CT_i18n[105] = CT_i18n[105] || "Hvilken mikrofon vil du gerne bruge";
 CT_i18n[106] = CT_i18n[106] || "denne video er længere end den maksimal tilladt varighed på ## sekunder. Prøv lige igen.";
 CT_i18n[107] = CT_i18n[107] || "Det ser ikke ud til at være en valid lydfil. Forsæt alligevel?";
 CT_i18n[108] = CT_i18n[108] || 'Vi er ude af stand til at forstå filen du valgte. Prøv lige igen.';
-CT_i18n[109] = CT_i18n[109] || 'Denne Chrome version understøtter ikke adgang til kamera fra usikre kilder. Brug venligst https://';
+CT_i18n[109] = CT_i18n[109] || 'Denne browser understøtter ikke adgang til hardware fra usikre kilder. Brug venligst https://';
+CT_i18n[110] = CT_i18n[110] || 'Din video uploader stadig til serveren. Prøv venligst igen om en kort øjeblik.';

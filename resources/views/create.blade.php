@@ -92,8 +92,11 @@ if ( isset( $word ) ) {
     @endif
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
 
-        <camera id="wign01" data-app-id="{{ config('wign.cameratag.id') }}" data-maxlength="15"
-                data-txt-message="Hej. Vær sød at gå til <<url>> for at optage din video"
+        <camera id="wign01"
+                data-app-id="{{ config('wign.cameratag.id') }}"
+                data-maxlength="15"
+                data-txt-message="Hej! Gå venligst til <<url>> for at optage din video"
+                data-default-sms-country="{{ config('app.country_code') }}"
                 style="width:580px;height:326px;"></camera>
         <br>
 
