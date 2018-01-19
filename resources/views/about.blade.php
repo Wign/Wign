@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-
+  {{-- Opret oversættelsesfil --}}
     <h1>Om Wign</h1>
     <p>Nuværende version: <a href="{{ config('social.github.url') }}"
                              alt="Wign hos Github">{{ config('wign.version') }}</a></p>

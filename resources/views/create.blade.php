@@ -5,7 +5,7 @@ if ( isset( $word ) ) {
 	$url   = url( '/opret/' . $word );
 } else {
 	$title = 'Opret et tegn';
-	$desc  = 'Hjælp os med din bidrag. Send dit tegn ind ved at bruge din mobil eller computer.';
+	$desc  = 'Hjælp os med din bidrag. Send dit tegn ind ved brug af din mobil eller computer.';
 	$url   = url( '/opret' );
 }
 ?>
@@ -31,7 +31,7 @@ if ( isset( $word ) ) {
 
             // Set a alert on before unload
             $(window).bind('beforeunload', function () {
-                return 'Pas på! Din video er ikke blevet lagt op endnu!\nHusk at klikke på "Indsend tegnet". Tak!';
+                return 'Pas på! Din video er ikke blevet lagt op endnu!\nHusk klik på "Indsend tegnet".';
             });
         });
 
