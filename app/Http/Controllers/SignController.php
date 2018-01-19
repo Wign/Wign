@@ -90,14 +90,14 @@ class SignController extends Controller {
 	 */
 	public function createSign( $word = null ) {
 		if ( empty( $word ) ) {
-			return view( config( 'wign.urlPath.create' ) );
+			return view( 'create' );
 		}
 
 		$hasSign         = Word::where( 'word', $word )->withSign()->first();
 		$data['hasSign'] = empty( $hasSign ) ? 0 : 1;
 		$data['word']    = $word;
 
-		return view( config( 'wign.urlPath.create' ) )->with( $data );
+		return view( 'create' )->with( $data );
 	}
 
 	/**
