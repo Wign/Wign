@@ -7,12 +7,12 @@
 
 @section('content')
 <h1>Seneste {{ $number }} tegn</h1>
-    
+
     <ul>
     @foreach($words as $word)
         <li>{{-- date("d-m-Y", $word->updated_at->timestamp) // Ved ikke om det skal bruges? --}} <a href="{{ URL::to('/tegn').'/'.Helper::makeUrlString($word->word) }}">{{ $word->word }}</a></li>
     @endforeach
     </ul>
-    <a href="{{ URL::to('/alle') }}" class="float--right" title="Alle vores tegne">Se alle vores tegn</a>
-    
+    <a href="{{ URL::to('/alle') }}" class="float--right" title="Alle vores tegn">Se alle vores tegn</a>
+
 @stop

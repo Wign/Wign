@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 $(function () {
     var _DEBUG = false;
 
@@ -25,11 +31,10 @@ $(function () {
         var signID = signDiv.data('id');
 
         var formData = {
-            '_token': $('meta[name="csrf-token"]').attr('content'),
-            'sign': signID
+            'sign': signID,
+            '_token': $('meta[name="csrf-token"]').attr('content')
         };
-        if (_DEBUG) console.log("Token: " + formData['_token'] + " - sign: " + formData['sign']);
-
+        if (_DEBUG) console.log("Sign ID: " + formData['sign']);
 
         $.ajax({
             url: ajaxURL,
@@ -38,6 +43,7 @@ $(function () {
             dataType: 'json',
             success: [
                 function (result) {
+                console.log(result);
                     if (result.status = 'success') {
                         if (_DEBUG) {
                             console.log("Ajax request succeed! Result:");
@@ -79,8 +85,9 @@ $(function () {
                     }
                 }
             ],
-            error: function () {
+            error: function (exception) {
                 console.log("ERROR!");
+                console.log("Exception:" + exception);
             }
 
         });
@@ -206,4 +213,5 @@ CT_i18n[105] = CT_i18n[105] || "Hvilken mikrofon vil du gerne bruge";
 CT_i18n[106] = CT_i18n[106] || "denne video er længere end den maksimal tilladt varighed på ## sekunder. Prøv lige igen.";
 CT_i18n[107] = CT_i18n[107] || "Det ser ikke ud til at være en valid lydfil. Forsæt alligevel?";
 CT_i18n[108] = CT_i18n[108] || 'Vi er ude af stand til at forstå filen du valgte. Prøv lige igen.';
-CT_i18n[109] = CT_i18n[109] || 'Denne Chrome version understøtter ikke adgang til kamera fra usikre kilder. Brug venligst https://';
+CT_i18n[109] = CT_i18n[109] || 'Denne browser understøtter ikke adgang til hardware fra usikre kilder. Brug venligst https://';
+CT_i18n[110] = CT_i18n[110] || 'Din video uploader stadig til serveren. Prøv venligst igen om en kort øjeblik.';

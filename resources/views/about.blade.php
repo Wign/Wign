@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-
+  {{-- Opret oversættelsesfil --}}
     <h1>Om Wign</h1>
     <p>Nuværende version: <a href="{{ config('social.github.url') }}"
                              alt="Wign hos Github">{{ config('wign.version') }}</a></p>
@@ -42,5 +42,5 @@
     <p>Du kan følge os på vores <a href="{{ config('social.facebook.url') }}">Facebook side</a>.</p>
     <p>Wign er ejet af <a href="http://www.ddu.dk">Danske Døves Ungdomsforbund</a>, og hovedmanden bag projektet er <a
                 href="mailto:{{ config('wign.email') }}" title="Send Troels en mail">Troels Madsen</a>.</p>
-    <img src="{{asset('images/wign_logo.png')}}" alt="Wign logo" class="wign logo-index" width="269" height="85">
+    <img src="{{asset('images/wign_logo_new.png')}}" alt="Wign logo" class="wign logo-index">
 @stop

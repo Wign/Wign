@@ -32,12 +32,9 @@ $(function() {
         @endif
     @endif
 
-    <img src="{{asset('images/wign_logo.png')}}" alt="Wign logo" class="wign logo-index" width="269" height="85">
+    <img src="{{asset('images/wign_logo_new.png')}}" alt="Wign logo" class="wign logo-index">
     <h1 class="headline">Social tegnsprogsencyklopædi</h1>
     @include('layout.search', ['randomWord' => $randomWord])
-
-    <a href="http://duf.dk/tilskud-og-stoette/dufs-initiativstoette/"><img src="{{asset('images/duf-is.png')}}" alt="DUFs intativstøtte logo" class="logo-index" style="margin-top:150px;" width="150"></a>
-
     </div>
 
     @include('layout.footer',['signCount' => $signCount])

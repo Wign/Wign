@@ -16,7 +16,7 @@ class CreateWordsTable extends Migration {
     	{
         $table->increments('id');
         $table->string('word')->unique();
-        $table->timestamps();
+        $table->timestamps()->useCurrent();
     	});
 	}
 

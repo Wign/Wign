@@ -17,7 +17,7 @@ class CreateRequestWordsTable extends Migration {
         $table->increments('id')->unique();
         $table->integer('word_id');
         $table->string('ip');
-        $table->timestamps();
+        $table->timestamps()->useCurrent();
     	});
 	}
 

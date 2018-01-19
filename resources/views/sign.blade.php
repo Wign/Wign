@@ -48,7 +48,12 @@
 <?php $myIP = Request::getClientIp(); ?>
 @foreach($signs as $sign)
     <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
-        <video id="video_{{ $sign->id }}" data-uuid="{{ $sign->video_uuid }}" data-options='{"mute":true, "controls":true}'></video>
+        <player id="video_{{ $sign->id }}"
+                data-uuid="{{ $sign->video_uuid }}"
+                data-controls="true"
+                data-displaytitle="false"
+                data-displaydescription="false"
+                data-mute="true"></player>
         <span class="count">{{ $sign->sign_count }}</span>
         @if(isset($sign->voted))
             <a href="#" class="delVote" title="Jeg bruger ikke det tegn">&nbsp;</a>
