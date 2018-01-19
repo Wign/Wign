@@ -29,7 +29,7 @@ class CreateSignsTable extends Migration {
         $table->text('flag_comment');
         $table->string('flag_ip');
         $table->string('flag_email');
-        $table->timestamps();
+        $table->timestamps()->useCurrent();
         $table->softDeletes();
     	});
 	}

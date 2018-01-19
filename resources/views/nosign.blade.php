@@ -32,7 +32,7 @@ if ( isset( $word ) ) {
         @else
             <br><a href="{{ URL::to('/opret/') }}" title="Opret et tegn">Opret et tegn</a>
         @endif
-        </p>
+    </p>
 
         @if(isset($suggestions))
             <p>
