@@ -9,11 +9,12 @@ RUN a2enmod rewrite
 
 # Modsecurity
 ADD apache/security2.conf /etc/apache2/mods-available/security2.conf
-#RUN mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
-#RUN sed -i \
-#-e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' \ NOT NOW! MUST DETECT ALL RULES TO REMOVE FIRST
-#	-e 's/SecResponseBodyAccess On/SecResponseBodyAccess Off/' \
-#	/etc/modsecurity/modsecurity.conf
+RUN mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+# Trying to set the SecRuleEngine on and see what happens...
+RUN sed -i \
+    -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/'
+	-e 's/SecResponseBodyAccess On/SecResponseBodyAccess Off/' \
+	/etc/modsecurity/modsecurity.conf
 
 RUN git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /etc/apache2/modsecurity.d
 RUN mv /etc/apache2/modsecurity.d/crs-setup.conf.example /etc/apache2/modsecurity.d/crs-setup.conf
@@ -31,10 +32,6 @@ WORKDIR /var/www
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
-
-# Install Node & npm :: Not needed in Docker enviroment
-# RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-#    && apt-get install -y nodejs
 
 EXPOSE 80
 
@@ -59,11 +56,7 @@ RUN php composer.phar update
 RUN php composer.phar install
 
 # Optimizing Laravel
-RUN php artisan config:cache
 RUN php artisan route:cache
-
-# Install node dependencies and run gulp :: Not need in Docker enviroment
-# RUN npm install
-# RUN npx gulp --production
+RUN php artisan config:cache
 
 USER root

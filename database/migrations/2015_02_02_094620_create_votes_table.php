@@ -17,7 +17,7 @@ class CreateVotesTable extends Migration {
         $table->increments('id')->unique();
         $table->integer('sign_id');
         $table->string('ip');
-        $table->timestamps()->useCurrent();
+        $table->timestamps();
     	});
 	}
 
