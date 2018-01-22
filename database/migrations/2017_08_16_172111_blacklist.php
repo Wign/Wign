@@ -17,7 +17,7 @@ class Blacklist extends Migration {
 			$table->increments('id');
 			$table->string('ip');
 			$table->text('reason');
-			$table->timestamps()->useCurrent();
+			$table->timestamps();
 			$table->softDeletes();
 		});
 	}

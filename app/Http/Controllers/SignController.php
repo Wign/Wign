@@ -288,8 +288,10 @@ class SignController extends Controller {
 			}
 			$result = false;
 
-			if ( ! is_array( $sign->votesIP ) && $sign->votesIP == $myIP ) {
-				$result = true;
+			if ( ! is_array( $sign->votesIP ) ) {
+				if( $sign->votesIP == $myIP ) {
+					$result = true;
+				}
 			} else {
 				foreach ( $sign->votesIP as $vote ) {
 					if ( $vote == $myIP ) {
