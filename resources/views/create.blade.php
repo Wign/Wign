@@ -17,6 +17,7 @@ if ( isset( $word ) ) {
 @stop
 
 @section('extra_head_scripts')
+    @include('lang.cameratag')
     @include('layout.cameratag')
     <script>
         /**
