@@ -1,18 +1,24 @@
 @extends('layout.main')
 
-@section('title', 'Seneste '.$number.' tegn')
+@section('title', __('text.recent.count', ['count' => $number]))
 @section('open_graph')
-    @include('layout.openGraph', ['title' => 'Seneste '.$number.' tegn', 'url' => url('/seneste'), 'desc' => 'De seneste '.$number.' tegn som er blevet lagt op i Wign. Her kan du få en kort kig i aktivitetet på Wign i den seneste tid.'])
+    @include('layout.openGraph', [
+        'title' =>  __('text.recent.count', ['count' => $number]),
+        'url' => url( config('wign.urlPath.recent') ),
+        'desc' => __('text.text.recent.desc', ['count' => $number])
+    ])
 @stop
 
 @section('content')
-<h1>Seneste {{ $number }} tegn</h1>
+    <h1>@lang('text.recent.count', ['count' => $number])</h1>
 
     <ul>
-    @foreach($words as $word)
-        <li>{{-- date("d-m-Y", $word->updated_at->timestamp) // Ved ikke om det skal bruges? --}} <a href="{{ URL::to('/tegn').'/'.Helper::makeUrlString($word->word) }}">{{ $word->word }}</a></li>
-    @endforeach
+        @foreach($words as $word)
+            <li>
+                <a href="{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}">{{ $word->word }}</a>
+            </li>
+        @endforeach
     </ul>
-    <a href="{{ URL::to('/alle') }}" class="float--right" title="Alle vores tegn">Se alle vores tegn</a>
+    <a href="{{ URL::to( config('wign.urlPath.all')) }}" class="float--right" title="{{__('text.signs.all.our')}}">@lang('text.signs.all.look')</a>
 
 @stop

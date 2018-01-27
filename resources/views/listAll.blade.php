@@ -1,16 +1,20 @@
 @extends('layout.main')
 
-@section('title', 'Alle tegn')
+@section('title', __('text.signs.all'))
 @section('open_graph')
-    @include('layout.openGraph', ['title' => 'Alle tegn', 'url' => url('/alle'), 'desc' => 'Oversigt over alle de tegn som er blevet lagt op i Wign. Her kan du få en samlet overblik over hvad Wign egentligt rummer.'])
+    @include('layout.openGraph', [
+        'title' => __('text.signs.all'),
+        'url' => url( config( 'wign.urlPath.all' ) ),
+        'desc' => __('text.signs.all.desc')
+    ])
 @stop
 
 @section('content')
-<h1>Alle tegn</h1>
+<h1>@lang('text.signs.all')</h1>
 
     <ol>
     @foreach($words as $word)
-        <li><a href="{{{ URL::to('/tegn').'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a></li>
+        <li><a href="{{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a></li>
     @endforeach
     </ol>
 

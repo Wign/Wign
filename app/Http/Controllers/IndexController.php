@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App;
 Use App\Word;
 Use App\Sign;
 
@@ -53,7 +54,8 @@ class IndexController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function policy() {
-		return view( 'policy' );
+		$lang = App::getLocale();
+		return view( $lang.'.policy' );
 	} // @TODO Change the web address to "policy"
 
 	/**

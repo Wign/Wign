@@ -1,4 +1,7 @@
 <div class="footer">
-    Wign har nu {{ $signCount }} tegn, fordelt over <a href="{{ URL::to('/alle') }}" title="oversigt over alle tegne">{{ $wordCount }}</a> ord<br>
-    &copy; 2009-{{ date('Y') }} <a href="{{ URL::to('/om') }}" title="Om Wign">Wign</a> | <a href="{{ config('social.facebook.url') }}" title="besøg vores facebook side">Facebook</a>
+    @lang('text.numSign', ['numSigns' => $signCount])
+    @lang('text.numWords', ['numWords' => $wordCount, 'url' => URL::to(config('wign.urlPath.all'))])
+    <br>&copy; 2009-{{ date('Y') }}
+    <a href="{{ URL::to( config('wign.urlPath.about' )) }}" title="{{ __( 'common.Wign.About' ) }}">Wign</a> | <a
+            href="{{ config( 'social.facebook.url' ) }}" title="{{ __( 'text.urlTitle.facebook' ) }}">Facebook</a>
 </div>

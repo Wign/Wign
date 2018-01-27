@@ -1,7 +1,7 @@
 <link rel="canonical" href="{{$url or url('/')}}" />
 
 <meta property="og:site_name" content="Wign" />
-<meta property="og:title" content="Wign :: {{$title or 'Social tegnsprogsencyklopædi'}}" />
+<meta property="og:title" content="Wign :: {{$title or __('common.social.encyl')}}" />
 @if (isset($desc))
 <meta property="og:description" content="{{$desc}}" />
 @endif

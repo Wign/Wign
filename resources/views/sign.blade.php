@@ -1,7 +1,7 @@
 <?php
     $title = $word;
-    $desc = 'Wign har tegnet for '.$word.'. Kom og prøv at tjekke om vi har andre tegn for '.$word.'. Tag en rejse i vores udvalg af tegn, og bliv inspireret.';
-    $url = url('/tegn/'.$word);
+    $desc = __('text.wign.got.sign', ['word' => $word] ) . ' ' . __('text.wign.journey');
+    $url = url( config('wign.urlPath.sign') . '/' . $word);
     $video = $signs[0]->video_uuid;
     $video_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/mp4.mp4';
     $image_url = 'https://www.cameratag.com/videos/'.$video.'/360p-16x9/thumb.png';
@@ -56,15 +56,15 @@
                 data-mute="true"></player>
         <span class="count">{{ $sign->sign_count }}</span>
         @if(isset($sign->voted))
-            <a href="#" class="delVote" title="Jeg bruger ikke det tegn">&nbsp;</a>
+            <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
         @else
-            <a href="#" class="addVote" title="Jeg bruger dette tegn">&nbsp;</a>
+            <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
         @endif
-        <a href="{{ URL::to('/flagSignView')."/".$sign->id }}" class="flagSign" title="Rapportér tegnet"><img src="{{ asset('images/flag-black.png') }}" class="anmeld"></a>
+        <a href="{{ URL::to('/flagSignView')."/".$sign->id }}" class="flagSign" title="{{__('text.sign.report')}}"><img src="{{ asset('images/flag-black.png') }}" class="anmeld"></a>
         <div class="desc">{{$sign->description}}</div>
     </div>
 @endforeach
 </div>
-<a href="{{ URL::to('/opret/'.$word) }}" class="float--right" title="Lav en ny forslag">Forslå et alternativt tegn</a>
+<a href="{{ URL::to( config('wign.urlPath.create'). '/' . $word) }}" class="float--right" title="{{__('text.sign.suggest.word', ['word' => $word])}}">@lang('text.sign.alt.suggest')</a>
 
 @stop
