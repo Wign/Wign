@@ -34,7 +34,7 @@ return [
 		'policy'        => 'retningslinjer',
 		'help'          => 'help',
 		'blacklist'     => 'blacklist',
-		'flagSign'      => 'flagSignView',
+		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
 		'results'       => 'results', // The search result page
 	]
 ];

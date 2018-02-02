@@ -35,7 +35,7 @@ class IndexController extends Controller {
 	 */
 	public function about() {
 		return view( 'about' );
-	} // @TODO: Change it to "about".
+	}
 
 	/**
 	 * Show the help page
@@ -56,7 +56,7 @@ class IndexController extends Controller {
 	public function policy() {
 		$lang = App::getLocale();
 		return view( $lang.'.policy' );
-	} // @TODO Change the web address to "policy"
+	}
 
 	/**
 	 * Show the "You're blacklisted" page
