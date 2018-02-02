@@ -7,7 +7,7 @@ return [
 	| Common Language Lines
 	|--------------------------------------------------------------------------
 	|
-	| The following language lines are used as short ans common lines for whole Wign
+	| The following language lines are used as short and common lines for whole Wign
 	|
 	*/
 
