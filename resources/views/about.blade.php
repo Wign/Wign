@@ -1,12 +1,12 @@
 @extends('layout.main')
 
-@section('title', 'Om Wign')
+@section('title', __( 'common.Wign.About' ) )
 @section('open_graph')
-    @include('layout.openGraph', ['title' => 'Om Wign', 'url' => url('/om')])
+    @include('layout.openGraph', [ 'title' => __( 'common.Wign.About' ), 'url' => url( config('wign.urlPath.about') ) ])
 @stop
 
 @section('content')
-  {{-- Opret oversættelsesfil --}}
+    {{-- Opret oversættelsesfil --}}
     <h1>Om Wign</h1>
     <p>Nuværende version: <a href="{{ config('social.github.url') }}"
                              alt="Wign hos Github">{{ config('wign.version') }}</a></p>

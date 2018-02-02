@@ -135,12 +135,12 @@ class SignController extends Controller {
 			$this->sendSlack( $word, $sign );
 
 			$flash = [
-				'message' => 'Tegnet er oprettet. Tusind tak for din bidrag! Tryk her for at opret flere tegn',
+				'message' => __('flash.sign.created'),
 			];
 		} else {
 			// Something went wrong! The sign isn't created!
 			$flash = [
-				'message' => 'Et eller andet gik galt og vi kunne ikke gemme din tegn! Vi er ked af det. Prøv igen ved at trykke her.',
+				'message' => __('flash.sign.create.failed'),
 			];
 		}
 		$flash['url'] = URL::to( config( 'wign.urlPath.create' ) );
@@ -173,11 +173,12 @@ class SignController extends Controller {
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Exception
 	 */
 	public function flagSign( Request $request ) {
 		// Check if client is bot. If true, reject the flagging!
 		if ( Helper::detect_bot() ) {
-			return redirect( '/' )->with( 'message', 'Det ser ud til at du er en bot. Vi må desværre afvise din rapportering af tegnet!' );
+			return redirect( '/' )->with( 'message', __('flash.bot.refuse') );
 		}
 
 		$this->validate( $request, [
@@ -206,10 +207,10 @@ class SignController extends Controller {
 		}
 
 		if ( $success ) {
-			return Redirect::to( '/' )->with( 'message', 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.' );
+			return Redirect::to( '/' )->with( 'message', __('flash.report.successful') );
 		} else {
 			$flash = [
-				'message' => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
+				'message' => __('flash.report.failed'),
 				'url'     => 'mailto:' . config( 'wign.email' )
 			];
 
@@ -276,9 +277,9 @@ class SignController extends Controller {
 	 * Updates the collection, inserting a key with a boolean value for each sign,
 	 * which tells whether the user have voted the sign or not.
 	 *
-	 * @param Collection $signs
+	 * @param array $signs
 	 *
-	 * @return Collection updated with the values
+	 * @return array updated with the values
 	 */
 	private function hasVoted( $signs ) {
 		$myIP = \Request::getClientIp();
@@ -311,7 +312,7 @@ class SignController extends Controller {
 	 * It's to keep us busy developers awake! Thank you for your contribution!
 	 *
 	 * @param String $word
-	 * @param Collection $sign - the $sign object, from which we can extract the information from.
+	 * @param \Illuminate\Database\Eloquent\Model $sign - the $sign object, from which we can extract the information from.
 	 */
 	private function sendSlack( $word, $sign ) {
 		$url     = URL::to( config( 'wign.urlPath.sign' ) . '/' . $word );

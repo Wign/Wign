@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App;
 Use App\Word;
 Use App\Sign;
 
@@ -34,7 +35,7 @@ class IndexController extends Controller {
 	 */
 	public function about() {
 		return view( 'about' );
-	} // @TODO: Change it to "about".
+	}
 
 	/**
 	 * Show the help page
@@ -53,8 +54,9 @@ class IndexController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function policy() {
-		return view( 'policy' );
-	} // @TODO Change the web address to "policy"
+		$lang = App::getLocale();
+		return view( $lang.'.policy' );
+	}
 
 	/**
 	 * Show the "You're blacklisted" page
