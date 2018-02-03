@@ -52,14 +52,12 @@
       "php artisan key:generate"
     ],
     "post-install-cmd": [
-      "php artisan ide-helper:generate",
-      "php artisan optimize"
+      "php artisan ide-helper:generate"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan ide-helper:generate",
-      "php artisan ide-helper:meta",
-      "php artisan optimize"
+      "php artisan ide-helper:meta"
     ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
