@@ -1,12 +1,12 @@
 <?php
 if ( isset( $word ) ) {
-	$title = 'Opret et tegn for ' . $word;
-	$desc  = 'Hjælp os med din bidrag til ' . $word . '. Send dit tegn for ' . $word . ' ind ved at bruge din mobil eller computer.';
-	$url   = url( '/opret/' . $word );
+	$title = __( 'text.create.sign.word', [ 'word' => $word ] );
+	$desc  = __( 'text.create.send.word', [ 'word' => $word ] );
+	$url   = url( config( 'wign.urlPath.create' ) . '/' . $word );
 } else {
-	$title = 'Opret et tegn';
-	$desc  = 'Hjælp os med din bidrag. Send dit tegn ind ved brug af din mobil eller computer.';
-	$url   = url( '/opret' );
+	$title = __( 'text.create.sign' );
+	$desc  = __( 'text.create.send' );
+	$url   = url( config( 'wign.urlPath.create' ) );
 }
 ?>
 @extends('layout.main')
@@ -17,6 +17,7 @@ if ( isset( $word ) ) {
 @stop
 
 @section('extra_head_scripts')
+    @include('lang.cameratag')
     @include('layout.cameratag')
     <script>
         /**
@@ -31,7 +32,7 @@ if ( isset( $word ) ) {
 
             // Set a alert on before unload
             $(window).bind('beforeunload', function () {
-                return 'Pas på! Din video er ikke blevet lagt op endnu!\nHusk klik på "Indsend tegnet".';
+                return '@lang( 'text.create.beware' )';
             });
         });
 
@@ -79,39 +80,34 @@ if ( isset( $word ) ) {
         </ul>
     </span>
     @endif
-    <!-- <a href="{{ URL::to('/help') }}" class="help"><img src="{{asset('images/question.png')}}"
-                                                       title="Klik for yderligere oplysninger og hjælp"
-                                                       class="question"></a> -->
+
     @if(isset($hasSign) && $hasSign == 1)
-        <p>Wign har allerede tegnet for <a href="{{ URL::to('/tegn/'.$word) }}">{{ $word }}</a>. Du kan enten tjekke om
-            tegnet eksisterer, eller oprette et ekstra tegn for {{ $word }} nedunder:</p>
+        <p>@lang('text.create.already.exist', ['word' => $word, 'url' => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )] )</p>
     @elseif(isset($word))
-        <p>Wign har ikke tegnet{{ $word ? ' for "'.$word.'"' : ''}} endnu.<br>
-            @else
-                Du kan hjælpe os med at oprette et ny tegn nedenunder.</p>
+        <p>@lang('text.create.nonexistent.word', ['word' => $word] ) @lang('text.create.help.us')<p>
+    @else
+        <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
     @endif
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
 
         <camera id="wign01"
                 data-app-id="{{ config('wign.cameratag.id') }}"
                 data-maxlength="15"
-                data-txt-message="Hej! Gå venligst til <<url>> for at optage din video"
+                data-txt-message="{{ __( 'text.create.sms.url' ) }}"
                 data-default-sms-country="{{ config('app.country_code') }}"
                 style="width:580px;height:326px;"></camera>
         <br>
 
-        <label for="word">Tegn for:</label>
-        <input type="text" id="word" name="word" value="{{ isset($word) ? $word : "" }}" placeholder="Skriv ordet"><br>
+        <label for="word">{{ __( 'text.form.word' ) }}</label>
+        <input type="text" id="word" name="word" value="{{ isset($word) ? $word : "" }}" placeholder="{{__('text.form.word.ph')}}"><br>
 
-        <label for="description">Beskrivelse:</label>
-        <textarea id="description" name="description" placeholder="Skriv lidt om tegnet"></textarea><br>
+        <label for="description">{{__('text.form.desc')}}</label>
+        <textarea id="description" name="description" placeholder="{{__('text.form.desc.ph')}}"></textarea><br>
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="submit" value="Indsend tegnet" id="btnSubmit">
+        <input type="submit" value="{{__('text.form.submit.sign')}}" id="btnSubmit">
         <p>
-            <small>Ved indsendelsen bekræfter jeg at jeg har læst og accepteret Wign's <a
-                        href="{{ URL::to('/retningslinjer/') }}">retningslinjer</a>
-            </small>
+            <small>@lang('text.submit.accept.terms', ['url' => URL::to( config( 'wign.urlPath.policy' ))])</small>
         </p>
 
     </form>

@@ -9,7 +9,7 @@
 |
 */
 return [
-	'version'   => '1.0',
+	'version'   => 'v1.0',
 	'email'     => 'wign@wign.dk',
 	'cameratag' => [
 		'id' => 'a-49088bd0-39cc-0132-ccc4-12313914f10b'
@@ -24,17 +24,17 @@ return [
 	|
 	*/
 	'urlPath'   => [
-		'sign'          => 'tegn',
-		'create'        => 'opret',
+		'sign'          => 'sign',
+		'create'        => 'new',
 		'createRequest' => 'request', // Redirecting page to create request
-		'request'       => 'requests', // Page showing all requests
-		'recent'        => 'seneste',
-		'all'           => 'alle',
-		'about'         => 'om',
-		'policy'        => 'retningslinjer',
+		'request'       => 'ask', // Page showing all requests
+		'recent'        => 'signs',
+		'all'           => 'all',
+		'about'         => 'about',
+		'policy'        => 'policy',
 		'help'          => 'help',
 		'blacklist'     => 'blacklist',
-		'flagSign'      => 'flagSignView',
-		'results'       => 'results', // The search result page
+		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
+		'results'       => 'results', // The search result page TODO: BETTER WITH www.wign.dk/search?q=xxx&y=xxx !!
 	]
 ];

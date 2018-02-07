@@ -1,12 +1,12 @@
 <?php
 if ( isset( $word ) ) {
-	$title = 'Vi mangler tegnet for ' . $word;
-	$desc  = 'Wign har desværre ikke tegnet for ' . $word . '. Du kan hjælpe Wign med at bidrage med et tegn til ' . $word . '.';
-	$url   = url( '/tegn/' . $word );
+	$title = __('text.sign.need.word', ['word' => $word]);
+	$desc  = __('text.sign.not.have.word', ['word' => $word]) . ' ' . __('text.sign.contribute.word', ['word' => $word]);
+	$url   = url( config('wign.urlPath.sign') . '/' . $word );
 } else {
-	$title = 'Vi mangler et tegn';
-	$desc  = 'Wign har desværre ikke et tegn. Du kan hjælpe Wign med din bidrag.';
-	$url   = url( '/tegn' );
+	$title = __('text.sign.need');
+	$desc  = __('text.sign.not.have') . ' ' . __('text.sign.contribute');
+	$url   = url( config('wign.urlPath.sign') );
 }
 ?>
 
@@ -19,27 +19,27 @@ if ( isset( $word ) ) {
 
 @section('content')
     <h1>{{ $title }}</h1>
-    <p><span class="brand">Wign</span> har desværre ikke tegnet{{{ isset($word) ? ' for '.$word : ''}}}.
         @if (isset($word))
-            Du kan nu enten:
+            <p>@lang('text.sign.not.have.word', ['word' => $word])</p>
+            @lang('text.sign.either')
             <ul>
-                <li><a href="{{ URL::to('/opret/'.$word) }}"
-                       title="opret tegnet for {{ $word }}">Oprette {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a></li>
-                eller
-                <li><a href="{{ URL::to('/request/'.$word) }}">Efterlyse {{ isset($word) ? 'tegnet for '.$word : 'tegnet'}}</a>
+                <li><a href="{{ URL::to( config('wign.urlPath.create') . '/' . $word) }}"
+                       title="{{__('text.create.sign.word', ['word' => $word])}}">@lang('text.create.sign.word', ['word' => $word])</a></li>
+                @lang('text.or')
+                <li><a href="{{ URL::to( config('wign.urlPath.createRequest') . '/' . $word) }}">@lang('text.sign.request.word', ['word' => $word])</a>
                 </li>
             </ul>
         @else
-            <br><a href="{{ URL::to('/opret/') }}" title="Opret et tegn">Opret et tegn</a>
+            <p>@lang('text.sign.not.have')</p>
+            <p><a href="{{ URL::to( config('wign.urlPath.create') ) }}" title="{{__('text.create.sign')}}">@lang('text.create.sign')</a></p>
         @endif
-    </p>
 
         @if(isset($suggestions))
             <p>
-            <h3>Eller mente du et af disse tegn?</h3>
+            <h3>@lang('text.sign.alternates')</h3>
             <ul>
                 @foreach($suggestions as $suggest)
-                    <li><a href="{{ URL::to('/tegn/'.$suggest) }}">{{ $suggest }}</a></li>
+                    <li><a href="{{ URL::to( config('wign.urlPath.sign') . '/' . $suggest) }}">{{ $suggest }}</a></li>
                 @endforeach
             </ul>
             </p>

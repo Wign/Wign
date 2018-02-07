@@ -39,7 +39,7 @@ class RequestController extends Controller {
 	 */
 	public function store( $word ) {
 		if ( empty( $word ) ) {
-			return redirect( config( 'wign.urlPath.request' ) )->with( 'message', 'Efterlysningsordet mangler...' );
+			return redirect( config( 'wign.urlPath.request' ) )->with( 'message', __('flash.request.word.missing') );
 		}
 
 		$word = Helper::underscoreToSpace( $word );
@@ -50,7 +50,7 @@ class RequestController extends Controller {
 		$hasSign = $hasWord->signs->first();
 		if ( $hasSign ) {
 			$flash = array(
-				'message' => 'Vi har allerede tegnet for ' . $word,
+				'message' => __('flash.sign.already', ['word' => $word]),
 				'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
 			);
 
@@ -59,23 +59,23 @@ class RequestController extends Controller {
 
 		$hasVote = $hasWord->request->where( 'ip', $myIP )->first();
 		if ( $hasVote ) {
-			return redirect( config( 'wign.urlPath.request' ) )->with( 'message', 'Du har allerede efterlyst ' . $word . '!' );
+			return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.already', ['word' => $word]));
 		} else {
 			// Check if client is bot. If true, reject the creation!
 			if ( Helper::detect_bot() ) {
-				return redirect( config( 'wign.urlPath.request' ) )->with( 'message', 'Det ser ud til at du er en bot. Vi må desværre afvise din anmoding!' );
+				return redirect( config( 'wign.urlPath.request' ) )->with( 'message', __('flash.bot.refuse') );
 			} else {
 				$requestID = RequestWord::create( [ 'word_id' => $hasWord['id'], 'ip' => $myIP ] );
 				if ( $requestID ) {
 					$flash = [
-						'message' => $word . ' succesfuldt efterlyst! Nu skal du bare vente på at en anden opretter tegnet for ' . $word . '.',
+						'message' => __('flash.request.successful', ['word' => $word]),
 						'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
 					];
 
 					return redirect( config( 'wign.urlPath.request' ) )->with( $flash );
 				} else {
 					// Something went wrong...
-					return redirect( config( 'wign.urlPath.request' ) )->with( 'message', 'Et eller andet gik galt og din efterlysning blev ikke gemt...' );
+					return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.failed'));
 				}
 			}
 		}

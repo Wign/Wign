@@ -1,12 +1,18 @@
 @extends('layout.main')
 
-@section('title', 'Retningslinjer')
+@section('title', __('text.guidelines'))
 @section('open_graph')
-    @include('layout.openGraph', ['title' => 'Retningslinjer', 'url' => url('/retningslinjer'), 'desc' => 'Vores retningslinjer for brug af Wign'])
+    @include('layout.openGraph', [
+        'title' => 'Retningslinjer',
+        'url' => url( config( 'wign.urlPath.policy' ) ),
+        'desc' => __('text.guidelines.usage')
+    ])
 @stop
 
 @section('content')
-    {{-- Opret gerne en separat fil til oversættelse af disse --}}
+
+    {{-- WARNING! This is in Danish. Shall be translated to English! --}}
+
     <h1>Retningslinjer</h1>
     <p>Brug altid det mest udbredt (og helst dansk) oversættelse af ordet i dets grundform (tjek gerne <a
                 href="{{config('externalurl.ordnet.url')}}">{{config('externalurl.ordnet.text')}}</a> og <a

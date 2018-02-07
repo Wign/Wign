@@ -31,13 +31,13 @@ class VoteController extends Controller {
 
 			$response = array(
 				'status' => 'success',
-				'msg'    => 'Vote successfully inserted',
+				'msg'    => __('flash.vote.insert.success'),
 				'votes'  => $votes
 			);
 		} else {
 			$response = array(
 				'status' => 'failed',
-				'msg'    => 'Somehow we failed to insert the vote into our database...'
+				'msg'    => __('flash.vote.insert.failed')
 			);
 		}
 
@@ -52,6 +52,7 @@ class VoteController extends Controller {
 	 *
 	 * @return \Illuminate\Http\JsonResponse a JSON response with status,
 	 * message and resulting number of signs if it succeed
+	 * @throws \Exception
 	 */
 	public function deleteVote( Request $request ) {
 		$signID = $request->get( 'sign' );
@@ -65,13 +66,13 @@ class VoteController extends Controller {
 
 			$response = array(
 				'status' => 'success',
-				'msg'    => 'Vote successfully removed',
+				'msg'    => __('flash.vote.delete.success'),
 				'votes'  => $votes
 			);
 		} else {
 			$response = array(
 				'status' => 'failed',
-				'msg'    => 'Somehow we failed to remove your vote from database...'
+				'msg'    => __('flash.vote.delete.failed')
 			);
 		}
 
