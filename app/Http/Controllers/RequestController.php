@@ -59,7 +59,7 @@ class RequestController extends Controller {
 
 		$hasVote = $hasWord->request->where( 'ip', $myIP )->first();
 		if ( $hasVote ) {
-			return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.sign.already', ['word' => $word]));
+			return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.already', ['word' => $word]));
 		} else {
 			// Check if client is bot. If true, reject the creation!
 			if ( Helper::detect_bot() ) {

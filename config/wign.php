@@ -24,17 +24,17 @@ return [
 	|
 	*/
 	'urlPath'   => [
-		'sign'          => 'tegn',
-		'create'        => 'opret',
+		'sign'          => 'sign',
+		'create'        => 'new',
 		'createRequest' => 'request', // Redirecting page to create request
-		'request'       => 'requests', // Page showing all requests
-		'recent'        => 'seneste',
-		'all'           => 'alle',
-		'about'         => 'om',
-		'policy'        => 'retningslinjer',
+		'request'       => 'ask', // Page showing all requests
+		'recent'        => 'signs',
+		'all'           => 'all',
+		'about'         => 'about',
+		'policy'        => 'policy',
 		'help'          => 'help',
 		'blacklist'     => 'blacklist',
 		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
-		'results'       => 'results', // The search result page
+		'results'       => 'results', // The search result page TODO: BETTER WITH www.wign.dk/search?q=xxx&y=xxx !!
 	]
 ];

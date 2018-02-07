@@ -57,7 +57,7 @@ USER www-data
 RUN php composer.phar install --prefer-source --no-interaction
 
 # Optimizing Laravel
-RUN php artisan route:cache && \
-    php artisan config:cache
+RUN php artisan config:cache && \
+    php artisan route:cache
 
 USER root
