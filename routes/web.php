@@ -15,8 +15,8 @@
 Route::get( config( 'wign.urlPath.blacklist' ), 'IndexController@blacklist' );
 
 // REDIRECTING old url's to the new (Danish to English)
-Route::redirect('tegn', config('wign.urlPath.sign'), 301 );
-Route::redirect('opret', config('wign.urlPath.create'), 301 );
+Route::get('tegn/{word?}', 'RedirectController@sign');
+Route::get('opret/{word?}', 'RedirectController@new');
 Route::redirect('requests', config('wign.urlPath.request'), 301 );
 Route::redirect('seneste', config('wign.urlPath.recent'), 301 );
 Route::redirect('alle', config('wign.urlPath.all'), 301 ); // TODO: Redirect all traffic to "signs"
@@ -33,12 +33,12 @@ Route::get( config( 'wign.urlPath.help' ), 'IndexController@help' );
 Route::post( 'redirect', 'SearchController@redirect' );
 
 // Dynamic routes
-Route::get( config( 'wign.urlPath.sign' ) . '/{word?}', 'SignController@showSign' );
+Route::get( config( 'wign.urlPath.sign' ) . '/{word?}', 'SignController@showSign' )->name('sign');
 Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
 Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
 Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
-Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' );
+Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' )->name('new');
 Route::get( config( 'wign.urlPath.createRequest' ) . '/{word?}', 'RequestController@store' );
 
 Route::get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
