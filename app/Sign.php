@@ -89,6 +89,10 @@ class Sign extends Model {
 		return $this->hasMany( 'App\Vote' );
 	}
 
+	public function tags() {
+		return $this->morphToMany('App\Tag', 'taggable');
+	}
+
 	// CREATE SCOPES -----------------------------------------------
 	// It makes it easier to make some certain queries
 	/**
