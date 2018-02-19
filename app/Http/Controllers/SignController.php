@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Services\SignService;
 use App\Word;
 use App\Sign;
 use App\Helpers\Helper;
@@ -7,10 +8,22 @@ use App\Helpers\Helper;
 use DB;
 use URL;
 use Redirect;
-use Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Http\Request;
 
 class SignController extends Controller {
+
+	// our SignService
+	protected $sign;
+
+	/**
+	 * SignController constructor.
+	 *
+	 * @param $sign
+	 */
+	public function __construct( SignService $sign ) {
+		$this->sign = $sign;
+	}
+
 
 	/**
 	 * Show the sign page.
@@ -46,8 +59,9 @@ class SignController extends Controller {
 
 			// Has the user voted for the signs?
 			$signs = $this->hasVoted( $signs );
+			$signs = $this->sign->hasTag( $signs );
 
-			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs ) );
+			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs) );
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
@@ -281,7 +295,7 @@ class SignController extends Controller {
 	 *
 	 * @return array updated with the values
 	 */
-	private function hasVoted( $signs ) {
+	private function hasVoted( array $signs ): array {
 		$myIP = \Request::getClientIp();
 		foreach ( $signs as $sign ) {
 			if ( empty( $sign->votesIP ) ) {
