@@ -145,6 +145,8 @@ class SignController extends Controller {
 			'ip'                  => $request->ip()
 		) );
 
+		//@TODO: Find and attach tags to the sign!
+
 		if ( $sign ) {
 			$this->sendSlack( $word, $sign );
 
