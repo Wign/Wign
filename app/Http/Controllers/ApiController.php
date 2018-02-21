@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use \Helper;
 use App\Word;
 
 use Illuminate\Database\Eloquent\Collection;

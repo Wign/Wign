@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * App\Tag
  *
  * @property int $id
- * @property string $tags
+ * @property string $tag
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property \Carbon\Carbon|null $deleted_at
@@ -32,12 +32,27 @@ class Tag extends Model {
 	// MASS ASSIGNMENT ------------------------------------------
 	// define which attributes are mass assignable (for security)
 	protected $fillable = array(
-		'tags',
+		'tag',
 	);
 
 	// DEFINING RELATIONSHIPS -----------------------------------
 	public function signs() {
 		return $this->morphedByMany( 'App\Sign', 'taggable' );
+	}
+
+	// CREATE SCOPES -----------------------------------------------
+	// It makes it easier to make some certain queries
+	/**
+	 * Scopes to tags that looks alike $search string.
+	 *
+	 * @param $query \Illuminate\Database\Eloquent\Builder
+	 *
+	 * @param string $search
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public static function scopeGetQueriedTag( $query, string $search ) {
+		return $query->where( 'tag', 'like', '%' . $search . '%' );
 	}
 
 }

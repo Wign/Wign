@@ -1,27 +1,32 @@
 <?php namespace App\Http\Controllers;
 
 use App\Services\SignService;
+use App\Services\TagService;
 use App\Word;
 use App\Sign;
-use App\Helpers\Helper;
 
 use DB;
+use App\Helpers\Helper;
 use URL;
 use Redirect;
 use \Illuminate\Http\Request;
 
 class SignController extends Controller {
 
-	// our SignService
-	protected $sign;
+	// our services
+	protected $sign_service;
+	protected $tag_service;
+
 
 	/**
 	 * SignController constructor.
 	 *
-	 * @param $sign
+	 * @param SignService $sign_service
+	 * @param TagService $tag_service
 	 */
-	public function __construct( SignService $sign ) {
-		$this->sign = $sign;
+	public function __construct( SignService $sign_service, TagService $tag_service ) {
+		$this->sign_service = $sign_service;
+		$this->tag_service = $tag_service;
 	}
 
 
@@ -59,7 +64,7 @@ class SignController extends Controller {
 
 			// Has the user voted for the signs?
 			$signs = $this->hasVoted( $signs );
-			$signs = $this->sign->hasTag( $signs );
+			$signs = $this->sign_service->isSignTagged( $signs );
 
 			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs) );
 		}
@@ -145,7 +150,7 @@ class SignController extends Controller {
 			'ip'                  => $request->ip()
 		) );
 
-		//@TODO: Find and attach tags to the sign!
+		$this->tag_service->storeTags($sign);
 
 		if ( $sign ) {
 			$this->sendSlack( $word, $sign );

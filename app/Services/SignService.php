@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Sign;
 use App\Word;
 
@@ -28,7 +27,7 @@ class SignService {
 		return $sign->tags()->get();
 	}
 
-	public function hasTag( $signs ) {
+	public function isSignTagged( $signs ) {
 		foreach ($signs as $sign) {
 			if(count($this->getTags($this->getSignByID($sign->id))) > 0) {
 				$sign->isTagged = true;

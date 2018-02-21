@@ -8,29 +8,38 @@ use Redirect;
 
 class TagController extends Controller {
 	protected $tag;
+	protected $sign;
+
 
 	/**
 	 * TagController constructor.
 	 *
 	 * @param TagService $tag
+	 * @param SignService $sign
 	 */
-	public function __construct( TagService $tag ) {
-		$this->tag = $tag;
+	public function __construct( TagService $tag, SignService $sign ) {
+		$this->tag  = $tag;
+		$this->sign = $sign;
 	}
 
-	public function findTags( $name = null ) {
-		$theTag = $this->tag->findTagByName( $name );
-
+	public function findTags( $tag = null ) {
+		if ( isset( $tag ) ) {
+			$theTag = $this->tag->findTagByName( $tag );
+		}
 		if ( empty( $theTag ) ) {
-			Redirect::to( '/' ); //@TODO: Add a flash message about the tag doesn't exist
+			$flash['message'] = empty( $tag ) ? __( 'flash.tag.empty' ) : __( 'flash.tag.nonexistent', [ 'tag' => $tag ] );
+
+			return Redirect::to( '/' )->with( $flash );
 		}
 
-		$signService = new SignService();
+		$signs = $this->tag->getTaggedSigns( $theTag );
+		if ( empty( $signs ) ) {
+			abort( 404, __( 'text.sign.not.have' ) );
+		}
+		$this->sign->isSignTagged( $signs );
 
-		$signs = $this->tag->getTaggedSigns($theTag);
-		$signService->hasTag($signs);
 
-		return view( 'sign' )->with( array( 'word' => '#'.$name, 'signs' => $signs, 'hashtag' => true ) );
+		return view( 'sign' )->with( array( 'word' => '#' . $theTag->tag, 'signs' => $signs, 'hashtag' => true ) );
 
 	}
 }

@@ -4,15 +4,18 @@ namespace App\Services;
 
 use App\Sign;
 use App\Tag;
-use Illuminate\Database\Eloquent\Model;
 
 define( 'REGEXP', config( 'wign.tagRegexp' ) );
 
 class TagService {
 
+	public function getAllTags() {
+		return Tag::all();
+	}
+
 	public static function replaceTagsToURL( string $text ): string {
 		$replaceWith = '<a href="' . \URL::to( config( "wign.urlPath.tags" ) ) . '/$1">$0</a>';
-		$text = preg_replace( REGEXP, $replaceWith, $text );
+		$text        = preg_replace( REGEXP, $replaceWith, $text );
 
 		return $text;
 	}
@@ -33,19 +36,19 @@ class TagService {
 		}
 
 		foreach ( $hashtags as $hashtag ) {
-			$tag = Tag::firstOrCreate( [ 'tags' => $hashtag ] );
+			$tag = Tag::firstOrCreate( [ 'tag' => $hashtag ] );
 			$sign->tags()->attach( $tag );
 		}
 
 		return true;
 	}
 
-	public function findTagByName( string $tag ) {
-		if($tag == null) {
-			return null;
-		}
+	public function findTagByName( string $tag ): Tag {
+		return Tag::where( 'tag', $tag )->first();
+	}
 
-		return Tag::where('tags', $tag)->first();
+	public function findTagByID( int $id ): Tag {
+		return Tag::find( $id );
 	}
 
 	private static function findTagsInText( String $text ): array {
@@ -55,9 +58,12 @@ class TagService {
 		return $tagArray['tags'];
 	}
 
-	public static function getTaggedSigns( Model $tag ) {
+	public function getTaggedSigns( Tag $tag ) {
 		return $tag->signs()->get();
 	}
 
+	public function getQueriedTags( string $search ) {
+		return Tag::getQueriedTag($search)->get();
+	}
 
 }

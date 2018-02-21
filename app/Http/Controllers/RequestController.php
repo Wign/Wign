@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use Helper;
 
 use App\RequestWord;
 use App\Word;

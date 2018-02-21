@@ -10,12 +10,18 @@
 <script>
 $(function() {
     $( "#autoComplete" ).autocomplete({
-        source: function(request, response) {
-            $.getJSON("{{ route('words') }}/" + request.term, response)
-        },
+        source: "{{ URL::to('autocomplete') }}",
         minLength: 2,
         delay: 0,
-        autoFocus: true
+        autoFocus: true,
+        select: function(key, value) {
+            if(value.item.dtype === "tag") {
+                window.location.href = "{{ URL::to( config('wign.urlPath.tags') ) }}/" + value.item.value;
+            }
+            else {
+                window.location.href = "{{ URL::to( config('wign.urlPath.sign') ) }}/" + value.item.value;
+            }
+        }
     });
 });
 </script>
