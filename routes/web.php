@@ -28,9 +28,15 @@ Route::redirect('retningslinjer', config('wign.urlPath.policy'), 301 );
 Route::get( '/', 'IndexController@index' );
 Route::get( config( 'wign.urlPath.about' ), 'IndexController@about' );
 Route::get( config( 'wign.urlPath.help' ), 'IndexController@help' );
+Route::get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
+
+Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
+Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
+Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
 // Search route
 Route::post( 'redirect', 'SearchController@redirect' );
+Route::get( 'autocomplete', 'SearchController@autocomplete' );
 
 // Dynamic routes
 Route::get( config( 'wign.urlPath.sign' ) . '/{word?}', 'SignController@showSign' )->name('sign');
@@ -40,9 +46,9 @@ Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
 Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' )->name('new');
 Route::get( config( 'wign.urlPath.createRequest' ) . '/{word?}', 'RequestController@store' );
+Route::get( config( 'wign.urlPath.tags' ) . '/{tag?}', 'TagController@findTags' );
 
-Route::get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
-//Route::get('brugersvilkår', 'IndexController@retningslinjer'); // Ændre den fordansket udtryk
+
 Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
 
 // Post routes

@@ -14,6 +14,9 @@ return [
 	'cameratag' => [
 		'id' => 'a-49088bd0-39cc-0132-ccc4-12313914f10b'
 	],
+
+	'tagRegexp' => '/#(?P<tags>[\p{L}\p{N}][\w]+)/ui',
+
 	/*
 	|--------------------------------------------------------------------------
 	| URL paths
@@ -36,5 +39,6 @@ return [
 		'blacklist'     => 'blacklist',
 		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
 		'results'       => 'results', // The search result page TODO: BETTER WITH www.wign.dk/search?q=xxx&y=xxx !!
+		'tags'          => 'hashtag',
 	]
 ];

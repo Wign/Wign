@@ -1,16 +1,34 @@
 <?php namespace App\Http\Controllers;
 
+use App\Services\SignService;
+use App\Services\TagService;
 use App\Word;
 use App\Sign;
-use App\Helpers\Helper;
 
 use DB;
+use App\Helpers\Helper;
 use URL;
 use Redirect;
-use Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Http\Request;
 
 class SignController extends Controller {
+
+	// our services
+	protected $sign_service;
+	protected $tag_service;
+
+
+	/**
+	 * SignController constructor.
+	 *
+	 * @param SignService $sign_service
+	 * @param TagService $tag_service
+	 */
+	public function __construct( SignService $sign_service, TagService $tag_service ) {
+		$this->sign_service = $sign_service;
+		$this->tag_service = $tag_service;
+	}
+
 
 	/**
 	 * Show the sign page.
@@ -46,8 +64,9 @@ class SignController extends Controller {
 
 			// Has the user voted for the signs?
 			$signs = $this->hasVoted( $signs );
+			$signs = $this->sign_service->isSignTagged( $signs );
 
-			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs ) );
+			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs) );
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
@@ -130,6 +149,8 @@ class SignController extends Controller {
 			'small_thumbnail_url' => $q['wign01_qvga_thumb'],
 			'ip'                  => $request->ip()
 		) );
+
+		$this->tag_service->storeTags($sign);
 
 		if ( $sign ) {
 			$this->sendSlack( $word, $sign );
@@ -281,7 +302,7 @@ class SignController extends Controller {
 	 *
 	 * @return array updated with the values
 	 */
-	private function hasVoted( $signs ) {
+	private function hasVoted( array $signs ): array {
 		$myIP = \Request::getClientIp();
 		foreach ( $signs as $sign ) {
 			if ( empty( $sign->votesIP ) ) {
