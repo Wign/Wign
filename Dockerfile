@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Instal php extenstions & enable mod_rewrite
-RUN docker-php-ext-install -j$(nproc) pdo_mysql
+RUN docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        opcache
 RUN a2enmod rewrite
 
 # Get the OWASP modsecurity package from git
@@ -49,12 +51,11 @@ ARG groupid=1000
 RUN usermod -u ${userid} www-data
 # RUN groupmod -g ${groupid} www-data
 
+# Install dependencies
+RUN php composer.phar install --prefer-dist --no-interaction
 # Don't be root
 RUN chown -R www-data:www-data /var/www
 USER www-data
-
-# Install dependencies
-RUN php composer.phar install --prefer-source --no-interaction
 
 # Optimizing Laravel
 RUN php artisan config:cache

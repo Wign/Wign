@@ -52,6 +52,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Sign withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Sign withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tag[] $tags
  */
 class Sign extends Model {
 	use SoftDeletes;
@@ -89,6 +90,10 @@ class Sign extends Model {
 		return $this->hasMany( 'App\Vote' );
 	}
 
+	public function tags() {
+		return $this->morphToMany('App\Tag', 'taggable');
+	}
+
 	// CREATE SCOPES -----------------------------------------------
 	// It makes it easier to make some certain queries
 	/**
@@ -101,7 +106,6 @@ class Sign extends Model {
 	/**
 	 * @method static findByWordID($query, $id)
 	 */
-
 	public function scopeFindByWordID( $query, $id ) {
 		return $query->noFlagged()->where( 'word_id', $id );
 	}

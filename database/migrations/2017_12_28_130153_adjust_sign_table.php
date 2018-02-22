@@ -13,13 +13,6 @@ class AdjustSignTable extends Migration
      */
     public function up()
     {
-    	// Changed the default method of created_at and updated at columns
-    	DB::unprepared('
-			ALTER TABLE signs 
-			MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-			MODIFY COLUMN updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-		');
-
     	Schema::table('signs', function (Blueprint $table) {
 	        $table->text('description')->nullable()->change();
         	$table->string('flag_reason')->nullable()->change();

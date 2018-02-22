@@ -21,10 +21,11 @@ return [
 	'bot.refuse'           => 'Det ser ud til at du er en bot. Vi må desværre afvise din anmoding.',
 	'report.successful'    => 'Tusind tak for din rapportering af tegnet. Videoen er fjernet indtil vi kigger nærmere på den. Du hører fra os.',
 	'report.failed'        => 'Der skete en fejl med at rapportere det. Prøv venligst igen, eller kontakt os i Wign. På forhånd tak.',
-	'vote.insert.success' => 'Vote successfully inserted',
-	'vote.insert.failed' => 'Somehow we failed to insert the vote into our database...',
-	'vote.delete.success' => 'Vote successfully removed',
-	'vote.delete.failed' => 'Somehow we failed to remove your vote from database...',
-
+	'vote.insert.success'  => 'Din stemme er angivet',
+	'vote.insert.failed'   => 'På et eller andet måde har vi fejlet at indsætte din stemme i vores database...',
+	'vote.delete.success'  => 'Din stemme er fjernet',
+	'vote.delete.failed'   => 'På et eller andet måde har vi fejlet at fjerne din stemme fra vores database...',
+	'tag.empty'            => 'Du skrev ikke noget hashtag',
+	'tag.nonexistent'      => 'Hashtagget #:tag findes ikke',
 
 ];

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -10,15 +11,13 @@ class CreateRequestWordsTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		Schema::create('request_words', function($table)
-    	{
-        $table->increments('id')->unique();
-        $table->integer('word_id');
-        $table->string('ip');
-        $table->timestamps();
-    	});
+	public function up() {
+		Schema::create( 'request_words', function ( Blueprint $table ) {
+			$table->increments( 'id' )->unique();
+			$table->integer( 'word_id' );
+			$table->string( 'ip' );
+			$table->timestamps();
+		} );
 	}
 
 	/**
@@ -26,9 +25,8 @@ class CreateRequestWordsTable extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		Schema::drop('requests');
+	public function down() {
+		Schema::drop( 'requests' );
 	}
 
 }

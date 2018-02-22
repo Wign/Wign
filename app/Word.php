@@ -82,10 +82,18 @@ class Word extends Model {
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 * @param int $num of random words
 	 *
+	 * @param null $count
+	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
-	public function scopeRandom( $query, $num = 1 ) {
-		$totalRows = static::withSign()->count() - 1;
+	public function scopeRandom( $query, $num = 1, $count = null ) {
+		if(empty($count)) {
+			$totalRows = static::withSign()->count() - 1;
+		}
+		else {
+			$totalRows = $count - 1;
+		}
+
 		$skip      = $totalRows > 0 ? mt_rand( 0, $totalRows ) : 0;
 
 		return $query->skip( $skip )->take( $num );
