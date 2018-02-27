@@ -109,4 +109,12 @@ class Sign extends Model {
 	public function scopeFindByWordID( $query, $id ) {
 		return $query->noFlagged()->where( 'word_id', $id );
 	}
+
+	public function getNumVotesAttribute() {
+		return $this->attributes['num_votes'];
+	}
+
+	public function setNumVotesAttribute($count) {
+		$this->attributes['num_votes'] = $count;
+	}
 }

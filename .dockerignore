@@ -5,4 +5,8 @@ Dockerfile.aws
 /resources/assets/sass
 webpack.mix.js
 package.json
-package-lock.json
+npm-shrinkwrap.json
+beamMeUpScotty.sh
+_ide_helper.php
+.phpstorm.meta.php
+.env.example

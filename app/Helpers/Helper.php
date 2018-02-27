@@ -1,6 +1,21 @@
 <?php namespace App\Helpers;
 
+use App\Services\WordService;
+
 class Helper {
+
+	// word service
+	protected $word;
+
+	/**
+	 * Helper constructor.
+	 *
+	 * @param WordService $word_service
+	 */
+	public function __construct(WordService $word_service) {
+		$this->word = $word_service;
+	}
+
 
 	/**
 	 * Detecting the most suspicious bots/crawlers
@@ -12,38 +27,6 @@ class Helper {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Converts any underscores (_) in strings to spaces ( )
-	 *
-	 * It is the opposite of {@see \App\Helpers\Helper::makeUrlString}, which converts spaces to underscores
-	 * so it's easier to parse as a URL string.
-	 *
-	 * @param string $s
-	 *
-	 * @return string with spaces
-	 */
-	public static function underscoreToSpace( $s ) {
-		return trim( str_replace( "_", " ", $s ) );
-	}
-
-	/**
-	 * Converts any string to URL-friendly string
-	 *
-	 * It converts all spaces to underscore (_), lowercase the string and
-	 * removes all "-" and "_" in the beginning or end of the string
-	 *
-	 * @param string $s
-	 *
-	 * @return string the url-friendly string
-	 */
-	public static function makeUrlString( $s ) {
-		//Converts all spaces to underscore (_) and lowercase the string
-		$s = preg_replace( '/\s/', '_', strtolower( $s ) );
-
-		//Removes "-" or "_" in the beginning or in the end of the string
-		return preg_replace( '/^(-|_)/', '', preg_replace( '/(-|_)$/', '', $s ) );
 	}
 
 	/**
@@ -72,5 +55,37 @@ class Helper {
 		);
 
 		curl_exec( $ch );
+	}
+
+	/**
+	 * Converts any underscores (_) in strings to spaces ( )
+	 *
+	 * It is the opposite of {@see \App\Services\Word->makeUrlString}, which converts spaces to underscores
+	 * so it's easier to parse as a URL string.
+	 *
+	 * @param string $s
+	 *
+	 * @return string
+	 */
+	public static function underscoreToSpace( string $s ) {
+		return trim( str_replace( "_", " ", $s ) );
+	}
+
+	/**
+	 * Converts any string to URL-friendly string
+	 *
+	 * It converts all spaces to underscore (_), lowercase the string and
+	 * removes all "-" and "_" in the beginning or end of the string
+	 *
+	 * @param string $s
+	 *
+	 * @return string
+	 */
+	public static function makeUrlString( string $s ): string {
+		//Converts all spaces to underscore (_) and lowercase the string
+		$s = preg_replace( '/\s/', '_', strtolower( $s ) );
+
+		//Removes "-" or "_" in the beginning or in the end of the string
+		return preg_replace( '/^(-|_)/', '', preg_replace( '/(-|_)$/', '', $s ) );
 	}
 }

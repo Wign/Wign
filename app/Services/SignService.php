@@ -4,39 +4,85 @@ namespace App\Services;
 
 use App\Sign;
 use App\Word;
+use Illuminate\Database\Eloquent\Collection;
 
 class SignService {
 
 	public function getAllSigns() {
-		return Sign::all();
+		return Sign::noFlagged()->all();
 	}
 
 	public function getSignByID( int $id ) {
-		return Sign::find($id);
+		return Sign::noFlagged()->find( $id );
 	}
 
 	public function getSignByWord( string $word ) {
-		return Word::whereWord($word)->signs;
+		return Word::whereWord( $word )->signs;
+	}
+
+	public function getSignByWordID( integer $wordID ) {
+		return Word::whereID( $wordID )->signs;
 	}
 
 	public function countSigns() {
-		return count( $this->getAllSigns() );
+		return $this->getAllSigns()->count();
 	}
 
 	public function getTags( Sign $sign ) {
 		return $sign->tags()->get();
 	}
 
-	public function isSignTagged( $signs ) {
-		foreach ($signs as $sign) {
-			if(count($this->getTags($this->getSignByID($sign->id))) > 0) {
-				$sign->isTagged = true;
-			}
-			else {
-				$sign->isTagged = false;
-			}
+	public function isSignTagged( Sign $sign ) {
+		if ( $this->getTags( $sign )->count() > 0 ) {
+			$sign->isTagged = true;
+		} else {
+			$sign->isTagged = false;
 		}
-		return $signs;
+
+		return $sign;
 	}
 
+	/**
+	 * Updates $sign with
+	 * 1) Number of votes
+	 * 2) Whether it has at least one vote, or not
+	 * 3) Whether it's voted by the user (based on the IP address), or not
+	 *
+	 * @param Sign $sign
+	 *
+	 * @return Sign
+	 */
+	public function assignVotesToSign( Sign $sign ) {
+		$myIP            = \Request::getClientIp();
+		$votes           = $sign->votes;
+		$sign->num_votes = count( $votes );
+		$sign->hasVoted  = count( $votes ) > 0 ? true : false;
+
+		$result = false;
+		foreach ( $votes as $vote ) {
+			if ( $vote->ip == $myIP ) {
+				$result = true;
+			}
+		}
+		$sign->voted = $result;
+
+		return $sign;
+	}
+
+	/**
+	 * Find all signs to $word, and assign number of votes, vote ip's and
+	 *
+	 * @param Word $word
+	 *
+	 * @return Collection|static[]
+	 */
+	public function getVotedSigns( Word $word ) {
+		$signs = Sign::where( 'word_id', $word->id )->get();
+		foreach ( $signs as $sign ) {
+			$this->assignVotesToSign( $sign );
+			$this->isSignTagged( $sign );
+		}
+
+		return $signs;
+	}
 }
