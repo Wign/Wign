@@ -38,8 +38,9 @@ class TagController extends Controller {
 		if ( empty( $signs ) ) {
 			abort( 404, __( 'text.sign.not.have' ) );
 		}
-		$this->sign->isSignTagged( $signs );
-
+		foreach ($signs as $sign) {
+			$this->sign->isSignTagged( $sign );
+		}
 
 		return view( 'sign' )->with( array( 'word' => '#' . $theTag->tag, 'signs' => $signs, 'hashtag' => true ) );
 

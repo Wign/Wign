@@ -1,5 +1,5 @@
 <?php
-$title = $word->word;
+$title = $word;
 $desc = __( 'text.wign.got.sign', [ 'word' => $word ] ) . ' ' . __( 'text.wign.journey' );
 $url = url( config( 'wign.urlPath.sign' ) . '/' . $word );
 $video = $signs[0]->video_uuid;
