@@ -70,4 +70,5 @@ return [
 	'sign.report'             => 'Rapportér tegnet',
 	'sign.alt.suggest'        => 'Foreslå et alternativt tegn',
 	'sign.suggest.word'       => 'Lav en ny tegnforslag af :word',
+	'hash.count.signs'        => 'Vi har :count tegn med hashtagget',
 ];

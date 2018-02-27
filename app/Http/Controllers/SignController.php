@@ -51,7 +51,7 @@ class SignController extends Controller {
 		$wordID   = $wordData['id'];
 
 		// If word exist in database
-		if ( $wordID && $this->hasSign( $wordID ) ) {
+		if ( isset($wordID) && $this->hasSign( $wordID ) ) {
 			// Query the database for the signs AND the number of votes they have and true if the user've voted it.
 			$signs = DB::select( DB::raw( '
                 SELECT signs.id, signs.video_uuid, signs.description, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
@@ -60,7 +60,7 @@ class SignController extends Controller {
                 WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
                 GROUP BY signs.id, signs.video_uuid, signs.description
                 ORDER BY sign_count DESC
-            ' ), array( 'wordID' => $wordData["id"] ) );
+            ' ), array( 'wordID' => $wordID ) );
 
 			// Has the user voted for the signs?
 			$signs = $this->hasVoted( $signs );
