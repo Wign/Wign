@@ -56,7 +56,7 @@ class SignController extends Controller {
 		if ( isset( $wordModel ) ) {
 			$signs = $this->sign_service->getVotedSigns( $wordModel );
 
-			return view( 'sign' )->with( array( 'word' => $wordModel, 'signs' => $signs ) );
+			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
