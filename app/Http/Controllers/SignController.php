@@ -2,6 +2,7 @@
 
 use App\Services\SignService;
 use App\Services\TagService;
+use App\Services\WordService;
 use App\Word;
 use App\Sign;
 
@@ -14,6 +15,7 @@ use \Illuminate\Http\Request;
 class SignController extends Controller {
 
 	// our services
+	protected $word_service;
 	protected $sign_service;
 	protected $tag_service;
 
@@ -23,10 +25,12 @@ class SignController extends Controller {
 	 *
 	 * @param SignService $sign_service
 	 * @param TagService $tag_service
+	 * @param WordService $word_service
 	 */
-	public function __construct( SignService $sign_service, TagService $tag_service ) {
+	public function __construct( SignService $sign_service, TagService $tag_service, WordService $word_service ) {
 		$this->sign_service = $sign_service;
-		$this->tag_service = $tag_service;
+		$this->tag_service  = $tag_service;
+		$this->word_service = $word_service;
 	}
 
 
@@ -37,40 +41,26 @@ class SignController extends Controller {
 	 *
 	 * @param string $word - a nullable string with the query $word
 	 *
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
 	public function showSign( $word = null ) {
 		if ( empty( trim( $word ) ) ) {
-			return view( 'nosign' );
-			// @TODO: Redirect user to index with flash that the sign don't exist
+			$flash['message'] = __( 'flash.word.empty' );
+			return Redirect::to( '/' )->with( $flash );
 		}
 
-		$word = Helper::underscoreToSpace( $word );
-
-		$wordData = Word::where( 'word', $word )->first();
-		$wordID   = $wordData['id'];
+		$word      = $this->word_service->underscoreToSpace( $word );
+		$wordModel = $this->word_service->getWordByWord( $word );
 
 		// If word exist in database
-		if ( isset($wordID) && $this->hasSign( $wordID ) ) {
-			// Query the database for the signs AND the number of votes they have and true if the user've voted it.
-			$signs = DB::select( DB::raw( '
-                SELECT signs.id, signs.video_uuid, signs.description, COUNT(votes.id) AS sign_count, GROUP_CONCAT(votes.ip ORDER BY votes.id) AS votesIP
-                FROM signs LEFT JOIN votes
-                ON signs.id = votes.sign_id
-                WHERE signs.word_id = :wordID AND signs.deleted_at IS NULL
-                GROUP BY signs.id, signs.video_uuid, signs.description
-                ORDER BY sign_count DESC
-            ' ), array( 'wordID' => $wordID ) );
+		if ( isset( $wordModel ) ) {
+			$signs = $this->sign_service->getVotedSigns( $wordModel );
 
-			// Has the user voted for the signs?
-			$signs = $this->hasVoted( $signs );
-			$signs = $this->sign_service->isSignTagged( $signs );
-
-			return view( 'sign' )->with( array( 'word' => $wordData->word, 'signs' => $signs) );
+			return view( 'sign' )->with( array( 'word' => $wordModel, 'signs' => $signs ) );
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
-		$suggestWords = $this->findAlikeWords( $word );
+		$suggestWords = $this->word_service->getAlikeWords( $word );
 
 		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
@@ -83,9 +73,9 @@ class SignController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function showRecent( $number = 25 ) {
-		$words = Word::withSign()->latest( $number )->get();
+		$recent = $this->word_service->getRecentWords( $number );
 
-		return view( 'list' )->with( [ 'words' => $words, 'number' => $number ] );
+		return view( 'list' )->with( [ 'words' => $recent, 'number' => $number ] );
 	}
 
 	/**
@@ -94,7 +84,7 @@ class SignController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function showAll() {
-		$words = Word::withSign()->orderBy( 'word' )->get();
+		$words = $this->word_service->getAllWordsSorted();
 
 		return view( 'listAll' )->with( [ 'words' => $words ] );
 	}
@@ -112,8 +102,8 @@ class SignController extends Controller {
 			return view( 'create' );
 		}
 
-		$hasSign         = Word::where( 'word', $word )->withSign()->first();
-		$data['hasSign'] = empty( $hasSign ) ? 0 : 1;
+		$word            = $this->word_service->getWordByWord( $word );
+		$data['hasSign'] = empty( $word ) ? 0 : 1;
 		$data['word']    = $word;
 
 		return view( 'create' )->with( $data );
@@ -150,18 +140,18 @@ class SignController extends Controller {
 			'ip'                  => $request->ip()
 		) );
 
-		$this->tag_service->storeTags($sign);
+		$this->tag_service->storeTags( $sign );
 
 		if ( $sign ) {
 			$this->sendSlack( $word, $sign );
 
 			$flash = [
-				'message' => __('flash.sign.created'),
+				'message' => __( 'flash.sign.created' ),
 			];
 		} else {
 			// Something went wrong! The sign isn't created!
 			$flash = [
-				'message' => __('flash.sign.create.failed'),
+				'message' => __( 'flash.sign.create.failed' ),
 			];
 		}
 		$flash['url'] = URL::to( config( 'wign.urlPath.create' ) );
@@ -177,7 +167,7 @@ class SignController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function flagSignView( $id ) {
-		$sign = Sign::where( 'id', $id )->first();
+		$sign = $this->sign_service->getSignByID( $id );
 
 		return view( 'form.flagSign' )->with( [
 			'id'   => $id,
@@ -199,7 +189,7 @@ class SignController extends Controller {
 	public function flagSign( Request $request ) {
 		// Check if client is bot. If true, reject the flagging!
 		if ( Helper::detect_bot() ) {
-			return redirect( '/' )->with( 'message', __('flash.bot.refuse') );
+			return redirect( '/' )->with( 'message', __( 'flash.bot.refuse' ) );
 		}
 
 		$this->validate( $request, [
@@ -228,104 +218,15 @@ class SignController extends Controller {
 		}
 
 		if ( $success ) {
-			return Redirect::to( '/' )->with( 'message', __('flash.report.successful') );
+			return Redirect::to( '/' )->with( 'message', __( 'flash.report.successful' ) );
 		} else {
 			$flash = [
-				'message' => __('flash.report.failed'),
+				'message' => __( 'flash.report.failed' ),
 				'url'     => 'mailto:' . config( 'wign.email' )
 			];
 
 			return Redirect::to( config( 'wign.urlPath.sign' ) . '/' . $saved->word )->with( $flash );
 		}
-	}
-
-	/**
-	 * Returns true if the word ID has at least one sign attached to it, otherwise false.
-	 *
-	 * @param $wordID
-	 *
-	 * @return bool
-	 */
-	private function hasSign( $wordID ) {
-		return Sign::findByWordID( $wordID )->count() > 0;
-	}
-
-	/**
-	 * Searching for words that looks alike the queried $word
-	 * Current uses Levenshtein distance, and return the 5 words with the least distance to $word
-	 *
-	 * @param $word - the query string
-	 *
-	 * @return array|null - array with words as value
-	 */
-	private function findAlikeWords( $word ) {
-		if ( empty( $word ) ) {
-			return null;
-		} else {
-			$max_levenshtein = 5;
-			$min_levenshtein = PHP_INT_MAX;
-			$words           = Word::withSign()->get();
-			$tempArr         = array();
-
-			foreach ( $words as $compareWord ) {
-				$levenDist = levenshtein( strtolower( $word ), strtolower( $compareWord->word ) );
-				if ( $levenDist > 5 || $levenDist > $min_levenshtein ) {
-					continue;
-				} else {
-					$tempArr[ $compareWord->word ] = $levenDist;
-					if ( count( $tempArr ) == $max_levenshtein + 1 ) {
-						asort( $tempArr );
-						$min_levenshtein = array_pop( $tempArr );
-					}
-				}
-			};
-
-			if ( empty( $tempArr ) ) {
-				return null; // There are none word with nearly the same "sounding" as $word
-			} else {
-				asort( $tempArr );
-				$suggestWords = [];
-				foreach ( $tempArr as $key => $value ) {
-					$suggestWords[] = $key;
-				}
-
-				return $suggestWords;
-			}
-		}
-	}
-
-	/**
-	 * Updates the collection, inserting a key with a boolean value for each sign,
-	 * which tells whether the user have voted the sign or not.
-	 *
-	 * @param array $signs
-	 *
-	 * @return array updated with the values
-	 */
-	private function hasVoted( array $signs ): array {
-		$myIP = \Request::getClientIp();
-		foreach ( $signs as $sign ) {
-			if ( empty( $sign->votesIP ) ) {
-				continue;
-			}
-			$result = false;
-
-			if ( ! is_array( $sign->votesIP ) ) {
-				if( $sign->votesIP == $myIP ) {
-					$result = true;
-				}
-			} else {
-				foreach ( $sign->votesIP as $vote ) {
-					if ( $vote == $myIP ) {
-						$result = true;
-						break;
-					}
-				}
-			}
-		$sign->voted = $result;
-		}
-
-		return $signs;
 	}
 
 	/**

@@ -27,5 +27,6 @@ return [
 	'vote.delete.failed'   => 'På et eller andet måde har vi fejlet at fjerne din stemme fra vores database...',
 	'tag.empty'            => 'Du skrev ikke noget hashtag',
 	'tag.nonexistent'      => 'Hashtagget #:tag findes ikke',
+	'word.empty'           => 'Vi kan desværre ikke finde ordet hvis du ikke kom med noget. Prøv lige igen',
 
 ];

@@ -1,9 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use \Helper;
+use App\Helpers\Helper;
 use App\Word;
-
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class ApiController extends Controller {
 
@@ -32,7 +31,7 @@ class ApiController extends Controller {
 			return array();
 		}
 		$word            = Helper::underscoreToSpace( $word );
-		$numWords        = Word::where( 'word', $word )->count();
+		$numWords        = Word::whereWord( $word )->count();
 		$result[ $word ] = $numWords > 0;
 
 		return $result;
@@ -84,6 +83,6 @@ class ApiController extends Controller {
 			$word = Helper::underscoreToSpace( $word );
 		}
 
-		return response(Word::getQueriedWord( $word )->get( array( 'word as label' ) ))->header('Access-Control-Allow-Origin', '*');
+		return response( Word::getQueriedWord( $word )->get( array( 'word as label' ) ) )->header( 'Access-Control-Allow-Origin', '*' );
 	}
 }

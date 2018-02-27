@@ -1,5 +1,5 @@
 <?php
-$title = $word;
+$title = $word->word;
 $desc = __( 'text.wign.got.sign', [ 'word' => $word ] ) . ' ' . __( 'text.wign.journey' );
 $url = url( config( 'wign.urlPath.sign' ) . '/' . $word );
 $video = $signs[0]->video_uuid;
@@ -61,9 +61,9 @@ $image_height = '360';
 
 
             <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
-                @if($sign->isTagged)
+                @isset($hashtag)
                     <h2>{{ $sign->word->word }}</h2>
-                @endif
+                @endisset
                 <player id="video_{{ $sign->id }}"
                         data-uuid="{{ $sign->video_uuid }}"
                         data-controls="true"
