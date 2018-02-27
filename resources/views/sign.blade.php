@@ -1,5 +1,5 @@
 <?php
-$title = $word;
+$title = $word->word;
 $desc = __( 'text.wign.got.sign', [ 'word' => $word ] ) . ' ' . __( 'text.wign.journey' );
 $url = url( config( 'wign.urlPath.sign' ) . '/' . $word );
 $video = $signs[0]->video_uuid;
@@ -34,6 +34,9 @@ $image_height = '360';
 
 @section('content')
     <h1>{{ $title }}</h1>
+    @isset($hashtag)
+        <p>@lang('text.hash.count.signs', ['count' => $signs->count()])</p>
+    @endisset
     @if(Session::has('message'))
         @if(Session::has('url'))
             <a href="{{ Session::get('url') }}">
@@ -58,6 +61,9 @@ $image_height = '360';
 
 
             <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
+                @isset($hashtag)
+                    <h2>{{ $sign->word->word }}</h2>
+                @endisset
                 <player id="video_{{ $sign->id }}"
                         data-uuid="{{ $sign->video_uuid }}"
                         data-controls="true"

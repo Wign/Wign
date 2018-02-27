@@ -26,6 +26,8 @@ class TagController extends Controller {
 		if ( isset( $tag ) ) {
 			$theTag = $this->tag->findTagByName( $tag );
 		}
+
+		// The hashtag does not exist. Redirects the user to front page with message.
 		if ( empty( $theTag ) ) {
 			$flash['message'] = empty( $tag ) ? __( 'flash.tag.empty' ) : __( 'flash.tag.nonexistent', [ 'tag' => $tag ] );
 
