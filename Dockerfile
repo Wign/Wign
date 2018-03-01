@@ -51,13 +51,14 @@ ARG groupid=1000
 RUN usermod -u ${userid} www-data
 # RUN groupmod -g ${groupid} www-data
 
-# Install dependencies
-RUN php composer.phar install --prefer-dist --no-interaction
 # Don't be root
 RUN chown -R www-data:www-data /var/www
 USER www-data
 
-# Optimizing Laravel
-RUN php artisan config:cache
+# Install dependencies
+RUN php composer.phar install --no-dev --no-interaction
 
 USER root
+
+# Optimizing Laravel
+RUN php artisan config:cache
