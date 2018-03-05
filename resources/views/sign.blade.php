@@ -1,7 +1,7 @@
 <?php
 $title = $word;
 $desc = __( 'text.wign.got.sign', [ 'word' => $word ] ) . ' ' . __( 'text.wign.journey' );
-$url = url( config( 'wign.urlPath.sign' ) . '/' . $word );
+$url = $hashtag ? url( config( 'wign.urlPath.tags' ) . '/' . substr( $word, 1 ) ) : url( config( 'wign.urlPath.sign' ) . '/' . $word );
 $video = $signs[0]->video_uuid;
 $video_url = 'https://www.cameratag.com/videos/' . $video . '/360p-16x9/mp4.mp4';
 $image_url = 'https://www.cameratag.com/videos/' . $video . '/360p-16x9/thumb.png';
@@ -51,12 +51,11 @@ $image_height = '360';
 		<?php $myIP = Request::getClientIp(); ?>
         @foreach($signs as $sign)
 			<?php
-                if($sign->isTagged == true) {
-                    $description = \App\Services\TagService::replaceTagsToURL($sign->description);
-                }
-                else {
-                    $description = $sign->description;
-                }
+			if ( $sign->isTagged == true ) {
+				$description = \App\Services\TagService::replaceTagsToURL( $sign->description );
+			} else {
+				$description = $sign->description;
+			}
 			?>
 
 
@@ -85,7 +84,7 @@ $image_height = '360';
     </div>
     @empty($hashtag)
         <a href="{{ URL::to( config('wign.urlPath.create'). '/' . $word) }}" class="float--right"
-            title="{{__('text.sign.suggest.word', ['word' => $word])}}">@lang('text.sign.alt.suggest')</a>
+           title="{{__('text.sign.suggest.word', ['word' => $word])}}">@lang('text.sign.alt.suggest')</a>
     @endempty
 
 @stop
