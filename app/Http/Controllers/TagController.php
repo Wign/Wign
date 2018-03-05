@@ -38,9 +38,15 @@ class TagController extends Controller {
 		if ( empty( $signs ) ) {
 			abort( 404, __( 'text.sign.not.have' ) );
 		}
-		foreach ($signs as $sign) {
+		foreach ( $signs as $sign ) {
 			$this->sign->isSignTagged( $sign );
+			$sign->theWord = $this->sign->getWordBySignID( $sign->id );
 		}
+
+		// Sorts the signs according to the words
+		$signs = $signs->sortBy( function ( $sign ) {
+			return strtolower( $sign->theWord );
+		} );
 
 		return view( 'sign' )->with( array( 'word' => '#' . $theTag->tag, 'signs' => $signs, 'hashtag' => true ) );
 
