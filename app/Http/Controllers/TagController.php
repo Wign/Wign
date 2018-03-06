@@ -40,7 +40,7 @@ class TagController extends Controller {
 		}
 		foreach ( $signs as $sign ) {
 			$this->sign->isSignTagged( $sign );
-			$sign->theWord = $this->sign->getWordBySignID( $sign->id );
+			$sign->theWord = $this->sign->getWordBySign( $sign );
 		}
 
 		// Sorts the signs according to the words

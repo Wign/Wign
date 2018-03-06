@@ -89,4 +89,8 @@ class SignService {
 	public function getWordBySignID( int $id ): string {
 		return Sign::all()->find( $id )->word->word;
 	}
+
+	public function getWordBySign( Sign $sign ): string {
+		return $sign->word->word;
+	}
 }
