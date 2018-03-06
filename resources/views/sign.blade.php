@@ -61,7 +61,7 @@ $image_height = '360';
 
             <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
                 @isset($hashtag)
-                    <h2>{{ $sign->word->word }}</h2>
+                    <h2>{{ $sign->theWord }}</h2>
                 @endisset
                 <player id="video_{{ $sign->id }}"
                         data-uuid="{{ $sign->video_uuid }}"

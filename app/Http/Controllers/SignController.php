@@ -102,9 +102,9 @@ class SignController extends Controller {
 			return view( 'create' );
 		}
 
-		$word            = $this->word_service->getWordByWord( $word );
-		$data['hasSign'] = empty( $word ) ? 0 : 1;
-		$data['word']    = $word;
+		$wordData            = $this->word_service->getWordByWord( $word );
+		$data['hasSign'] = empty( $wordData ) ? 0 : 1;
+		$data['word']    = empty( $wordData ) ? $word : $wordData->word;
 
 		return view( 'create' )->with( $data );
 	}
