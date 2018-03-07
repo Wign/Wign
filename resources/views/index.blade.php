@@ -16,10 +16,10 @@ $(function() {
         autoFocus: true,
         select: function(key, value) {
             if(value.item.dtype === "tag") {
-                window.location.href = "{{ URL::to( config('wign.urlPath.tags') ) }}/" + value.item.value;
+                window.location.href = value.item.url;
             }
             else {
-                window.location.href = "{{ URL::to( config('wign.urlPath.sign') ) }}/" + value.item.value;
+                window.location.href = value.item.url;
             }
         }
     });

@@ -120,7 +120,7 @@ class WordService {
 	 * @return string
 	 */
 	public function underscoreToSpace( string $s ): string {
-		return Helper::underscoreToSpace($s);
+		return Helper::underscoreToSpace( $s );
 	}
 
 	/**
@@ -134,9 +134,8 @@ class WordService {
 	 * @return string
 	 */
 	public static function makeUrlString( string $s ): string {
-		return Helper::makeUrlString($s);
+		return Helper::makeUrlString( $s );
 	}
-
 
 
 }
