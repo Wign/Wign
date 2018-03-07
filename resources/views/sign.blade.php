@@ -59,7 +59,7 @@ $image_height = '360';
 			?>
 
 
-            <div class="sign" data-count="{{ $sign->sign_count }}" data-id="{{$sign->id}}">
+            <div class="sign" data-count="{{ $sign->num_votes }}" data-id="{{$sign->id}}">
                 @isset($hashtag)
                     <h2>{{ $sign->theWord }}</h2>
                 @endisset
@@ -69,8 +69,8 @@ $image_height = '360';
                         data-displaytitle="false"
                         data-displaydescription="false"
                         data-mute="true"></player>
-                <span class="count">{{ $sign->sign_count }}</span>
-                @if(isset($sign->voted))
+                <span class="count">{{ $sign->num_votes }}</span>
+                @if(isset($sign->voted) && $sign->voted == true)
                     <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
