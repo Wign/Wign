@@ -1,12 +1,8 @@
-<?php
-    if($word) { $titel = ucfirst($word->word); }
-?>
-
 @extends('layout.main')
 
 @section('content')
 
-<h1>Rapportering af {{ $titel }}</h1>
+<h1>Rapportering af {{ $word->word or "et tegn" }}</h1>
 @if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
@@ -22,6 +18,7 @@
     <label for="content">Hvad rapporter du videoen for?</label>
     <select name="content">
         <option value="Ikke tegn">Indholder ikke tegn</option>
+        <option value="Tegnduplikat">Indholder duplikat af et andet tegn</option>
         <option value="Seksuelt">Seksuelt indhold</option>
         <option value="Voldeligt">Voldeligt eller frastødende indhold</option>
         <option value="Groft">Modbydeligt eller groft indhold</option>
