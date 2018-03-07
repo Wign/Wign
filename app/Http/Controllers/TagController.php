@@ -40,10 +40,11 @@ class TagController extends Controller {
 		}
 		foreach ( $signs as $sign ) {
 			$this->sign->isSignTagged( $sign );
+			$this->sign->assignVotesToSign( $sign );
 			$sign->theWord = $this->sign->getWordBySign( $sign );
 		}
 
-		// Sorts the signs according to the words
+		// Sorts the signs according to the words (And not according to number of votes as in "sign" page)
 		$signs = $signs->sortBy( function ( $sign ) {
 			return strtolower( $sign->theWord );
 		} );

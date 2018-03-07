@@ -46,6 +46,7 @@ class SignController extends Controller {
 	public function showSign( $word = null ) {
 		if ( empty( trim( $word ) ) ) {
 			$flash['message'] = __( 'flash.word.empty' );
+
 			return Redirect::to( '/' )->with( $flash );
 		}
 
@@ -55,6 +56,7 @@ class SignController extends Controller {
 		// If word exist in database
 		if ( isset( $wordModel ) ) {
 			$signs = $this->sign_service->getVotedSigns( $wordModel );
+			$signs = $signs->sortByDesc('num_votes'); // Sort the signs according to the number of votes
 
 			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
 		}
@@ -102,7 +104,7 @@ class SignController extends Controller {
 			return view( 'create' );
 		}
 
-		$wordData            = $this->word_service->getWordByWord( $word );
+		$wordData        = $this->word_service->getWordByWord( $word );
 		$data['hasSign'] = empty( $wordData ) ? 0 : 1;
 		$data['word']    = empty( $wordData ) ? $word : $wordData->word;
 
