@@ -39,7 +39,7 @@ class RequestController extends Controller {
 	 */
 	public function store( $word ) {
 		if ( empty( $word ) ) {
-			return redirect( config( 'wign.urlPath.request' ) )->with( 'message', __('flash.request.word.missing') );
+			return redirect()->back()->with( 'message', __('flash.request.word.missing') );
 		}
 
 		$word = Helper::underscoreToSpace( $word );
