@@ -43,13 +43,7 @@ class SignController extends Controller {
 	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
-	public function showSign( $word = null ) {
-		if ( empty( trim( $word ) ) ) {
-			$flash['message'] = __( 'flash.word.empty' );
-
-			return Redirect::to( '/' )->with( $flash );
-		}
-
+	public function showSign( $word ) {
 		$word      = $this->word_service->underscoreToSpace( $word );
 		$wordModel = $this->word_service->getWordByWord( $word );
 
@@ -62,7 +56,7 @@ class SignController extends Controller {
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
-		$suggestWords = $this->word_service->getAlikeWords( $word );
+		$suggestWords = $this->word_service->getAlikeWords( $word, 5 );
 
 		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
