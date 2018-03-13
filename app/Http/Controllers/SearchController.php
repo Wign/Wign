@@ -78,18 +78,16 @@ class SearchController extends Controller {
 			];
 		}
 
-		if ( ! $hashtag ) {
-			$words = $this->word_service->getQueriedWords( $query );
-			foreach ( $words as $word ) {
-				$url    = URL::to( config( 'wign.urlPath.sign' ) . '/' . rawurlencode( $word->word ) );
-				$list[] = [
-					'label' => $word->word,
-					'dtype' => 'word',
-					'id'    => $word->id,
-					'value' => $word->word,
-					'url'   => $url
-				];
-			}
+		$words = $this->word_service->getQueriedWords( $query );
+		foreach ( $words as $word ) {
+			$url    = URL::to( config( 'wign.urlPath.sign' ) . '/' . rawurlencode( $word->word ) );
+			$list[] = [
+				'label' => $word->word,
+				'dtype' => 'word',
+				'id'    => $word->id,
+				'value' => $word->word,
+				'url'   => $url
+			];
 		}
 
 		return $list;

@@ -10,7 +10,7 @@ class RedirectController extends Controller
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	function sign($word = null) {
+	function sign($word) {
 		return redirect()->route( 'sign', ['word' => $word], 301 );
 	}
 
@@ -20,7 +20,7 @@ class RedirectController extends Controller
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	function new($word = null) {
+	function new($word) {
 		return redirect()->route( 'new', ['word' => $word], 301 );
 	}
 }

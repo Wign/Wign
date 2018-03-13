@@ -15,14 +15,16 @@
 Route::get( config( 'wign.urlPath.blacklist' ), 'IndexController@blacklist' );
 
 // REDIRECTING old url's to the new (Danish to English)
-Route::get('tegn/{word?}', 'RedirectController@sign');
-Route::get('opret/{word?}', 'RedirectController@new');
-Route::redirect('requests', config('wign.urlPath.request'), 301 );
-Route::redirect('seneste', config('wign.urlPath.recent'), 301 );
-Route::redirect('alle', config('wign.urlPath.all'), 301 ); // TODO: Redirect all traffic to "signs"
-Route::redirect('om', config('wign.urlPath.about'), 301 );
-Route::redirect('help', config('wign.urlPath.help'), 301 ); // Same...
-Route::redirect('retningslinjer', config('wign.urlPath.policy'), 301 );
+Route::get( 'tegn/{word}', 'RedirectController@sign' );
+Route::get( 'opret/{word}', 'RedirectController@new' );
+Route::redirect( 'tegn', '/', 301 );
+Route::redirect( 'opret', config( 'wign.urlPath.create' ), 301 );
+Route::redirect( 'requests', config( 'wign.urlPath.request' ), 301 );
+Route::redirect( 'seneste', config( 'wign.urlPath.recent' ), 301 );
+Route::redirect( 'alle', config( 'wign.urlPath.all' ), 301 ); // TODO: Redirect all traffic to "signs" - in new design
+Route::redirect( 'om', config( 'wign.urlPath.about' ), 301 );
+Route::redirect( 'help', config( 'wign.urlPath.help' ), 301 ); // Same...
+Route::redirect( 'retningslinjer', config( 'wign.urlPath.policy' ), 301 );
 
 // Index and static pages
 Route::get( '/', 'IndexController@index' );
@@ -39,17 +41,21 @@ Route::post( 'redirect', 'SearchController@redirect' );
 Route::get( 'autocomplete', 'SearchController@autocomplete' );
 
 // Dynamic routes
-Route::get( config( 'wign.urlPath.sign' ) . '/{word?}', 'SignController@showSign' )->name('sign');
+Route::get( config( 'wign.urlPath.sign' ) . '/{word}', 'SignController@showSign' )->name( 'sign' );
+Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestController@store' );
+Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
+Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' )->name( 'new' );
+
 Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
 Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
 Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
-Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' )->name('new');
-Route::get( config( 'wign.urlPath.createRequest' ) . '/{word?}', 'RequestController@store' );
-Route::get( config( 'wign.urlPath.tags' ) . '/{tag?}', 'TagController@findTags' );
-
-
 Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
+
+// Dynamic routes with empty string (Redirecting)
+Route::redirect( config( 'wign.urlPath.sign' ), '/' );
+Route::redirect( config( 'wign.urlPath.tags' ), '/' );
+Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
 // Post routes
 Route::post( 'createVote', 'VoteController@createVote' );
@@ -58,8 +64,3 @@ Route::post( 'saveSign', 'SignController@saveSign' );
 Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
-
-/*
-Route::get('/', function () {
-	return view('welcome');
-}); */

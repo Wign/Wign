@@ -60,13 +60,13 @@ class WordService {
 
 	/**
 	 * Searching for words that looks alike the queried $word
-	 * Current uses Levenshtein distance, and return the 5 words with the least distance to $word
+	 * Current uses both "LIKE" mysql query and Levenshtein distance, and return $count words with the least distance to $word
 	 *
 	 * @param string $word
 	 *
 	 * @return array|null
 	 */
-	public function getAlikeWords( string $word ) {
+	public function getAlikeWords( string $word, int $count ) {
 		$max_levenshtein = 5;
 		$min_levenshtein = PHP_INT_MAX;
 		$words           = $this->getAllWords();
@@ -74,11 +74,11 @@ class WordService {
 
 		foreach ( $words as $compareWord ) {
 			$levenDist = levenshtein( strtolower( $word ), strtolower( $compareWord->word ) );
-			if ( $levenDist > 5 || $levenDist > $min_levenshtein ) {
+			if ( $levenDist > $max_levenshtein || $levenDist > $min_levenshtein ) {
 				continue;
 			} else {
 				$tempArr[ $compareWord->word ] = $levenDist;
-				if ( count( $tempArr ) == $max_levenshtein + 1 ) {
+				if ( count( $tempArr ) == $count + 1 ) {
 					asort( $tempArr );
 					$min_levenshtein = array_pop( $tempArr );
 				}

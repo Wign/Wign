@@ -1,7 +1,9 @@
 {
   "name": "Wign/Wign",
   "description": "Crowdsourcing on sign languages",
-  "keywords": [ "sign language"],
+  "keywords": [
+    "sign language"
+  ],
   "license": "MIT",
   "type": "project",
   "require": {
@@ -31,17 +33,17 @@
     ],
     "psr-4": {
       "App\\": "app/"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Tests\\": "tests/"
-      }
-    },
-    "extra": {
-      "laravel": {
-        "dont-discover": [
-        ]
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": [
+      ]
     }
   },
   "scripts": {
