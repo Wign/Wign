@@ -35,9 +35,9 @@
         
         <div class="wrapper">
         
-            @yield('content')    
-            
+            @yield('content')
+
         </div>
-    
+        @include('cookieConsent::index')
     </body>
 </html>

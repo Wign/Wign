@@ -6,17 +6,13 @@ $submit-width: 100px;
 }
 
 .input-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: $submit-width+10px;
-    bottom: 0;
+
 }
 
 .search-text {
     font-size: $h4-size;
     line-height: $search-heigh;
-    width: 100%;
+    width: 80%;
     background-image: url("/images/lup-grey.png");
     background-repeat: no-repeat;
     background-position: 5px center;
