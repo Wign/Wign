@@ -52,9 +52,9 @@ $image_height = '360';
         @foreach($signs as $sign)
 			<?php
 			if ( $sign->isTagged == true ) {
-				$description = \App\Services\TagService::replaceTagsToURL( $sign->description );
+				$description = \App\Services\TagService::replaceTagsToURL( e($sign->description) );
 			} else {
-				$description = $sign->description;
+				$description = e($sign->description);
 			}
 			?>
 
@@ -78,7 +78,7 @@ $image_height = '360';
                 <a href="{{ URL::to('/flagSignView')."/".$sign->id }}" class="flagSign"
                    title="{{__('text.sign.report')}}"><img src="{{ asset('images/flag-black.png') }}"
                                                            class="anmeld"></a>
-                <div class="desc">{!! $description !!}</div>
+                <div class="desc">{!! nl2br($description) !!}</div>
             </div>
         @endforeach
     </div>
