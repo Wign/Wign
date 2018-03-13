@@ -6,11 +6,11 @@ use App\Services\WordService;
 use App\Word;
 use App\Sign;
 
-use DB;
 use App\Helpers\Helper;
+use Response;
 use URL;
 use Redirect;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class SignController extends Controller {
 
@@ -50,7 +50,7 @@ class SignController extends Controller {
 		// If word exist in database
 		if ( isset( $wordModel ) ) {
 			$signs = $this->sign_service->getVotedSigns( $wordModel );
-			$signs = $signs->sortByDesc('num_votes'); // Sort the signs according to the number of votes
+			$signs = $signs->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
 
 			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
 		}
@@ -108,23 +108,26 @@ class SignController extends Controller {
 	/**
 	 * Validate and save the sign created by the user (And send a Slack message).
 	 *
-	 * @param \Illuminate\Http\Request $request
+	 * @param Request $request
 	 *
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return Response
 	 */
 	public function saveSign( Request $request ) {
 		// Validating the incoming request
-		$this->validate( $request, [
-			'word'        => 'required|string',
-			'description' => 'nullable|string',
-			'wign01_uuid' => 'required'
+		$request->validate( [
+			'word'              => 'required|string',
+			'description'       => 'nullable|string',
+			'wign01_uuid'       => 'required',
+			'wign01_vga_mp4'    => 'required',
+			'wign01_vga_thumb'  => 'required',
+			'wign01_qvga_thumb' => 'required',
 		] );
 
 		$q = $request->all();
 
 		$findWord = Word::firstOrCreate( [ 'word' => $q['word'] ] );
 		$wordID   = $findWord->id;
-		$word     = $q['word'];
+		$word     = $findWord->word;
 
 		$sign = Sign::create( array(
 			'word_id'             => $wordID,

@@ -89,22 +89,37 @@ if ( isset( $word ) ) {
         <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
     @endif
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
+        {{ csrf_field() }}
 
-        <camera id="wign01"
+        @if( empty( old('wign01_uuid') ) )
+            <camera id="wign01"
                 data-app-id="{{ config('wign.cameratag.id') }}"
                 data-maxlength="15"
                 data-txt-message="{{ __( 'text.create.sms.url' ) }}"
                 data-default-sms-country="{{ config('app.country_code') }}"
                 style="width:580px;height:326px;"></camera>
+        @else
+            <input type="hidden" name="wign01_uuid" value="{{ old('wign01_uuid') }}">
+            <input type="hidden" name="wign01_vga_mp4" value="{{ old('wign01_vga_mp4') }}">
+            <input type="hidden" name="wign01_vga_thumb" value="{{ old('wign01_vga_thumb') }}">
+            <input type="hidden" name="wign01_qvga_thumb" value="{{ old('wign01_qvga_thumb') }}">
+            <player id="video01"
+                    data-uuid="{{ old('wign01_uuid') }}"
+                    data-controls="true"
+                    data-displaytitle="false"
+                    data-displaydescription="false"
+                    data-mute="true"></player>
+        @endif
         <br>
 
         <label for="word">{{ __( 'text.form.word' ) }}</label>
-        <input type="text" id="word" name="word" value="{{ isset($word) ? $word : "" }}" placeholder="{{__('text.form.word.ph')}}"><br>
+        <input type="text" id="word" name="word" value="{{ $word or old('word') or "" }}"
+               placeholder="{{__('text.form.word.ph')}}"><br>
 
         <label for="description">{{__('text.form.desc')}}</label>
-        <textarea id="description" name="description" placeholder="{{__('text.form.desc.ph')}}"></textarea><br>
+        <textarea id="description" name="description"
+                  placeholder="{{__('text.form.desc.ph')}}">{{ old('description') }}</textarea><br>
 
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="submit" value="{{__('text.form.submit.sign')}}" id="btnSubmit">
         <p>
             <small>@lang('text.submit.accept.terms', ['url' => URL::to( config( 'wign.urlPath.policy' ))])</small>
