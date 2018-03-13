@@ -25,7 +25,6 @@ select {
 
 input[type="text"], textarea {
     background-color: darken($white, 5%);
-    width: 100%;
 
     .ligeform & {
         width: 80%;

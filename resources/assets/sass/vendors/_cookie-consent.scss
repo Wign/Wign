@@ -1,0 +1,16 @@
+.cookie-consent {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: lighten($base-background-color, 15%);
+  border-top: 1px solid white;
+  text-align: center;
+  padding: 5px 0 5px 0;
+}
+
+.cookie-consent__agree {
+  background-color: $brand-green;
+  color: $black;
+  border: 0;
+  border-radius: 3px;
+}

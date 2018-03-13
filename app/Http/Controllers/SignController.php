@@ -6,11 +6,11 @@ use App\Services\WordService;
 use App\Word;
 use App\Sign;
 
-use DB;
 use App\Helpers\Helper;
+use Response;
 use URL;
 use Redirect;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class SignController extends Controller {
 
@@ -43,24 +43,20 @@ class SignController extends Controller {
 	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
-	public function showSign( $word = null ) {
-		if ( empty( trim( $word ) ) ) {
-			$flash['message'] = __( 'flash.word.empty' );
-			return Redirect::to( '/' )->with( $flash );
-		}
-
+	public function showSign( $word ) {
 		$word      = $this->word_service->underscoreToSpace( $word );
 		$wordModel = $this->word_service->getWordByWord( $word );
 
 		// If word exist in database
 		if ( isset( $wordModel ) ) {
 			$signs = $this->sign_service->getVotedSigns( $wordModel );
+			$signs = $signs->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
 
 			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
 		}
 
 		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
-		$suggestWords = $this->word_service->getAlikeWords( $word );
+		$suggestWords = $this->word_service->getAlikeWords( $word, 5 );
 
 		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
 	}
@@ -102,9 +98,9 @@ class SignController extends Controller {
 			return view( 'create' );
 		}
 
-		$word            = $this->word_service->getWordByWord( $word );
-		$data['hasSign'] = empty( $word ) ? 0 : 1;
-		$data['word']    = $word;
+		$wordData        = $this->word_service->getWordByWord( $word );
+		$data['hasSign'] = empty( $wordData ) ? 0 : 1;
+		$data['word']    = empty( $wordData ) ? $word : $wordData->word;
 
 		return view( 'create' )->with( $data );
 	}
@@ -112,23 +108,26 @@ class SignController extends Controller {
 	/**
 	 * Validate and save the sign created by the user (And send a Slack message).
 	 *
-	 * @param \Illuminate\Http\Request $request
+	 * @param Request $request
 	 *
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return Response
 	 */
 	public function saveSign( Request $request ) {
 		// Validating the incoming request
-		$this->validate( $request, [
-			'word'        => 'required|string',
-			'description' => 'nullable|string',
-			'wign01_uuid' => 'required'
+		$request->validate( [
+			'word'              => 'required|string',
+			'description'       => 'nullable|string',
+			'wign01_uuid'       => 'required',
+			'wign01_vga_mp4'    => 'required',
+			'wign01_vga_thumb'  => 'required',
+			'wign01_qvga_thumb' => 'required',
 		] );
 
 		$q = $request->all();
 
 		$findWord = Word::firstOrCreate( [ 'word' => $q['word'] ] );
 		$wordID   = $findWord->id;
-		$word     = $q['word'];
+		$word     = $findWord->word;
 
 		$sign = Sign::create( array(
 			'word_id'             => $wordID,

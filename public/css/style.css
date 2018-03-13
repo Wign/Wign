@@ -800,12 +800,6 @@ body {
   color: #D8D8D8;
   font-weight: 400;
   background-color: #4A4A4A;
-  /*
-    background-image: url("/wign/public/images/bobler.svg");
-    background-repeat: no-repeat;
-    background-position: bottom left;
-    //background-size: 10% auto;
-    */
 }
 
 h1 {
@@ -877,7 +871,6 @@ label {
 input[type="text"],
 textarea {
   background-color: #f2f2f2;
-  width: 100%;
 }
 
 .ligeform input[type="text"],
@@ -963,18 +956,10 @@ input[type="submit"]:disabled {
   position: relative;
 }
 
-.input-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 110px;
-  bottom: 0;
-}
-
 .search-text {
   font-size: 20px;
   line-height: 50px;
-  width: 100%;
+  width: calc(100% - 110px);
   background-image: url("/images/lup-grey.png");
   background-repeat: no-repeat;
   background-position: 5px center;
@@ -1135,15 +1120,26 @@ input[type="submit"]:disabled {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  height: 75px;
   text-align: center;
-  padding: 10px 10px 20px 10px;
-  background-color: #4A4A4A;
-  z-index: 9999;
+  padding: 50px 10px 20px 10px;
 }
 
 /* Style trumps; helper and brand classes */
+
+.cookie-consent {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: #707070;
+  border-top: 1px solid white;
+  text-align: center;
+  padding: 5px 0 5px 0;
+}
+
+.cookie-consent__agree {
+  background-color: #B8E986;
+  color: #000000;
+  border: 0;
+  border-radius: 3px;
+}
 

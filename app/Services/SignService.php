@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 class SignService {
 
 	public function getAllSigns() {
-		return Sign::noFlagged()->all();
+		return Sign::noFlagged()->get(); // Need -get for "maketags.php"
 	}
 
 	public function getSignByID( int $id ) {
@@ -33,7 +33,7 @@ class SignService {
 	}
 
 	public function isSignTagged( Sign $sign ) {
-		if ( $this->getTags( $sign )->count() > 0 ) {
+		if ( $sign->tags()->count() > 0 ) {
 			$sign->isTagged = true;
 		} else {
 			$sign->isTagged = false;
@@ -77,12 +77,20 @@ class SignService {
 	 * @return Collection|static[]
 	 */
 	public function getVotedSigns( Word $word ) {
-		$signs = Sign::where( 'word_id', $word->id )->get();
+		$signs = Sign::whereWordId( $word->id )->get();
 		foreach ( $signs as $sign ) {
 			$this->assignVotesToSign( $sign );
 			$this->isSignTagged( $sign );
 		}
 
 		return $signs;
+	}
+
+	public function getWordBySignID( int $id ): string {
+		return Sign::all()->find( $id )->word->word;
+	}
+
+	public function getWordBySign( Sign $sign ): string {
+		return $sign->word->word;
 	}
 }

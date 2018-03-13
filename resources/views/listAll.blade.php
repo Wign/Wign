@@ -14,7 +14,7 @@
 
     <ol>
     @foreach($words as $word)
-        <li><a href="{{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a></li>
+        <li><a href="{{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a> ({{{ $word->signs->count() }}})</li>
     @endforeach
     </ol>
 

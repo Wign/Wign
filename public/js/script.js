@@ -5,14 +5,14 @@ $.ajaxSetup({
 });
 
 $(function () {
-    var _DEBUG = false;
+    const _DEBUG = false;
 
     $('.sign a.delVote, .sign a.addVote').on('click', function (event) {
         event.preventDefault();
         if (_DEBUG) console.log("Click detected!");
 
-        var mode = $(this).attr('class');
-        var ajaxURL = '';
+        let mode = $(this).attr('class');
+        let ajaxURL = '';
         if (mode === 'addVote') {
             ajaxURL = addUrl;
         }
@@ -27,10 +27,10 @@ $(function () {
         $(this).addClass('loadingVote');
 
         // Saving this element to later usage
-        var signDiv = $(this).parent();
-        var signID = signDiv.data('id');
+        let signDiv = $(this).parent();
+        let signID = signDiv.data('id');
 
-        var formData = {
+        let formData = {
             'sign': signID,
             '_token': $('meta[name="csrf-token"]').attr('content')
         };
@@ -73,8 +73,8 @@ $(function () {
                         // Sorts the divs according to the "data-count" attr inside the divs
                         $('.sign').sort(function (a, b) {
                             if (_DEBUG) console.log("Sorting the divs");
-                            var contentA = parseInt($(a).attr('data-count'));
-                            var contentB = parseInt($(b).attr('data-count'));
+                            let contentA = parseInt($(a).attr('data-count'));
+                            let contentB = parseInt($(b).attr('data-count'));
                             return contentA < contentB ? 1 : -1;
                         }).appendTo("#signs");
 

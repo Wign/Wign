@@ -5,6 +5,7 @@ use App\Services\WordService;
 use Illuminate\Http\Request;
 use Redirect;
 use Response;
+use URL;
 
 class SearchController extends Controller {
 
@@ -67,14 +68,26 @@ class SearchController extends Controller {
 
 		$tags = $this->tag_service->getQueriedTags( $query );
 		foreach ( $tags as $tag ) {
-			$list[] = [ 'label' => '#' . $tag->tag, 'dtype' => 'tag', 'id' => $tag->id, 'value' => $tag->tag ];
+			$url    = URL::to( config( 'wign.urlPath.tags' ) . '/' . rawurlencode( $tag->tag ) );
+			$list[] = [
+				'label' => '#' . $tag->tag,
+				'dtype' => 'tag',
+				'id'    => $tag->id,
+				'value' => $tag->tag,
+				'url'   => $url
+			];
 		}
 
-		if ( ! $hashtag ) {
-			$words = $this->word_service->getQueriedWords( $query );
-			foreach ( $words as $word ) {
-				$list[] = [ 'label' => $word->word, 'dtype' => 'word', 'id' => $word->id, 'value' => $word->word ];
-			}
+		$words = $this->word_service->getQueriedWords( $query );
+		foreach ( $words as $word ) {
+			$url    = URL::to( config( 'wign.urlPath.sign' ) . '/' . rawurlencode( $word->word ) );
+			$list[] = [
+				'label' => $word->word,
+				'dtype' => 'word',
+				'id'    => $word->id,
+				'value' => $word->word,
+				'url'   => $url
+			];
 		}
 
 		return $list;
