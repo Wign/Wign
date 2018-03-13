@@ -12,7 +12,7 @@ $submit-width: 100px;
 .search-text {
     font-size: $h4-size;
     line-height: $search-heigh;
-    width: 80%;
+    width: calc(100% - 110px);
     background-image: url("/images/lup-grey.png");
     background-repeat: no-repeat;
     background-position: 5px center;
