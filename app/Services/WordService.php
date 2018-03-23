@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\Helper;
 use App\Word;
+use DB;
 
 class WordService {
 
@@ -135,6 +136,18 @@ class WordService {
 	 */
 	public static function makeUrlString( string $s ): string {
 		return Helper::makeUrlString( $s );
+	}
+
+	public function getAllWordsSortedwithCount() {
+		return DB::table( 'words' )
+		         ->join( 'signs', 'words.id', '=', 'signs.word_id' )
+		         ->whereNull( 'signs.flag_reason' )
+		         ->orWhereRaw( "signs.flag_reason = ' '" )
+		         ->whereNull( 'signs.deleted_at' )
+		         ->groupBy( 'words.id' )
+		         ->orderBy( 'words.word' )
+		         ->selectRaw( 'words.word, COUNT(signs.id) as count' )
+		         ->get();
 	}
 
 

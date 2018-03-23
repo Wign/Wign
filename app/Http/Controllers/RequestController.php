@@ -18,12 +18,11 @@ class RequestController extends Controller {
 	public function showList() {
 		$requests = DB::select( DB::raw( '
             SELECT words.word, COUNT(request_words.id) AS request_count
-            FROM words LEFT JOIN request_words
-            ON words.id = request_words.word_id
-            WHERE (SELECT count(*) FROM request_words WHERE request_words.word_id = words.id) >= 1 
-                AND (SELECT count(*) FROM signs WHERE signs.word_id = words.id) <= 0
-            GROUP BY words.word
-            ORDER BY request_count DESC, words.word ASC
+			FROM words INNER JOIN request_words
+			ON words.id = request_words.word_id
+			WHERE (SELECT count(*) FROM signs WHERE signs.word_id = words.id AND signs.deleted_at IS NULL AND signs.flag_reason IS NULL) <= 0
+			GROUP BY words.word
+			ORDER BY request_count DESC, words.word ASC
         ' ) );
 
 		return view( 'requests' )->with( 'requests', $requests );

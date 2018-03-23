@@ -109,9 +109,9 @@ class Word extends Model {
 	 */
 	public function scopeGetQueriedWord( $query, $word = null ) {
 		if ( isset( $word ) ) {
-			return $query->withSign()->where( 'word', 'like', '%' . $word . '%' );
+			return $query->has('signs')->where( 'word', 'like', $word . '%' );
 		} else {
-			return $query->withSign();
+			return $query->has('signs');
 		}
 	}
 }
