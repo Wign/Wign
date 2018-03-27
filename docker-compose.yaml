@@ -3,17 +3,18 @@ services:
 
   app:
     image: wign:app
+    depends_on:
+      - db
     volumes:
       - "./:/var/www"
       - "./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf"
-      - "./apache/activated_rules:/etc/apache2/modsecurity.d/rules/"
     ports:
       - "8080:80"
     env_file:
       - ./.env
 
   db:
-    image: "mysql:5.7"
+    image: mysql:5.7
     ports:
       - "4306:3306"
     environment:
@@ -24,19 +25,21 @@ services:
     command: " --explicit_defaults_for_timestamp "
 
   migrater:
+    depends_on:
+      - db
+      - app
     image: wign:app
     env_file:
       - ./.env
-    # Waiting for DB to actually initialize. TODO: Consider more graceful solution
-    command: "sh -c 'sleep 30 ; php artisan migrate ; php artisan config:cache ; php artisan route:cache'"
+    command: "sh -c './wait-for-it.sh db:3306 ; php artisan migrate:fresh --force --seed ; php artisan config:cache ; php artisan route:cache'"
 
   aws:
+    build:
+        context: ./
+        dockerfile: Dockerfile.aws
     volumes:
       - "./:/src"
       - "./.ssh:/root/.ssh"
     environment:
       - AWS_CREDENTIAL_FILE=/src/aws_credentials.txt
     working_dir: "/src"
-    build:
-      context: ./
-      dockerfile: Dockerfile.aws

@@ -1,4 +1,5 @@
 FROM php:7.2-apache
+MAINTAINER Troels Madsen <tm@wign.dk>
 
 # Install system dependencies & tools
 RUN apt-get update && apt-get install -y \
