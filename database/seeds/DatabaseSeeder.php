@@ -9,6 +9,9 @@ class DatabaseSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
-		// $this->call(UsersTableSeeder::class);
+		$this->call( SignsTableSeeder::class );
+		$this->call( VoteTableSeeder::class );
+		$this->call( RequestWordTableSeeder::class );
+		$this->call( BlacklistTableSeeder::class );
 	}
 }

@@ -78,7 +78,7 @@ return [
 	|
 	*/
 
-	'locale' => 'da',
+	'locale'       => 'da',
 	'country_code' => 'dk', // uses ISO 3166-1 alpha-2 codes
 
 	/*
@@ -107,7 +107,18 @@ return [
 
 	'key' => env( 'APP_KEY' ),
 
-	'cipher' => 'AES-256-CBC',
+	'cipher'       => 'AES-256-CBC',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Faker Locale
+	|--------------------------------------------------------------------------
+	|
+	| Defining the locale language/formats for the Faker file to Danish
+	| for this testing environment
+	|
+	*/
+	'faker_locale' => 'da_DK',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -210,7 +221,7 @@ return [
 		'URL'          => Illuminate\Support\Facades\URL::class,
 		'Validator'    => Illuminate\Support\Facades\Validator::class,
 		'View'         => Illuminate\Support\Facades\View::class,
-		'Helper'       => App\Helpers\Helper::class
+		'Helper'       => App\Helpers\Helper::class,
 		// Adding our own helper class as alias - so we can call it without using "Use Helper"
 
 	],
