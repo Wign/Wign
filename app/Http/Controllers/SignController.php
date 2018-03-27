@@ -80,7 +80,7 @@ class SignController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function showAll() {
-		$words = $this->word_service->getAllWordsSorted();
+		$words = $this->word_service->getAllWordsSortedWithCount();
 
 		return view( 'listAll' )->with( [ 'words' => $words ] );
 	}
