@@ -9,7 +9,6 @@ package.json
 npm-shrinkwrap.json
 beamMeUpScotty.sh
 letTheMagicHappen.sh
-wait-for-it.sh
 testDatabase.sql
 _ide_helper.php
 .phpstorm.meta.php
