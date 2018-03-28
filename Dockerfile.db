@@ -1,5 +1,0 @@
-FROM mysql:5.7
-MAINTAINER Troels Madsen <tm@wign.dk>
-
-COPY wait-for-it.sh /
-CMD /wait-for-it.sh localhost
