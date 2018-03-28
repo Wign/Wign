@@ -26,7 +26,7 @@ class CreateRequestWordsTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop( 'requests' );
+		Schema::drop( 'request_words' );
 	}
 
 }

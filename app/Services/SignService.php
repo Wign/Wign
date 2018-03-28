@@ -13,11 +13,11 @@ class SignService {
 	}
 
 	public function getSignByID( int $id ) {
-		return Sign::noFlagged()->find( $id );
+		return Sign::all()->find( $id );
 	}
 
 	public function getSignByWord( string $word ) {
-		return Word::whereWord( $word )->signs;
+		return Word::whereWord( $word )->first()->signs;
 	}
 
 	public function getSignByWordID( integer $wordID ) {
