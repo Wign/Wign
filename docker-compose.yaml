@@ -10,8 +10,6 @@ services:
       - "./apache/000-default.conf:/etc/apache2/sites-available/000-default.conf"
     ports:
       - "8080:80"
-    env_file:
-      - ./.env
 
   db:
     image: mysql:5.7
@@ -24,6 +22,17 @@ services:
       - "MYSQL_PASSWORD=pass"
     command: " --explicit_defaults_for_timestamp "
 
+  testdb:
+      image: mysql:5.7
+      ports:
+        - "5306:3306"
+      environment:
+        - "MYSQL_ROOT_PASSWORD=root"
+        - "MYSQL_DATABASE=db"
+        - "MYSQL_USER=user"
+        - "MYSQL_PASSWORD=pass"
+      command: " --explicit_defaults_for_timestamp "
+
   migrater:
     depends_on:
       - db
@@ -31,7 +40,7 @@ services:
     image: wign:app
     env_file:
       - ./.env
-    command: "sh -c './wait-for-it.sh db:3306 ; php artisan migrate:fresh --force --seed ; php artisan config:cache ; php artisan route:cache'"
+    command: "sh -c './wait-for-it.sh db:3306 ; php artisan migrate:fresh --force --seed'"
 
   aws:
     build:

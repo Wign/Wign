@@ -1,12 +1,16 @@
 Dockerfile
 docker-compose.yaml
 Dockerfile.aws
+Dockerfile.dev
 .ssh
 /resources/assets/sass
 webpack.mix.js
 package.json
 npm-shrinkwrap.json
 beamMeUpScotty.sh
+letTheMagicHappen.sh
+wait-for-it.sh
+testDatabase.sql
 _ide_helper.php
 .phpstorm.meta.php
 .env.example
