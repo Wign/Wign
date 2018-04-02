@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /ask/
 Disallow: /new/
+Disallow: /flagSignView/
 
 ## FILE
 Disallow: /robots.txt
