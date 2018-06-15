@@ -17,7 +17,7 @@ $contentTypes = [
 
 @section('content')
 
-    <h1>Rapportering af {{ $word->word or "et tegn" }}</h1>
+    <h1>Rapportering af {{ $word->word ?? "et tegn" }}</h1>
     @if (count($errors) > 0)
         <div class="msg--flash">
             <ul>
