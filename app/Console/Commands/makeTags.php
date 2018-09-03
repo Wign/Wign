@@ -58,6 +58,8 @@ class makeTags extends Command {
 
 			$bar->finish();
 
+			// TODO: Make a clear on the tag_relation database and delete all tags with no usages.
+
 			$this->output->success("All tags successfully inserted in database!");
 
 		}
