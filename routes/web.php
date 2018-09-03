@@ -64,6 +64,3 @@ Route::post( 'saveSign', 'SignController@saveSign' );
 Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
