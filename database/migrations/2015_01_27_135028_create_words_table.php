@@ -14,8 +14,11 @@ class CreateWordsTable extends Migration {
 	public function up() {
 		Schema::create( 'words', function ( Blueprint $table ) {
 			$table->increments( 'id' );
+			$table->integer( 'language_id' )->unique();
+			$table->integer( 'user_id' );
 			$table->string( 'word' )->unique();
 			$table->timestamps();
+			$table->softDeletes();
 		} );
 	}
 

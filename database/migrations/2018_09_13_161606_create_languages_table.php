@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaggablesTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateTaggablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('taggables', function (Blueprint $table) {
-            $table->increments( 'id' );
-            $table->integer('tag_id')->unique();
-            $table->integer('description_id')->unique();
+        Schema::create('languages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string( 'language' )->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateTaggablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taggables');
+        Schema::dropIfExists('languages');
     }
 }

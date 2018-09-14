@@ -18,8 +18,11 @@ class CreateUsersTable extends Migration
 			$table->string('name');
 			$table->string('email')->unique();
 			$table->string('password');
+			$table->boolean('admin');
+			$table->smallInteger('QCV')->unsigned(); // Quality Confidence Value
 			$table->rememberToken();
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 
