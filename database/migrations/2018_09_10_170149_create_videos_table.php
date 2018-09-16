@@ -23,7 +23,7 @@ class CreateVideosTable extends Migration
             $table->string( 'video_url' );
             $table->string( 'thumbnail_url' );
             $table->string( 'small_thumbnail_url' );
-            $table->integer( 'playings' );
+            $table->integer( 'playings' )->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
