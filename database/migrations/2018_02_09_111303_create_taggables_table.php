@@ -15,8 +15,8 @@ class CreateTaggablesTable extends Migration
     {
         Schema::create('taggables', function (Blueprint $table) {
             $table->increments( 'id' );
-            $table->integer('tag_id')->unique();
-            $table->integer('description_id')->unique();
+            $table->integer('tag_id')->unsigned();
+            $table->integer('description_id')->unsigned();
             $table->timestamps();
         });
     }

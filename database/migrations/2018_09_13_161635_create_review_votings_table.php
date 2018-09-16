@@ -15,8 +15,8 @@ class CreateReviewVotingsTable extends Migration
     {
         Schema::create('review_votings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer( 'review_id' )->unique();
-            $table->integer( 'user_id' )->unique();
+            $table->integer( 'review_id' )->unsigned();
+            $table->integer( 'user_id' )->unsigned();
             $table->boolean( 'approve' )->nullable($value = true);
             $table->timestamps();
         });

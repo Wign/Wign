@@ -14,8 +14,8 @@ class CreatePostsTable extends Migration {
 	public function up() {
 		Schema::create( 'posts', function ( Blueprint $table ) {
 			$table->increments( 'id' );
-			$table->integer( 'word_id' );
-			$table->integer( 'language_id');
+			$table->integer( 'word_id' )->unsigned();
+			$table->integer( 'language_id')->unsigned();
 			$table->smallInteger( 'il' )->unsigned(); //Integrity level
 			$table->timestamps();
 			$table->softDeletes();

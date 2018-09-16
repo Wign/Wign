@@ -15,8 +15,8 @@ class CreateRemotionVotingsTable extends Migration
     {
         Schema::create('remotion_votings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer( 'remotion_id' )->unique();
-            $table->integer( 'user_id' )->unique();
+            $table->integer( 'remotion_id' )->unsigned();
+            $table->integer( 'user_id' )->unsigned();
             $table->boolean( 'approve' )->nullable($value = true);
             $table->timestamps();
         });
