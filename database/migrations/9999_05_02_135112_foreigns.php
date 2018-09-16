@@ -28,7 +28,7 @@ class Foreigns extends Migration
             $table->foreign('language_id')->references('id')->on('languages');
         });
 
-        Schema::table('taggable', function (Blueprint $table) {
+        Schema::table('taggables', function (Blueprint $table) {
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->foreign('description_id')->references('id')->on('descriptions');
         });
@@ -86,7 +86,7 @@ class Foreigns extends Migration
             $table->dropForeign(['word_id', 'language_id']);
         });
 
-        Schema::table('taggable', function (Blueprint $table) {
+        Schema::table('taggables', function (Blueprint $table) {
             $table->dropForeign(['tag_id', 'description_id']);
         });
 
