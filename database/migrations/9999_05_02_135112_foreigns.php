@@ -13,10 +13,10 @@ class Foreigns extends Migration
      */
     public function up()
     {
-        Schema::table('aliases', function (Blueprint $table) {
-            $table->foreign('child_word_id')->references('id')->on('words');
-            $table->foreign('parent_word_id')->references('id')->on('words');
-        });
+        // Schema::table('aliases', function (Blueprint $table) {
+        //     $table->foreign('child_word_id')->references('id')->on('words');
+        //     $table->foreign('parent_word_id')->references('id')->on('words');
+        // });
 
         Schema::table('descriptions', function (Blueprint $table) {
             $table->foreign('post_id')->references('id')->on('posts');
