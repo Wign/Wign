@@ -162,7 +162,7 @@ return [
 		/*
 		 * Package Service Providers...
 		 */
-		// None here
+        Reliese\Coders\CodersServiceProvider::class,
 
 		/*
 		 * Application Service Providers...
