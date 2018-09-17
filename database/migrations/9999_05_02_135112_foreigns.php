@@ -24,7 +24,10 @@ class Foreigns extends Migration
         });
 
         Schema::table('posts', function (Blueprint $table) {
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->foreign('word_id')->references('id')->on('words');
+            $table->foreign('video_id')->references('id')->on('videos');
+            $table->foreign('description_id')->references('id')->on('descriptions');
             $table->foreign('language_id')->references('id')->on('languages');
         });
 
@@ -83,7 +86,7 @@ class Foreigns extends Migration
         });
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['word_id', 'language_id']);
+            $table->dropForeign(['creator_id', 'word_id', 'video_id', 'description_id', 'language_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {
