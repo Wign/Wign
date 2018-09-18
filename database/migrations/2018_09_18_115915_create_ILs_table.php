@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRemotionVotingsTable extends Migration
+class CreateILsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateRemotionVotingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('remotion_votings', function (Blueprint $table) {
+        Schema::create('ILs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer( 'remotion_id' )->unsigned()->unique();
-            $table->integer( 'voter_id' )->unsigned()->unique();
-            $table->boolean( 'approve' )->nullable($value = true);
+            $table->integer( 'post_id' )->unsigned();
+            $table->smallinteger( 'rank' )->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateRemotionVotingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('remotion_votings');
+        Schema::dropIfExists('ILs');
     }
 }

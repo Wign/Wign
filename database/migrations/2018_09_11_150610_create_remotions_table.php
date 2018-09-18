@@ -16,7 +16,6 @@ class CreateRemotionsTable extends Migration
         Schema::create('remotions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
-            $table->smallInteger( 'user_past_qcv' )->unsigned();
             $table->boolean( 'promotion' );
             $table->DateTime( 'effective_date' )->nullable($value = true);
             $table->timestamps();

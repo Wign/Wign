@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReviewsTable extends Migration
+class CreateBlacklistTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer( 'post_id' )->unsigned();
-            $table->DateTime( 'effective_date' )->nullable($value = true);
-            $table->timestamps();
+        Schema::create('blacklist', function (Blueprint $table) {
+            $table->increments( 'id' );
+      			$table->integer( 'user_id' )->unsigned()->unique();
+      			$table->text( 'reason' );
+      			$table->timestamps();
+      			$table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('blacklist');
     }
 }
