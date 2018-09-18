@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 18 Sep 2018 14:29:09 +0200.
+ * Date: Tue, 18 Sep 2018 15:32:09 +0200.
  */
 
-namespace App\Models;
+namespace App\Models\Base;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -32,26 +32,54 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Illuminate\Database\Eloquent\Collection $videos
  * @property \Illuminate\Database\Eloquent\Collection $words
  *
- * @package App\Models
+ * @package App\Models\Base
  */
 class User extends Eloquent
 {
-    // MASS ASSIGNMENT ------------------------------------------
 	use \Illuminate\Database\Eloquent\SoftDeletes;
 
-	protected $hidden = [
-		'password',
-		'remember_token'
+	protected $casts = [
+		'admin' => 'bool',
+		'QCV' => 'int'
 	];
 
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-		'admin',
-		'QCV',
-		'remember_token'
-	];
+	public function descriptions()
+	{
+		return $this->hasMany(\App\Models\Description::class);
+	}
 
-	// CREATE SCOPES --------------------------------------------
+	public function likes()
+	{
+		return $this->hasMany(\App\Models\Like::class);
+	}
+
+	public function posts()
+	{
+		return $this->hasMany(\App\Models\Post::class, 'creator_id');
+	}
+
+	public function remotion_votings()
+	{
+		return $this->hasMany(\App\Models\RemotionVoting::class);
+	}
+
+	public function remotions()
+	{
+		return $this->hasMany(\App\Models\Remotion::class);
+	}
+
+	public function review_votings()
+	{
+		return $this->hasMany(\App\Models\ReviewVoting::class);
+	}
+
+	public function videos()
+	{
+		return $this->hasMany(\App\Models\Video::class);
+	}
+
+	public function words()
+	{
+		return $this->hasMany(\App\Models\Word::class);
+	}
 }

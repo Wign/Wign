@@ -14,8 +14,8 @@ class IndexController extends Controller {
 	 * @link www.wign.dk
 	 * @return \Illuminate\View\View
 	 */
-	public function index() {
-		$words = Word::withSign();
+	public function index() {   //TODO
+		$words = Post::withSign();
 		$wordCount = $words->count();
 		$randomWord = $words->random( 1, $wordCount )->first();
 		$signCount = Sign::count();
@@ -30,7 +30,7 @@ class IndexController extends Controller {
 	/**
 	 * Show the about page
 	 *
-	 * @link www.wign.dk/om
+	 * @link www.wign.dk/about
 	 * @return \Illuminate\View\View
 	 */
 	public function about() {
@@ -50,7 +50,7 @@ class IndexController extends Controller {
 	/**
 	 * Show the policy page
 	 *
-	 * @link www.wign.dk/retningslinjer
+	 * @link www.wign.dk/policy
 	 * @return \Illuminate\View\View
 	 */
 	public function policy() {

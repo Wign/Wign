@@ -2,10 +2,10 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 18 Sep 2018 14:31:17 +0200.
+ * Date: Tue, 18 Sep 2018 15:33:55 +0200.
  */
 
-namespace App\Models;
+namespace App\Models\Base;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -25,18 +25,34 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Illuminate\Database\Eloquent\Collection $posts
  * @property \Illuminate\Database\Eloquent\Collection $taggables
  *
- * @package App\Models
+ * @package App\Models\Base
  */
 class Description extends Eloquent
 {
-    // MASS ASSIGNMENT ------------------------------------------
-	protected $fillable = [
-		'user_id',
-		'post_id',
-		'description'
+	use \Illuminate\Database\Eloquent\SoftDeletes;
+
+	protected $casts = [
+		'user_id' => 'int',
+		'post_id' => 'int'
 	];
 
-    // DEFINING RELATIONSHIPS -----------------------------------
+	public function post()
+	{
+		return $this->belongsTo(\App\Models\Post::class);
+	}
 
-    // CREATE SCOPES -----------------------------------------------
+	public function user()
+	{
+		return $this->belongsTo(\App\Models\User::class);
+	}
+
+	public function posts()
+	{
+		return $this->hasMany(\App\Models\Post::class);
+	}
+
+	public function taggables()
+	{
+		return $this->hasMany(\App\Models\Taggable::class);
+	}
 }
