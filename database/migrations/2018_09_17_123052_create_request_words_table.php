@@ -13,7 +13,7 @@ class CreateRequestWordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requestWords', function (Blueprint $table) {
+        Schema::create('request_words', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'word_id' )->unsigned()->unique();
             $table->integer( 'user_id' )->unsigned()->unique();
@@ -28,6 +28,6 @@ class CreateRequestWordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requestWords');
+        Schema::dropIfExists('request_words');
     }
 }
