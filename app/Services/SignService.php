@@ -7,7 +7,7 @@ use App\Word;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Class SignService
+ * Class PostService    // LARGE TODO
  * @package App\Services
  * @deprecated (Convert to "Post" that include the word too)
  */
