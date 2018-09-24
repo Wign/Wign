@@ -9,16 +9,16 @@ if ( isset( $word ) ) {
 	$url   = url( config( 'wign.urlPath.create' ) );
 }
 ?>
-@extends('layout.main')
+@extends('layouts.main')
 
 @section('title', $title)
 @section('open_graph')
-    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
+    @include('layouts.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
 @stop
 
 @section('extra_head_scripts')
     @include('lang.cameratag')
-    @include('layout.cameratag')
+    @include('layouts.cameratag')
     <script>
         /**
          * Observe on the camera

@@ -22,45 +22,82 @@ Route::redirect( 'opret', config( 'wign.urlPath.create' ), 301 );
 Route::redirect( 'requests', config( 'wign.urlPath.request' ), 301 );
 Route::redirect( 'seneste', config( 'wign.urlPath.recent' ), 301 );
 Route::redirect( 'alle', config( 'wign.urlPath.all' ), 301 ); // TODO: Redirect all traffic to "signs" - in new design
-Route::redirect( 'om', config( 'wign.urlPath.about' ), 301 );
-Route::redirect( 'help', config( 'wign.urlPath.help' ), 301 ); // Same...
-Route::redirect( 'retningslinjer', config( 'wign.urlPath.policy' ), 301 );
+Route::redirect( 'om', 'index.about', 301 );
+Route::redirect( 'retningslinjer', 'index.policy', 301 );
 
-// Index and static pages
-Route::get( '/', 'IndexController@index' );
-Route::get( config( 'wign.urlPath.about' ), 'IndexController@about' );
-Route::get( config( 'wign.urlPath.help' ), 'IndexController@help' );
-Route::get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
+// INDEX
+Route::get( '/',        ['uses' => 'IndexController@index', 'as' => 'index'] );
+Route::get( 'about',    ['uses' => 'IndexController@about', 'as' => 'index.about'] );
+Route::get( 'help',     ['uses' => 'IndexController@help', 'as' => 'index.help'] );
+Route::get( 'policy',   ['uses' => 'IndexController@policy', 'as' => 'index.policy'] );
 
-Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
-Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
-Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
+// USER
+Route::get( 'user',     ['uses' => 'UserController@index', 'as' => 'user.index']); //TODO Enter this user profile
 
-// Search route
-Route::post( 'redirect', 'SearchController@redirect' );
-Route::get( 'autocomplete', 'SearchController@autocomplete' );
+// SIGN (OLD)
+Route::get( 'recent', ['uses' => 'SignController@showRecent', 'as' => 'sign.recent'] );
+Route::get( 'all', ['uses' => 'SignController@showAll', 'as' => 'sign.all'] );
 
-// Dynamic routes
-Route::get( config( 'wign.urlPath.sign' ) . '/{word}', 'SignController@showSign' )->name( 'sign' );
-Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestController@store' );
-Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
 Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'SignController@createSign' )->name( 'new' );
-
-Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
-Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
-Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
+Route::get( config( 'wign.urlPath.sign' ) . '/{word}', 'SignController@showSign' )->name( 'sign' );
 
 Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
+Route::post( 'saveSign', 'SignController@saveSign' );
+Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
+
+// POST
+Route::get( 'edit/{post}', function ()  {return view('edit');})->name('post.edit');    //TODO Initial the edit on this post
+
+// REQUEST
+Route::get( 'request', ['uses' => 'RequestController@showList', 'as' => 'requests'] );
+Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestController@store' );
+
+// VOTE
+Route::post( 'createVote', 'VoteController@createVote' );
+Route::post( 'deleteVote', 'VoteController@deleteVote' );
+
+// TAG
+Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
+
+// SEARCH
+Route::get( 'autocomplete', 'SearchController@autocomplete' );
+Route::post( 'redirect', 'SearchController@redirect' );
 
 // Dynamic routes with empty string (Redirecting)
 Route::redirect( config( 'wign.urlPath.sign' ), '/' );
 Route::redirect( config( 'wign.urlPath.tags' ), '/' );
 Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
-// Post routes
-Route::post( 'createVote', 'VoteController@createVote' );
-Route::post( 'deleteVote', 'VoteController@deleteVote' );
-Route::post( 'saveSign', 'SignController@saveSign' );
-Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
+// AUTHENTICATION
+Auth::routes(); // /register and /login
+Route::post('login', [
+    'uses' => 'SigninController@signin',
+    'as' => 'Auth.signin'
+]);
+
+//////////////////////////////////////////////
+///////////////////EOF////////////////////////
+//////////////////////////////////////////////
+
+Route::get( 'post/{post}/vote', function () {return view('post.vote');})->name('post.vote');    //TODO Allow if the voter holding the valid ballot
+Route::get( 'user/{user}/vote', function () {return view('user.vote');})->name('user.vote');    //TODO Allow if the voter holding the valid ballot
+
+
+//TODO Check if the route works
+/*Route::post('create', function(\Illuminate\Http\Request $request, \Illuminate\Validation\Factory $validator)    {
+    if ($validation->fails())  {
+        return redirect()->back()->withErrors($validation);
+    }
+    return redirect()->route('index')->with('info', $request->input('word') . ' er oprettet, tak for dit bidrag.');
+})->name('post.create');
 
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
+
+Route::group(['prefix' => 'admin'], function () {   //TODO Enter admin page if allowed
+    Route::get('', [
+            'uses' => 'AdminController@getIndex',
+            'as' => 'admin.index'
+        ]);
+    Route::get( 'create', function ()   {return view('admin.create');})->name('admin.create');
+});*/
+

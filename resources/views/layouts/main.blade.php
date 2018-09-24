@@ -13,11 +13,11 @@
         <title>Wign :: @yield('title', 'Social tegnsprogsencyklopædi')</title>
 
         @section('open_graph')
-            @include('layout.openGraph')
+            @include('layouts.openGraph')
         @show
 
-        @include('layout.icons')
-        @include('layout.style')
+        @include('layouts.icons')
+        @include('layouts.style')
     
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -31,7 +31,7 @@
     </head>
     <body>
 
-        @include('layout.menu')
+        @include('partials.header')
         
         <div class="wrapper">
         

@@ -28,16 +28,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Remotion extends Eloquent
 {
     // MASS ASSIGNMENT ------------------------------------------
-	protected $casts = [
-		'user_id' => 'int',
-		'user_past_qcv' => 'int',
-		'promotion' => 'bool'
-	];
-
-	protected $dates = [
-		'effective_date'
-	];
-
 	protected $fillable = [
 		'user_id',
 		'user_past_qcv',

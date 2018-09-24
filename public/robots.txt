@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /request/
 Disallow: /opret/
+Disallow: /new/
 Disallow: /flagSignView/
 
 ## FILE

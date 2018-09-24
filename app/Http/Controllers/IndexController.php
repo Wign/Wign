@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App;
-Use App\Word;
-Use App\Sign;
+Use App\Models\Word;
+Use App\Models\Post;
 
 class IndexController extends Controller {
 
@@ -14,16 +14,16 @@ class IndexController extends Controller {
 	 * @link www.wign.dk
 	 * @return \Illuminate\View\View
 	 */
-	public function index() {   //TODO
-		$words = Post::withSign();
+	public function index() {   //TODO: udkommenter når modellerne foreligger klar
+/*		$words = Post::withVideo();
 		$wordCount = $words->count();
 		$randomWord = $words->random( 1, $wordCount )->first();
-		$signCount = Sign::count();
+		$videoCount = Sign::count();*/
 
 		return view( 'index' )->with( [
-			'randomWord' => $randomWord,
-			'signCount'  => $signCount,
-			'wordCount'  => $wordCount
+			'randomWord' => null, //$randomWord,
+			'signCount'  => 0, //$videoCount,
+			'wordCount'  => 0 //$wordCount
 		] );
 	}
 

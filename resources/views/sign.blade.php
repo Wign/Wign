@@ -12,7 +12,7 @@ $image_height = '360';
 
 @section('title', $title)
 @section('open_graph')
-    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc, 'video' => $video_url, 'image' => $image_url, 'width' => $image_width, 'height' => $image_height])
+    @include('layouts.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc, 'video' => $video_url, 'image' => $image_url, 'width' => $image_width, 'height' => $image_height])
 @stop
 
 @section('extra_head_scripts')
@@ -28,7 +28,7 @@ $image_height = '360';
             });
         });
     </script>
-    @include('layout.cameratag')
+    @include('layouts.cameratag')
 
 @stop
 
@@ -81,6 +81,11 @@ $image_height = '360';
                 <div class="desc">{!! nl2br($description) !!}</div>
             </div>
         @endforeach
+        <div class="row">
+            <div class="col-md-12 text-center">
+                {{ $signs->links() }}
+            </div>
+        </div>
     </div>
     @empty($hashtag)
         <a href="{{ URL::to( config('wign.urlPath.create'). '/' .  Helper::makeUrlString( $word ) ) }}"

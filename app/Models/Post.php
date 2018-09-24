@@ -15,9 +15,33 @@ class Post extends \App\Models\Base\Post
     ];
 
     // DEFINING RELATIONSHIPS -----------------------------------
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'post_id');
+    }
 
+    /*public function word()
+    {
+        return $this->belongsTo('App\Models\Word', 'post_id');
+    }*/
+
+    public function video()
+    {
+        return $this->hasMany('App\Models\Video', 'post_id');
+    }
+
+    public function description()
+    {
+        return $this->hasMany('App\Models\Description', 'post_id');
+    }
 
     // CREATE SCOPES --------------------------------------------
+    /**
+     * @method static content
+     * @return word_id, video_id, description_id
+     */
+
+
     /**
      * @method static noFlagged($query)
      * @deprecated

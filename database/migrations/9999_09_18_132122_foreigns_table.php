@@ -39,10 +39,7 @@ class ForeignsTable extends Migration
         Schema::table('posts', function (Blueprint $table) {
             $table->foreign('author_id')->references('id')->on('users');
             $table->foreign('word_id')->references('id')->on('words');
-            $table->foreign('video_id')->references('id')->on('videos');
-            $table->foreign('description_id')->references('id')->on('descriptions');
             $table->foreign('language_id')->references('id')->on('languages');
-            $table->foreign('IL_id')->references('id')->on('ILs');
         });
 
         Schema::table('QCVs', function (Blueprint $table) {
@@ -75,10 +72,6 @@ class ForeignsTable extends Migration
         Schema::table('taggables', function (Blueprint $table) {
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->foreign('description_id')->references('id')->on('descriptions');
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('QCV_id')->references('id')->on('QCVs');
         });
 
         Schema::table('videos', function (Blueprint $table) {
@@ -144,11 +137,7 @@ class ForeignsTable extends Migration
         });
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['author_id', 'word_id', 'video_id', 'description_id', 'language_id', 'IL_id']);
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['QCV_id']);
+            $table->dropForeign(['author_id', 'word_id', 'language_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {

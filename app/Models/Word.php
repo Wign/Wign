@@ -32,11 +32,6 @@ class Word extends Eloquent
     // MASS ASSIGNMENT ------------------------------------------
 	use \Illuminate\Database\Eloquent\SoftDeletes;
 
-	protected $casts = [
-		'language_id' => 'int',
-		'user_id' => 'int'
-	];
-
 	protected $fillable = [
 		'language_id',
 		'user_id',
@@ -46,29 +41,32 @@ class Word extends Eloquent
     // DEFINING RELATIONSHIPS -----------------------------------
 	public function language()
 	{
-		return $this->belongsTo(\App\Models\Language::class);
+		return $this->belongsTo('App\Models\Language');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class);
+		return $this->belongsTo('App\Models\User');
 	}
 
 	public function aliases()
 	{
-		return $this->hasMany(\App\Models\Alias::class, 'parent_word_id');
+		return $this->hasMany('App\Models\Alias', 'parent_word_id');
 	}
 
 	public function posts()
 	{
-		return $this->hasMany(\App\Models\Post::class);
+		return $this->hasMany('App\Models\Post');
 	}
 
-    public function request() {
-        return $this->hasMany( \App\Models\RequestWord::class );
+    public function requests()
+    {
+        return $this->hasMany( 'App\Models\RequestWord');
     }
 
     // CREATE SCOPES --------------------------------------------
+
+
     /**
      * Scopes down to words WITH posts
      *
@@ -77,8 +75,8 @@ class Word extends Eloquent
      * @return \Illuminate\Database\Eloquent\Builder
      */
 
-    public function scopeWithPost( $query ) {
-        return $query->has( 'posts' );
+    public function scopeWithVideo( $query ) {
+        return $query->has( 'videos' );
     }
 
     /**

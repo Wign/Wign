@@ -35,14 +35,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Video extends Eloquent
 {
     // MASS ASSIGNMENT ------------------------------------------
-	use \Illuminate\Database\Eloquent\SoftDeletes;
-
-	protected $casts = [
-		'user_id' => 'int',
-		'post_id' => 'int',
-		'playings' => 'int'
-	];
-
 	protected $fillable = [
 		'user_id',
 		'post_id',

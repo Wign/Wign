@@ -1,8 +1,8 @@
-@extends('layout.main')
+@extends('layouts.main')
 
 @section('title', __( 'common.Wign.About' ) )
 @section('open_graph')
-    @include('layout.openGraph', [ 'title' => __( 'common.Wign.About' ), 'url' => url( config('wign.urlPath.about') ) ])
+    @include('layouts.openGraph', [ 'title' => __( 'common.Wign.About' ), 'url' => url( config('wign.urlPath.about') ) ])
 @stop
 
 @section('content')

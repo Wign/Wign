@@ -37,6 +37,10 @@ class Description extends Eloquent
 	];
 
     // DEFINING RELATIONSHIPS -----------------------------------
+    public function tags()
+    {
+        return $this->belongsToMany('App\Model\Tag', 'taggables', 'description_id', 'tag_id')->withTimestamps();
+    }
 
     // CREATE SCOPES -----------------------------------------------
 }

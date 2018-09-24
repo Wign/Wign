@@ -17,7 +17,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $email
  * @property string $password
  * @property bool $admin
- * @property int $QCV
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -37,8 +36,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class User extends Eloquent
 {
     // MASS ASSIGNMENT ------------------------------------------
-	use \Illuminate\Database\Eloquent\SoftDeletes;
-
 	protected $hidden = [
 		'password',
 		'remember_token'
@@ -49,9 +46,42 @@ class User extends Eloquent
 		'email',
 		'password',
 		'admin',
-		'QCV',
 		'remember_token'
 	];
 
+    // DEFINING RELATIONSHIPS -----------------------------------
+
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
+    }
+
+    public function words()
+    {
+        return $this->hasMany(\App\Models\Word::class);
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(\App\Models\Video::class);
+    }
+
+    public function descriptions()
+    {
+        return $this->hasMany(\App\Models\Description::class);
+    }
 	// CREATE SCOPES --------------------------------------------
+
+
+    /**
+     * Scopes down to valid posts WITH video
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeWithVideo( $query ) {
+        return $query->has( 'videos' );
+    }
 }

@@ -25,8 +25,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Tag extends Eloquent
 {
     // MASS ASSIGNMENT ------------------------------------------
-	use \Illuminate\Database\Eloquent\SoftDeletes;
-
 	protected $fillable = [
 		'tag'
 	];

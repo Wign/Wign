@@ -50,7 +50,7 @@ class SignController extends Controller {
 		// If word exist in database
 		if ( isset( $wordModel ) ) {
 			$signs = $this->sign_service->getVotedSigns( $wordModel );
-			$signs = $signs->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
+			$signs = $signs->sortByDesc( 'num_votes' )->paginate(3); // Sort the signs according to the number of votes
 
 			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
 		}
@@ -243,7 +243,7 @@ class SignController extends Controller {
 				[
 					"fallback"     => "Videoen kan ses her: " . $video . "!",
 					"color"        => "good",
-					"pretext"      => "Et ny tegn er kommet!",
+					"pretext"      => "wikiTrust har lagt et tegn op, undskyld forstyrrelsen!",
 					"title"        => $word,
 					"title_link"   => $url,
 					"text"         => "Se <" . $video . "|videoen>!",

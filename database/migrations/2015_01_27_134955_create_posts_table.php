@@ -16,10 +16,7 @@ class CreatePostsTable extends Migration {
 			$table->increments( 'id' );
 			$table->integer( 'author_id' )->unsigned();
 			$table->integer( 'word_id' )->unsigned()->unique();
-			$table->integer( 'video_id' )->unsigned()->unique();
-			$table->integer( 'description_id' )->unsigned()->unique();
 			$table->integer( 'language_id')->unsigned();
-			$table->integer( 'IL_id' )->unsigned(); //Integrity level
 			$table->timestamps();
 		} );
 	}

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 18 Sep 2018 15:16:20 +0200.
+ * Date: Mon, 24 Sep 2018 14:37:28 +0200.
  */
 
 namespace App\Models\Base;
@@ -13,21 +13,22 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class Post
  * 
  * @property int $id
- * @property int $creator_id
+ * @property int $author_id
  * @property int $word_id
  * @property int $video_id
  * @property int $description_id
  * @property int $language_id
- * @property int $il
+ * @property int $IL_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
  * 
  * @property \App\Models\User $user
  * @property \App\Models\Description $description
+ * @property \App\Models\IL $i_l
  * @property \App\Models\Language $language
  * @property \App\Models\Video $video
  * @property \App\Models\Word $word
+ * @property \Illuminate\Database\Eloquent\Collection $i_l_s
  * @property \Illuminate\Database\Eloquent\Collection $descriptions
  * @property \Illuminate\Database\Eloquent\Collection $likes
  * @property \Illuminate\Database\Eloquent\Collection $reviews
@@ -37,25 +38,28 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Post extends Eloquent
 {
-	use \Illuminate\Database\Eloquent\SoftDeletes;
-
 	protected $casts = [
-		'creator_id' => 'int',
+		'author_id' => 'int',
 		'word_id' => 'int',
 		'video_id' => 'int',
 		'description_id' => 'int',
 		'language_id' => 'int',
-		'il' => 'int'
+		'IL_id' => 'int'
 	];
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class, 'creator_id');
+		return $this->belongsTo(\App\Models\User::class, 'author_id');
 	}
 
 	public function description()
 	{
 		return $this->belongsTo(\App\Models\Description::class);
+	}
+
+	public function i_l()
+	{
+		return $this->belongsTo(\App\Models\IL::class);
 	}
 
 	public function language()
@@ -71,6 +75,11 @@ class Post extends Eloquent
 	public function word()
 	{
 		return $this->belongsTo(\App\Models\Word::class);
+	}
+
+	public function i_l_s()
+	{
+		return $this->hasMany(\App\Models\IL::class);
 	}
 
 	public function descriptions()

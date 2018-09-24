@@ -10,18 +10,6 @@ class TagController extends Controller {
 	protected $tag;
 	protected $sign;
 
-
-	/**
-	 * TagController constructor.
-	 *
-	 * @param TagService $tag
-	 * @param SignService $sign
-	 */
-	public function __construct( TagService $tag, SignService $sign ) {
-		$this->tag  = $tag;
-		$this->sign = $sign;
-	}
-
 	public function findTags( $tag ) {
 		$theTag = $this->tag->findTagByName( $tag );
 

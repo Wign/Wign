@@ -26,14 +26,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Review extends Eloquent
 {
     // MASS ASSIGNMENT ------------------------------------------
-	protected $casts = [
-		'post_id' => 'int'
-	];
-
-	protected $dates = [
-		'effective_date'
-	];
-
 	protected $fillable = [
 		'post_id',
 		'effective_date'
