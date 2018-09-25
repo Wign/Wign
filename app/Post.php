@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App;
+use Illuminate\Database\Eloquent\Model;
 
-class Post extends \App\Models\Base\Post
+class Post extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     protected $fillable = [
-        'creator_id',
+        'user_id',
         'word_id',
-        'video_id',
-        'description_id',
         'language_id',
         'il'
     ];
@@ -17,30 +16,40 @@ class Post extends \App\Models\Base\Post
     // DEFINING RELATIONSHIPS -----------------------------------
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'post_id');
+        return $this->belongsTo('App\User', 'user_id');
     }
 
-    /*public function word()
+    public function word()
     {
-        return $this->belongsTo('App\Models\Word', 'post_id');
-    }*/
+        return $this->belongsTo('App\Word', 'word_id');
+    }
 
     public function video()
     {
-        return $this->hasMany('App\Models\Video', 'post_id');
+        return $this->hasMany('App\Video', 'post_id');
     }
 
     public function description()
     {
-        return $this->hasMany('App\Models\Description', 'post_id');
+        return $this->hasMany('App\Description', 'post_id');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany('App\User', 'likes', 'post_id', 'user_id')->withTimestamps();
+    }
+
+    public function ILs()
+    {
+        return $this->hasMany('App\IL', 'post_id');
     }
 
     // CREATE SCOPES --------------------------------------------
-    /**
-     * @method static content
-     * @return word_id, video_id, description_id
-     */
 
+    public function IL()
+    {
+        return $this->ILs()->whereNotNull('delete_at')->first('rank');
+    }
 
     /**
      * @method static noFlagged($query)

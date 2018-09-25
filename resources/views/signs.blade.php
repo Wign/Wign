@@ -57,8 +57,6 @@ $image_height = '360';
 				$description = e($sign->description);
 			}
 			?>
-
-
             <div class="sign" data-count="{{ $sign->num_votes }}" data-id="{{$sign->id}}">
                 @isset($hashtag)
                     <h2>{{ $sign->theWord }}</h2>

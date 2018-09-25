@@ -34,6 +34,10 @@ Route::get( 'policy',   ['uses' => 'IndexController@policy', 'as' => 'index.poli
 // USER
 Route::get( 'user',     ['uses' => 'UserController@index', 'as' => 'user.index']); //TODO Enter this user profile
 
+// POST
+Route::get( 'edit/{id}', ['uses' => 'PostController@getPostEdit', 'as' => 'post.edit'] );    //TODO Initial the edit on this post
+Route::get('post', [ 'uses' => 'PostController@getPost', 'as' => 'post.index']);
+
 // SIGN (OLD)
 Route::get( 'recent', ['uses' => 'SignController@showRecent', 'as' => 'sign.recent'] );
 Route::get( 'all', ['uses' => 'SignController@showAll', 'as' => 'sign.all'] );
@@ -44,9 +48,6 @@ Route::get( config( 'wign.urlPath.sign' ) . '/{word}', 'SignController@showSign'
 Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
 Route::post( 'saveSign', 'SignController@saveSign' );
 Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
-
-// POST
-Route::get( 'edit/{post}', function ()  {return view('edit');})->name('post.edit');    //TODO Initial the edit on this post
 
 // REQUEST
 Route::get( 'request', ['uses' => 'RequestController@showList', 'as' => 'requests'] );
@@ -70,10 +71,7 @@ Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
 // AUTHENTICATION
 Auth::routes(); // /register and /login
-Route::post('login', [
-    'uses' => 'SigninController@signin',
-    'as' => 'Auth.signin'
-]);
+Route::post('login', ['uses' => 'SigninController@signin', 'as' => 'Auth.signin'] );
 
 //////////////////////////////////////////////
 ///////////////////EOF////////////////////////

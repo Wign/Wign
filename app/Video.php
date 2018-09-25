@@ -5,9 +5,9 @@
  * Date: Tue, 18 Sep 2018 14:31:10 +0200.
  */
 
-namespace App\Models;
+namespace App;
 
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Video
@@ -32,9 +32,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  *
  * @package App\Models
  */
-class Video extends Eloquent
+class Video extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
+    use \Illuminate\Database\Eloquent\SoftDeletes;
+
 	protected $fillable = [
 		'user_id',
 		'post_id',
@@ -50,20 +52,23 @@ class Video extends Eloquent
     // DEFINING RELATIONSHIPS -----------------------------------
 	public function post()
 	{
-		return $this->belongsTo(\App\Models\Post::class);
+		return $this->belongsTo('App\Post', 'post_id');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class);
-	}
-
-	public function posts()
-	{
-		return $this->hasMany(\App\Models\Post::class);
+		return $this->belongsTo('App\User', 'post_id');
 	}
 
     // CREATE SCOPES --------------------------------------------
+    /**
+     *
+     */
+    public function scopeCountVideos($query)
+    {
+
+    }
+
     /**
      * Count the number og votes assigned to $signID
      *

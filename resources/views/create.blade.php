@@ -88,9 +88,9 @@ if ( isset( $word ) ) {
     @else
         <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
     @endif
+
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
         {{ csrf_field() }}
-
         @if( empty( old('wign01_uuid') ) )
             <camera id="wign01"
                 data-app-id="{{ config('wign.cameratag.id') }}"

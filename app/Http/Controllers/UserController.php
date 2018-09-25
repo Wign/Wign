@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class UserController extends Controller //TODO: Fill the controller
 {
 
-    public function userCreate(Request $request ) { //TODO: fill the data when creating this user
+    public function userCreate(Request $request )  //TODO: fill the data when creating this user
+    {
         /**
          * - check the blacklist and email
          * if negative do
@@ -30,25 +31,4 @@ class UserController extends Controller //TODO: Fill the controller
 
        return null;
     }
-/*
-    public function adminCreate(Request $request ) { //TODO: fill the data when creating this user
-        /**
-         *  create the user with filled data and set QCV to 0
-
-        dd('it works');
-        $this->validate($request,[
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required|min:8'
-        ]);
-        $user = new User([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'admin' => true
-        ]);
-        $user->save();
-
-        return null;
-    }*/
 }

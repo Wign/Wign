@@ -5,9 +5,9 @@
  * Date: Tue, 18 Sep 2018 14:29:21 +0200.
  */
 
-namespace App\Models;
+namespace App;
 
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Word
@@ -20,14 +20,14 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
  * 
- * @property \App\Models\Language $language
- * @property \App\Models\User $user
+ * @property \App\Language $language
+ * @property \App\User $user
  * @property \Illuminate\Database\Eloquent\Collection $aliases
  * @property \Illuminate\Database\Eloquent\Collection $posts
  *
  * @package App\Models
  */
-class Word extends Eloquent
+class Word extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
 	use \Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,29 +39,30 @@ class Word extends Eloquent
 	];
 
     // DEFINING RELATIONSHIPS -----------------------------------
-	public function language()
+	// Incoming relations
+    public function language()
 	{
-		return $this->belongsTo('App\Models\Language');
+		return $this->belongsTo('App\Language', 'language_id');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo('App\Models\User');
+		return $this->belongsTo('App\User', 'user_id');
 	}
-
+    // Outcoming relations
 	public function aliases()
 	{
-		return $this->hasMany('App\Models\Alias', 'parent_word_id');
+		return $this->hasMany('App\Alias', 'parent_word_id');
 	}
 
 	public function posts()
 	{
-		return $this->hasMany('App\Models\Post');
+		return $this->hasMany('App\Post',  'word_id');
 	}
 
     public function requests()
     {
-        return $this->hasMany( 'App\Models\RequestWord');
+        return $this->hasMany( 'App\RequestWord', 'word_id');
     }
 
     // CREATE SCOPES --------------------------------------------

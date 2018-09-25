@@ -1,13 +1,7 @@
 <?php
 
-/**
- * Created by Reliese Model.
- * Date: Tue, 18 Sep 2018 14:29:09 +0200.
- */
-
-namespace App\Models;
-
-use Reliese\Database\Eloquent\Model as Eloquent;
+namespace App;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User
@@ -33,7 +27,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  *
  * @package App\Models
  */
-class User extends Eloquent
+class User extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
 	protected $hidden = [
@@ -53,26 +47,40 @@ class User extends Eloquent
 
     public function posts()
     {
-        return $this->hasMany(\App\Models\Post::class);
+        return $this->hasMany('App\Post');
     }
 
     public function words()
     {
-        return $this->hasMany(\App\Models\Word::class);
+        return $this->hasMany('App\Word');
     }
 
     public function videos()
     {
-        return $this->hasMany(\App\Models\Video::class);
+        return $this->hasMany('App\Video');
     }
 
     public function descriptions()
     {
-        return $this->hasMany(\App\Models\Description::class);
+        return $this->hasMany('App\Description');
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany('App\Post', 'likes', 'user_id', 'post_id')->withTimestamps();
+    }
+
+    public function QCVs()
+    {
+        return $this->hasMany('App\QCV', 'user_id');
+    }
+
 	// CREATE SCOPES --------------------------------------------
 
-
+    public function QCV()
+    {
+        return $this->QCVs()->whereNotNull('delete_at')->first('rank');
+    }
     /**
      * Scopes down to valid posts WITH video
      *
