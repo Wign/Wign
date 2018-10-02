@@ -92,13 +92,14 @@ class ForeignTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::table('aliases', function (Blueprint $table) {
-            $table->dropForeign(['child_word_id', 'parent_word_id']);
+            $table->dropForeign(['child_word_id']);
+            $table->dropForeign(['parent_word_id']);
         });
 
         Schema::table('descriptions', function (Blueprint $table) {
-            $table->dropForeign(['post_id', 'user_id']);
+            $table->dropForeign(['post_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('ILs', function (Blueprint $table) {
@@ -106,11 +107,13 @@ class ForeignTable extends Migration
         });
 
         Schema::table('likes', function (Blueprint $table) {
-            $table->dropForeign(['user_id', 'post_id']);
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['post_id']);
         });
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id', 'language_id']);
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['language_id']);
         });
 
         Schema::table('QCVs', function (Blueprint $table) {
@@ -122,11 +125,13 @@ class ForeignTable extends Migration
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
-            $table->dropForeign(['remotion_id', 'user_id']);
+            $table->dropForeign(['remotion_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('request_words', function (Blueprint $table) {
-            $table->dropForeign(['word_id', 'user_id']);
+            $table->dropForeign(['word_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('reviews', function (Blueprint $table) {
@@ -134,24 +139,28 @@ class ForeignTable extends Migration
         });
 
         Schema::table('review_votings', function (Blueprint $table) {
-            $table->dropForeign(['review_id', 'user_id']);
+            $table->dropForeign(['review_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {
-            $table->dropForeign(['tag_id', 'description_id']);
+            $table->dropForeign(['tag_id']);
+            $table->dropForeign(['description_id']);
         });
 
         Schema::table('videos', function (Blueprint $table) {
-            $table->dropForeign(['user_id', 'post_id']);
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['post_id']);
         });
 
         Schema::table('wordlinks', function (Blueprint $table) {
-            $table->dropForeign(['word_id', 'post_id', 'user_id']);
+            $table->dropForeign(['word_id']);
+            $table->dropForeign(['post_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('words', function (Blueprint $table) {
             $table->dropForeign(['language_id']);
         });
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
