@@ -80,6 +80,8 @@ class User extends Authenticatable {
     protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
+    //TODO: bool pending remotion
+    
     public function words()
     {
         return $this->hasMany('App\Word', 'user_id');

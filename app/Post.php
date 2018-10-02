@@ -90,6 +90,7 @@ class Post extends Model
 
     // CREATE SCOPES --------------------------------------------
     //TODO: Count num likes
+    //TODO: bool pending review
 
     public function ScopeCurrentIL()
     {
