@@ -42,7 +42,7 @@ class ForeignsTable extends Migration
         });
 
         Schema::table('remotions', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('QCV_id')->references('id')->on('QCVs');
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
@@ -56,7 +56,7 @@ class ForeignsTable extends Migration
         });
 
         Schema::table('reviews', function (Blueprint $table) {
-            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('IL_id')->references('id')->on('ILs');
         });
 
         Schema::table('review_votings', function (Blueprint $table) {
@@ -117,7 +117,7 @@ class ForeignsTable extends Migration
         });
 
         Schema::table('remotions', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
+            $table->dropForeign(['QCV_id']);
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
@@ -129,7 +129,7 @@ class ForeignsTable extends Migration
         });
 
         Schema::table('reviews', function (Blueprint $table) {
-            $table->dropForeign(['post_id']);
+            $table->dropForeign(['IL_id']);
         });
 
         Schema::table('review_votings', function (Blueprint $table) {
