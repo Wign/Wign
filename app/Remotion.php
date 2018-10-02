@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereUserId($value)
  * @mixin \Eloquent
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereDeletedAt($value)
  */
 class Remotion extends Model
 {

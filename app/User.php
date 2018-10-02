@@ -44,6 +44,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
+ * @property int $blacklisted
+ * @property string $reason
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBlacklisted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereReason($value)
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
@@ -118,7 +122,7 @@ class User extends Authenticatable {
 
     public function requestWords()
     {
-        return $this->belongsToMany('App\RequestWord', 'request_words', 'user_id', 'word_id');
+        return $this->belongsToMany('App\Word', 'request_words', 'user_id', 'word_id');
     }
 
     public function QCVs()

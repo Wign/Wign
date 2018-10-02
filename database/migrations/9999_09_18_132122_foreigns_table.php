@@ -18,10 +18,6 @@ class ForeignsTable extends Migration
             $table->foreign('parent_word_id')->references('id')->on('words');
         });
 
-        Schema::table('blacklist', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
-        });
-
         Schema::table('descriptions', function (Blueprint $table) {
             $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
@@ -98,10 +94,6 @@ class ForeignsTable extends Migration
     {
         Schema::table('aliases', function (Blueprint $table) {
             $table->dropForeign(['child_word_id', 'parent_word_id']);
-        });
-
-        Schema::table('blacklist', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
         });
 
         Schema::table('descriptions', function (Blueprint $table) {

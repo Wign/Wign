@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
  */
 class Review extends Model
 {

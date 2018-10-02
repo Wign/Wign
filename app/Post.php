@@ -35,6 +35,10 @@ use Illuminate\Support\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post description()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post video()
+ * @property mixed $num_votes
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post activeReviews()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post findByWordID($id)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post noFlagged()
  */
 class Post extends Model
 {
