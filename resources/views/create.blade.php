@@ -9,16 +9,16 @@ if ( isset( $word ) ) {
 	$url   = url( config( 'wign.urlPath.create' ) );
 }
 ?>
-@extends('layouts.main')
+@extends('layout.main')
 
 @section('title', $title)
 @section('open_graph')
-    @include('layouts.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
+    @include('layout.openGraph', ['title' => $title, 'url' => $url, 'desc' => $desc])
 @stop
 
 @section('extra_head_scripts')
     @include('lang.cameratag')
-    @include('layouts.cameratag')
+    @include('layout.cameratag')
     <script>
         /**
          * Observe on the camera
@@ -88,9 +88,10 @@ if ( isset( $word ) ) {
     @else
         <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
     @endif
-
     <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
+        <input type="submit" value="Ret" id="btnEdit" style="float:right">
         {{ csrf_field() }}
+
         @if( empty( old('wign01_uuid') ) )
             <camera id="wign01"
                 data-app-id="{{ config('wign.cameratag.id') }}"

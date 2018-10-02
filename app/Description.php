@@ -1,42 +1,49 @@
 <?php
 
-/**
- * Created by Reliese Model.
- * Date: Tue, 18 Sep 2018 14:31:17 +0200.
- */
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Description
- * 
+ * App\Description
+ *
  * @property int $id
  * @property int $user_id
  * @property int $post_id
  * @property string $description
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * 
- * @property \App\Post $post
- * @property \App\User $user
- * @property \Illuminate\Database\Eloquent\Collection $posts
- * @property \Illuminate\Database\Eloquent\Collection $taggables
- *
- * @package App\Models
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \App\Post $post
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tag[] $tags
+ * @property-read \App\User $user
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Description onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description wherePostId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Description withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Description withoutTrashed()
+ * @mixin \Eloquent
  */
 class Description extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
-    use \Illuminate\Database\Eloquent\SoftDeletes;
+    use SoftDeletes;
 
-	protected $fillable = [
-		'user_id',
-		'post_id',
-		'description'
-	];
+    protected $fillable = [
+        'user_id',
+        'post_id',
+        'description'
+    ];
+
+    protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
     public function tags()

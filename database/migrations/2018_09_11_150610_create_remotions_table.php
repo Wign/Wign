@@ -17,8 +17,8 @@ class CreateRemotionsTable extends Migration
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
             $table->boolean( 'promotion' );
-            $table->DateTime( 'effective_date' )->nullable($value = true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

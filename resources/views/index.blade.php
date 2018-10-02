@@ -1,7 +1,7 @@
-@extends('layouts.main')
+@extends('layout.main')
 
 @section('open_graph')
-    @include('layouts.openGraph', [
+    @include('layout.openGraph', [
         'desc' => __('text.index.desc')
     ])
 @stop
@@ -42,9 +42,9 @@ $(function() {
 
     <img src="{{asset('images/wign_logo_new.png')}}" alt="{{__('common.Wign.logo')}}" class="wign logo-index">
     <h1 class="headline">@lang('common.wign.jargon')</h1>
-    @include('layouts.search', ['randomWord' => $randomWord])
+    @include('layout.search', ['randomWord' => $randomWord])
     </div>
 
-    @include('partials.footer',['signCount' => $signCount])
+    {{--@include('layout.footer',['signCount' => $signCount])--}}
 
 @stop

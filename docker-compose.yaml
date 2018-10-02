@@ -40,7 +40,7 @@ services:
     image: wign:app
     env_file:
       - ./.env
-    command: "sh -c './wait-for-it.sh db:3306 ; php artisan migrate:fresh --force'"
+    command: "sh -c './wait-for-it.sh db:3306 ; php artisan migrate:fresh --force --seed'"
 
   aws:
     build:

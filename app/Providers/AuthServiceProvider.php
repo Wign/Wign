@@ -25,9 +25,6 @@ class AuthServiceProvider extends ServiceProvider
 	{
 		$this->registerPolicies();
 
-		Gate::define('update-post', function($user, $post)  {
-		    //TODO: check user->qcv->lvl >= post->il->lvl
-		    return null;
-        });
+		//
 	}
 }

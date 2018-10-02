@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App;
-Use App\Models\Word;
-Use App\Models\Post;
+Use App\Word;
+Use App\Sign;
 
 class IndexController extends Controller {
 
@@ -14,15 +14,16 @@ class IndexController extends Controller {
 	 * @link www.wign.dk
 	 * @return \Illuminate\View\View
 	 */
-	public function index() {   //TODO: udkommenter når modellerne foreligger klar
-/*		$words = Post::withVideo();
-		$wordCount = $words->count();
-		$randomWord = $words->random( 1, $wordCount )->first();
-		$videoCount = Sign::count();*/
+	public function index() {
+		/*$words = Word::withSign();
+		//$wordCount = $words->count();
+		//$randomWord = $words->random( 1, $wordCount )->first();
+		//$signCount = Sign::count();
+		*/
 
 		return view( 'index' )->with( [
 			'randomWord' => null, //$randomWord,
-			'signCount'  => 0, //$videoCount,
+			'signCount'  => 0, //$signCount,
 			'wordCount'  => 0 //$wordCount
 		] );
 	}
@@ -30,7 +31,7 @@ class IndexController extends Controller {
 	/**
 	 * Show the about page
 	 *
-	 * @link www.wign.dk/about
+	 * @link www.wign.dk/om
 	 * @return \Illuminate\View\View
 	 */
 	public function about() {
@@ -50,22 +51,12 @@ class IndexController extends Controller {
 	/**
 	 * Show the policy page
 	 *
-	 * @link www.wign.dk/policy
+	 * @link www.wign.dk/retningslinjer
 	 * @return \Illuminate\View\View
 	 */
 	public function policy() {
 		$lang = App::getLocale();
 		return view( $lang.'.policy' );
-	}
-
-	/**
-	 * Show the "You're blacklisted" page
-	 *
-	 * @link www.wign.dk/blacklist
-	 * @return \Illuminate\View\View
-	 */
-	public function blacklist() {
-		return view( 'blacklist' );
 	}
 
 }

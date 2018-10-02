@@ -16,8 +16,8 @@ class CreateReviewsTable extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'post_id' )->unsigned();
-            $table->DateTime( 'effective_date' )->nullable($value = true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

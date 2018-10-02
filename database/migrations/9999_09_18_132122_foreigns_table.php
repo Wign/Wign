@@ -38,7 +38,6 @@ class ForeignsTable extends Migration
 
         Schema::table('posts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('word_id')->references('id')->on('words');
             $table->foreign('language_id')->references('id')->on('languages');
         });
 
@@ -79,8 +78,13 @@ class ForeignsTable extends Migration
             $table->foreign('post_id')->references('id')->on('posts');
         });
 
-        Schema::table('words', function (Blueprint $table) {
+        Schema::table('wordlinks', function (Blueprint $table) {
+            $table->foreign('word_id')->references('id')->on('words');
+            $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
+        });
+
+        Schema::table('words', function (Blueprint $table) {
             $table->foreign('language_id')->references('id')->on('languages');
         });
     }
@@ -112,6 +116,10 @@ class ForeignsTable extends Migration
             $table->dropForeign(['user_id', 'post_id']);
         });
 
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropForeign(['user_id', 'language_id']);
+        });
+
         Schema::table('QCVs', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
@@ -136,10 +144,6 @@ class ForeignsTable extends Migration
             $table->dropForeign(['review_id', 'user_id']);
         });
 
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id', 'word_id', 'language_id']);
-        });
-
         Schema::table('taggables', function (Blueprint $table) {
             $table->dropForeign(['tag_id', 'description_id']);
         });
@@ -148,8 +152,12 @@ class ForeignsTable extends Migration
             $table->dropForeign(['user_id', 'post_id']);
         });
 
+        Schema::table('wordlinks', function (Blueprint $table) {
+            $table->dropForeign(['word_id', 'post_id', 'user_id']);
+        });
+
         Schema::table('words', function (Blueprint $table) {
-            $table->dropForeign(['user_id', 'language_id']);
+            $table->dropForeign(['language_id']);
         });
     }
 }
