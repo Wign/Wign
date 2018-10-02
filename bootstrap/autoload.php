@@ -1,5 +1,4 @@
 <?php
-// @TODO REMOVE??
 //define('LARAVEL_START', microtime(true));
 
 /*

@@ -18,7 +18,7 @@ Route::redirect( 'tegn', '/', 301 );
 Route::redirect( 'opret', config( 'wign.urlPath.create' ), 301 );
 Route::redirect( 'requests', config( 'wign.urlPath.request' ), 301 );
 Route::redirect( 'seneste', config( 'wign.urlPath.recent' ), 301 );
-Route::redirect( 'alle', config( 'wign.urlPath.all' ), 301 ); // TODO: Redirect all traffic to "signs" - in new design
+Route::redirect( 'alle', config( 'wign.urlPath.all' ), 301 );
 Route::redirect( 'om', config( 'wign.urlPath.about' ), 301 );
 Route::redirect( 'help', config( 'wign.urlPath.help' ), 301 ); // Same...
 Route::redirect( 'retningslinjer', config( 'wign.urlPath.policy' ), 301 );

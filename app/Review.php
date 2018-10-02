@@ -34,7 +34,7 @@ class Review extends Model
     use SoftDeletes;
 
     protected $fillable = array(
-        'post_id',
+        'IL_id',
 
     );
 
@@ -44,6 +44,11 @@ class Review extends Model
     public function voters()
     {
         return $this->belongsToMany('App\User', 'review_voting', 'review_id', 'user_id')->withTimestamps();
+    }
+
+    public function IL()
+    {
+        return $this->belongsTo('App\IL', 'IL_id');
     }
 
     // CREATE SCOPES -----------------------------------------------

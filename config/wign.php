@@ -38,7 +38,7 @@ return [
 		'help'          => 'help',
 		'blacklist'     => 'blacklist',
 		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
-		'results'       => 'results', // The search result page TODO: BETTER WITH www.wign.dk/search?q=xxx&y=xxx !!
+		'results'       => 'results', // The search result page
 		'tags'          => 'hashtag',
 	]
 ];

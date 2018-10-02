@@ -42,8 +42,8 @@ class PostController extends Controller
             'word' => 'required',
             'video_uuid' => 'required'
         ]);
-        //TODO: Auth the user and store in $user
-        //TODO: Check if the word exists in DB (either with another post or as request
+        //Task: Auth the user and store in $user
+        //Task: Check if the word exists in DB (either with another post or as request
         $word = new Word([
             'string' => $request->input('word'),
             'user_id' => null,  // Auth::check()

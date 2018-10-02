@@ -7,7 +7,6 @@ use App\Word;
 
 class WordController extends Controller
 {
-    //TODO: redirect from searchEngine, show listOfRequests, new/append request
 
     /**
      * Get all words with assigned sign

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
  * App\Post
@@ -90,13 +89,24 @@ class Post extends Model
     }
 
     // CREATE SCOPES --------------------------------------------
+    //TODO: Count num likes
 
     public function ScopeCurrentIL()
     {
         return $this->ILs()->first('rank');
     }
 
-    public function scopeVideo()
+    public function scopeCurrentWord()
+    {
+        return $this->words()->first();
+    }
+
+    public function scopeDeletedWords()
+    {
+        return Word::onlyTrashed()->word()->find($this->id)->get();
+    }
+
+    public function scopeCurrentVideo()
     {
         return $this->videos()->first();
     }
@@ -106,7 +116,7 @@ class Post extends Model
         return Video::onlyTrashed()->post()->find($this->id)->get();
     }
     
-    public function scopeDescription()
+    public function scopeCurrentDescription()
     {
         return $this->descriptions()->first();
     }

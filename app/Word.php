@@ -83,7 +83,8 @@ class Word extends Model {
 
 	// CREATE SCOPES -----------------------------------------------
 
-
+    //TODO: Scope words with sign
+    //TODO: Scope request words
 
 	/**
 	 * Scopes down to words WITH signs
@@ -91,6 +92,7 @@ class Word extends Model {
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
 	 */
 
 	public function scopeWithSign( $query ) {
@@ -103,6 +105,7 @@ class Word extends Model {
 	 * @param \Illuminate\Database\Eloquent\Builder $query
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
 	 */
 
 	public function scopeWithoutSign( $query ) {

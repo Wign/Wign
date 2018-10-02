@@ -38,4 +38,6 @@ class Language extends Model
     }
 
     // CREATE SCOPES -----------------------------------------------
+    //TODO: Count num videos ($id)
+    //TODO: count num words ($id)
 }

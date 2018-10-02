@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Remotion
@@ -27,9 +28,10 @@ use Illuminate\Database\Eloquent\Model;
 class Remotion extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
+    use SoftDeletes;
 
     protected $fillable = array(
-        'user_id',
+        'QCV_id',
         'promotion'
     );
 
@@ -41,6 +43,12 @@ class Remotion extends Model
         return $this->belongsToMany('App\User', 'remotion_voting', 'remotion_id', 'user_id')->withTimestamps();
     }
 
-    // CREATE SCOPES -----------------------------------------------
+    public function QCV()
+    {
+        return $this->belongsTo('App\QCV', 'QCV_id');
+    }
 
+    // CREATE SCOPES -----------------------------------------------
+    //TODO count num assigned votes
+    //TODO count num approved votes
 }

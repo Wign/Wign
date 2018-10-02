@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ForeignsTable extends Migration
+class ForeignTable extends Migration
 {
     /**
      * Run the migrations.
@@ -92,6 +92,7 @@ class ForeignsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::table('aliases', function (Blueprint $table) {
             $table->dropForeign(['child_word_id', 'parent_word_id']);
         });
@@ -151,5 +152,6 @@ class ForeignsTable extends Migration
         Schema::table('words', function (Blueprint $table) {
             $table->dropForeign(['language_id']);
         });
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

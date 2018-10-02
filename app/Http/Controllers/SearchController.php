@@ -28,8 +28,6 @@ class SearchController extends Controller {
 	/**
 	 * Redirects all search queries to /tegn/{word} using SignController
 	 *
-	 * @todo Later we will add hashtags and thus must redirects to /results/{word} including hashtags and other search results.
-	 *
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
