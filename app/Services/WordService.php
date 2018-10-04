@@ -32,6 +32,7 @@ class WordService {
 	 * @param string $word
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model|null|object|static
+     * @deprecated
 	 */
 	public function getWordByWord( string $word ) {
 		return Word::whereWord( $word )->withSign()->first();
@@ -66,6 +67,7 @@ class WordService {
 	 * @param string $word
 	 *
 	 * @return array|null
+     * @deprecated
 	 */
 	public function getAlikeWords( string $word, int $count ) {
 		$max_levenshtein = 5;

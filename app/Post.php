@@ -4,45 +4,37 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
  * App\Post
  *
  * @property int $id
  * @property int $user_id
- * @property int $word_id
- * @property int $language_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $descriptions
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $likes
- * @property-read \App\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
- * @property-read \App\Word $word
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedVideos()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereLanguageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereWordId($value)
- * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\IL[] $ILs
  * @property-read \App\User $creator
- * @property-read \App\Language $language
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $words
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post description()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post video()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $descriptions
  * @property mixed $num_votes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $likes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $words
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post activeReviews()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post findByWordID($id)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post noFlagged()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post countVotes($signID)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentDescription()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentVideo()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentWord()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedVideos()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedWords()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post findByWordID($id)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post noFlagged()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
+ * @mixin \Eloquent
  */
 class Post extends Model
 {
@@ -91,6 +83,11 @@ class Post extends Model
     //TODO: Count num likes
     //TODO: bool pending review
 
+    public function ScopeCountLikes()
+    {
+        return $this->likes()->count();
+    }
+
     public function ScopeCurrentIL()
     {
         return $this->ILs()->first('rank');
@@ -103,7 +100,7 @@ class Post extends Model
 
     public function scopeDeletedWords()
     {
-        return Word::onlyTrashed()->word()->find($this->id)->get();
+        return Word::onlyTrashed()->posts()->find($this->id)->get();
     }
 
     public function scopeCurrentVideo()

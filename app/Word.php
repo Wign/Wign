@@ -3,42 +3,37 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 /**
  * App\Word
  *
  * @property int $id
  * @property string $word
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\RequestWord[] $request
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sign[] $signs
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word getQueriedWord($word = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word latest($num = 25)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word random($num = 1)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withSign()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
- * @mixin \Eloquent
- * @property int $language_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $alias_children
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $alias_parents
- * @property-read \App\Language $language
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $requests
  * @property-read \App\User $user
  * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word getQueriedWord($word = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word latest($num = 25)
  * @method static \Illuminate\Database\Query\Builder|\App\Word onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word random($num = 1, $count = null)
  * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereLanguageId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Word withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word countWithPost()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withPost()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withSign()
+ * @method static \Illuminate\Database\Query\Builder|\App\Word withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
+ * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
+ * @mixin \Eloquent
  */
 class Word extends Model {
 
@@ -84,7 +79,7 @@ class Word extends Model {
 
     public function scopeWithPost()
     {
-        return Post::words()->get()->count();
+        return Post::words()->get();
     }
 
 	/**

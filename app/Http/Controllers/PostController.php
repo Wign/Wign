@@ -13,7 +13,7 @@ use App\Tag;
 use URL;
 use App\Helpers\Helper;
 
-//define( 'REGEXP', config( 'wign.tagRegexp' ) );
+define( 'REGEXP', config( 'wign.tagRegexp' ) );
 
 class PostController extends Controller
 {
@@ -129,20 +129,21 @@ class PostController extends Controller
      */
     public function getPosts( $word ) {
         $word      = Helper::underscoreToSpace( $word );
-        $wordModel = $this->word_service->getWordByWord( $word );
+        $wordModel = Word::whereWord( $word )->withPost()->first();
 
         // If word exist in database
         if ( isset( $wordModel ) ) {
-            $signs = $this->sign_service->getVotedSigns( $wordModel );
-            $signs = $signs->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
+            $posts = $wordModel->posts()->get();
+            // $posts = $this->sign_service->getVotedSigns( $wordModel );
+            // $posts = $posts->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
 
-            return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
+            return view( 'post' )->with( array( 'word' => $wordModel->word, 'posts' => $posts ) );
         }
 
         // If no word exist in database; make a list of suggested word and display the 'no sign' view.
-        $suggestWords = $this->word_service->getAlikeWords( $word, 5 );
+        $suggestWords = $this->getAlikeWords( $word, 5 );
 
-        return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
+        return view( 'nopost' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
     }
 
     /**
@@ -169,5 +170,45 @@ class PostController extends Controller
 
 
     //////////////////////
+
+    /**
+     * Searching for words that looks alike the queried $word
+     * Current uses both "LIKE" mysql query and Levenshtein distance, and return $count words with the least distance to $word
+     *
+     * @param string $word
+     *
+     * @return array|null
+     */
+    private function getAlikeWords( string $word, int $count ) {
+        $max_levenshtein = 5;
+        $min_levenshtein = PHP_INT_MAX;
+        $words           = Word::withSign()->get();
+        $tempArr         = array();
+
+        foreach ( $words as $compareWord ) {
+            $levenDist = levenshtein( strtolower( $word ), strtolower( $compareWord->word ) );
+            if ( $levenDist > $max_levenshtein || $levenDist > $min_levenshtein ) {
+                continue;
+            } else {
+                $tempArr[ $compareWord->word ] = $levenDist;
+                if ( count( $tempArr ) == $count + 1 ) {
+                    asort( $tempArr );
+                    $min_levenshtein = array_pop( $tempArr );
+                }
+            }
+        };
+
+        if ( empty( $tempArr ) ) {
+            return null; // There are none word with nearly the same "sounding" as $word
+        } else {
+            asort( $tempArr );
+            $suggestWords = [];
+            foreach ( $tempArr as $key => $value ) {
+                $suggestWords[] = $key;
+            }
+
+            return $suggestWords;
+        }
+    }
 
 }

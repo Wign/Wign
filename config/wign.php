@@ -27,17 +27,17 @@ return [
 	|
 	*/
 	'urlPath'   => [
-		'sign'          => 'sign',
+		'sign'          => 'post',
 		'create'        => 'new',
 		'createRequest' => 'request', // Redirecting page to create request
 		'request'       => 'ask', // Page showing all requests
-		'recent'        => 'signs',
+		'recent'        => 'posts',
 		'all'           => 'all',
 		'about'         => 'about',
 		'policy'        => 'policy',
 		'help'          => 'help',
 		'blacklist'     => 'blacklist',
-		'flagSign'      => 'flagSignView', // Best with a popup window and not a separate url
+		'flagSign'      => 'flagPostView', // Best with a popup window and not a separate url
 		'results'       => 'results', // The search result page
 		'tags'          => 'hashtag',
 	]

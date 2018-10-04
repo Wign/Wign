@@ -6,7 +6,7 @@ use App\Sign;
 use App\Tag;
 use URL;
 
-define( 'REGEXP', config( 'wign.tagRegexp' ) );
+//define( 'REGEXP', config( 'wign.tagRegexp' ) );
 
 class TagService {
 
