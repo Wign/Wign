@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
+
 /**
  * App\Word
  *
@@ -74,12 +75,16 @@ class Word extends Model {
 
 	// CREATE SCOPES -----------------------------------------------
 
-    //TODO: Scope words with sign
     //TODO: Scope request words
 
     public function scopeWithPost()
     {
         return Post::words()->get();
+    }
+
+    public function scopeRequestWords()
+    {
+        return User::requestWords()->get();
     }
 
 	/**
