@@ -81,7 +81,7 @@ class User extends Authenticatable {
 
     // DEFINING RELATIONSHIPS -----------------------------------
     //TODO: bool pending remotion
-    
+
     public function words()
     {
         return $this->hasMany('App\Word', 'user_id');

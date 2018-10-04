@@ -12,6 +12,11 @@ use URL;
 use Redirect;
 use Illuminate\Http\Request;
 
+/**
+ * Class SignController
+ * @package App\Http\Controllers
+ * @deprecated
+ */
 class SignController extends Controller {
 
 	// our services
@@ -34,32 +39,7 @@ class SignController extends Controller {
 	}
 
 
-	/**
-	 * Show the sign page.
-	 * Display all the signs if $word is non-null and does exist in database
-	 * Otherwise show the 'no sign' page
-	 *
-	 * @param string $word - a nullable string with the query $word
-	 *
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
-	 */
-	public function showSign( $word ) {
-		$word      = $this->word_service->underscoreToSpace( $word );
-		$wordModel = $this->word_service->getWordByWord( $word );
 
-		// If word exist in database
-		if ( isset( $wordModel ) ) {
-			$signs = $this->sign_service->getVotedSigns( $wordModel );
-			$signs = $signs->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
-
-			return view( 'sign' )->with( array( 'word' => $wordModel->word, 'signs' => $signs ) );
-		}
-
-		// If no word exist in database; make a list of suggested word and display the 'no sign' view.
-		$suggestWords = $this->word_service->getAlikeWords( $word, 5 );
-
-		return view( 'nosign' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
-	}
 
 	/**
 	 * Show the recent # words which have been assigned with a sign

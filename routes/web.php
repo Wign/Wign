@@ -14,50 +14,55 @@
 // REDIRECTING old url's to the new (Danish to English)
 Route::get( 'tegn/{word}', 'RedirectController@sign' );
 Route::get( 'opret/{word}', 'RedirectController@new' );
-Route::redirect( 'tegn', '/', 301 );
+Route::redirect( 'tegn', 'index', 301 );
 Route::redirect( 'opret', config( 'wign.urlPath.create' ), 301 );
 Route::redirect( 'requests', config( 'wign.urlPath.request' ), 301 );
 Route::redirect( 'seneste', config( 'wign.urlPath.recent' ), 301 );
 Route::redirect( 'alle', config( 'wign.urlPath.all' ), 301 );
 Route::redirect( 'om', config( 'wign.urlPath.about' ), 301 );
-Route::redirect( 'help', config( 'wign.urlPath.help' ), 301 ); // Same...
 Route::redirect( 'retningslinjer', config( 'wign.urlPath.policy' ), 301 );
 
-// Index and static pages
-Route::get( '/', 'IndexController@index' );
-Route::get( config( 'wign.urlPath.about' ), 'IndexController@about' );
-Route::get( config( 'wign.urlPath.help' ), 'IndexController@help' );
-Route::get( config( 'wign.urlPath.policy' ), 'IndexController@policy' );
+// INDEX
+Route::get( '/',        ['uses' => 'IndexController@index', 'as' => 'index'] );
+Route::get( 'about',    ['uses' => 'IndexController@about', 'as' => 'index.about'] );
+Route::get( 'help',     ['uses' => 'IndexController@help', 'as' => 'index.help'] );
+Route::get( 'policy',   ['uses' => 'IndexController@policy', 'as' => 'index.policy'] );
 
+// POST
+Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
+Route::get( 'post/{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
+//----
+Route::get( 'recent',   ['uses' => 'SignController@showRecent', 'as' => 'post.recent']);
+Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
 Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
 Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
-Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
+Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' );
+Route::post( 'postNewPost', ['uses' => 'PostController@saveSign', 'as' => 'newPost'] );
+Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
-// Search route
+// SEARCH
 Route::post( 'redirect', 'SearchController@redirect' );
 Route::get( 'autocomplete', 'SearchController@autocomplete' );
 
-// Dynamic routes
-Route::get( config( 'wign.urlPath.sign' ) . '/{word}', 'SignController@showSign' )->name( 'sign' );
+// REQUEST
+Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestController@store' );
-Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
-Route::get( config( 'wign.urlPath.create' ) . '/{word?}', 'PostController@create' )->name( 'new' );
-
-Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
-Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
 Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
-Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' ); // Find some better url than "flagSignView"!
+// TAG
+Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
 
-// Dynamic routes with empty string (Redirecting)
+// VOTE
+Route::post( 'createVote', 'VoteController@createVote' );
+Route::post( 'deleteVote', 'VoteController@deleteVote' );
+
+// HOME
+Route::get( 'home', 'HomeController@index' ); // Login (Need?)
+
+// REDIRECTION
 Route::redirect( config( 'wign.urlPath.sign' ), '/' );
 Route::redirect( config( 'wign.urlPath.tags' ), '/' );
 Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
-// Post routes
-Route::post( 'createVote', 'VoteController@createVote' );
-Route::post( 'deleteVote', 'VoteController@deleteVote' );
-Route::post( 'saveSign', 'SignController@saveSign' );
-Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
-Route::get( 'home', 'HomeController@index' ); // Login (Need?)
+

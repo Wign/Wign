@@ -2,7 +2,7 @@
 
 use App;
 Use App\Word;
-Use App\Sign;
+Use App\Post;
 
 class IndexController extends Controller {
 
@@ -15,11 +15,10 @@ class IndexController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function index() {
-		/*$words = Word::withSign();
-		//$wordCount = $words->count();
+		//$wordCount = $words; //$words::count();
 		//$randomWord = $words->random( 1, $wordCount )->first();
 		//$signCount = Sign::count();
-		*/
+
 
 		return view( 'index' )->with( [
 			'randomWord' => null, //$randomWord,

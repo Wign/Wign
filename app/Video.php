@@ -54,7 +54,6 @@ class Video extends Model
         'post_id',
         'video_uuid',
         'camera_uuid',
-        'recorded_from',
         'video_url',
         'thumbnail_url',
         'small_thumbnail_url',

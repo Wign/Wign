@@ -24,6 +24,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @property string|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereDeletedAt($value)
+ * @property int $QCV_id
+ * @property-read \App\QCV $QCV
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Remotion onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereQCVId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Remotion withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Remotion withoutTrashed()
  */
 class Remotion extends Model
 {

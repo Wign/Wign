@@ -38,13 +38,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post activeReviews()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post findByWordID($id)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post noFlagged()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post countVotes($signID)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentDescription()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentVideo()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentWord()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedWords()
  */
 class Post extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     protected $fillable = [
         'user_id',
-        'language_id'
     ];
 
     // DEFINING RELATIONSHIPS -----------------------------------
@@ -76,11 +80,6 @@ class Post extends Model
     public function ILs()
     {
         return $this->hasMany('App\IL', 'post_id');
-    }
-
-    public function language()
-    {
-        return $this->belongsTo('App\Language', 'language_id');
     }
 
     public function reviews()
@@ -157,5 +156,19 @@ class Post extends Model
 
     public function setNumVotesAttribute($count) {
         $this->attributes['num_votes'] = $count;
+    }
+
+    /**
+     * Count the number og votes assigned to $signID
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $signID the id of the sign
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
+     */
+
+    public function scopeCountVotes( $query, $signID ) {
+        return $query->where( 'sign_id', $signID )->count();
     }
 }
