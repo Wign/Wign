@@ -37,13 +37,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereLanguageId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Word withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word countWithPost()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withPost()
  */
 class Word extends Model {
 
 	// MASS ASSIGNMENT ------------------------------------------
 	use SoftDeletes;
     protected $fillable = [
-        'language_id',
         'user_id',
         'word'
     ];
@@ -51,11 +52,6 @@ class Word extends Model {
     protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
-    public function language()
-    {
-        return $this->belongsTo('App\Language', 'language_id');
-    }
-
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
@@ -85,6 +81,11 @@ class Word extends Model {
 
     //TODO: Scope words with sign
     //TODO: Scope request words
+
+    public function scopeWithPost()
+    {
+        return Post::words()->get()->count();
+    }
 
 	/**
 	 * Scopes down to words WITH signs

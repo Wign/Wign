@@ -21,6 +21,11 @@ class TagService {
 		return $text;
 	}
 
+    /**
+     * @param Sign $sign
+     * @return bool
+     * @deprecated
+     */
 	public function storeTags( Sign $sign ): bool {
 		$sign->tags()->detach(); // Delete all tags relations from the sign (Begin on fresh)
 
@@ -52,6 +57,11 @@ class TagService {
 		return Tag::find( $id );
 	}
 
+    /**
+     * @param String $text
+     * @return array
+     * @deprecated
+     */
 	private static function findTagsInText( String $text ): array {
 		$tagArray = [];
 		preg_match_all( REGEXP, $text, $tagArray );

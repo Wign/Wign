@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Adgangskoder skal minimum være 6 tegn og skal være tastet ens i begge felter.',
-    'user'     => 'Vi kan ikke finde en bruger med den e-mail adresse.',
+    'password' => 'Adgangskoden skal have minimum 6 tegn og er ens i begge felter.',
+    'user'     => 'Vi kan ikke finde en bruger med denne e-mail adresse.',
     'token'    => 'Koden til nulstilling af adgangskoden er ugyldig.',
-    'sent'     => 'Vi har sendt dig en e-mail til at nulstille din adgangskode!',
+    'sent'     => 'Vi har sendt e-mailen til nulstilling af din adgangskode!',
     'reset'    => 'Adgangskoden er blevet nulstillet!',
 
 ];

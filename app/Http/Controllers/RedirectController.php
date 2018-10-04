@@ -5,22 +5,22 @@ namespace App\Http\Controllers;
 class RedirectController extends Controller
 {
 	/**
-	 * Redirecting traffic from danish to english URL to view signs
+	 * Redirecting traffic from danish to english URL to view posts
 	 * @param null $word
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	function sign($word) {
-		return redirect()->route( 'sign', ['word' => $word], 301 );
+	function post($word) {
+		return redirect()->route( 'post', ['word' => $word], 301 );
 	}
 
 	/**
-	 * Redirecting traffic from danish to english URL to create signs
+	 * Redirecting traffic from danish to english URL to create posts
 	 * @param null $word
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	function new($word) {
-		return redirect()->route( 'new', ['word' => $word], 301 );
+		return redirect()->route( 'post.new', ['word' => $word], 301 );
 	}
 }

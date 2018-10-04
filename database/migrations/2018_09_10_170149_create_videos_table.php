@@ -19,7 +19,6 @@ class CreateVideosTable extends Migration
             $table->integer( 'post_id' )->unsigned();
             $table->string( 'video_uuid' )->unique();
             $table->string( 'camera_uuid' );
-            $table->string( 'recorded_from' );
             $table->string( 'video_url' );
             $table->string( 'thumbnail_url' );
             $table->string( 'small_thumbnail_url' );

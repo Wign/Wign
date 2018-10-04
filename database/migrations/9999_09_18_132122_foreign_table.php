@@ -34,7 +34,6 @@ class ForeignTable extends Migration
 
         Schema::table('posts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('language_id')->references('id')->on('languages');
         });
 
         Schema::table('QCVs', function (Blueprint $table) {
@@ -79,10 +78,6 @@ class ForeignTable extends Migration
             $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
         });
-
-        Schema::table('words', function (Blueprint $table) {
-            $table->foreign('language_id')->references('id')->on('languages');
-        });
     }
 
     /**
@@ -113,7 +108,6 @@ class ForeignTable extends Migration
 
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['language_id']);
         });
 
         Schema::table('QCVs', function (Blueprint $table) {
@@ -157,10 +151,6 @@ class ForeignTable extends Migration
             $table->dropForeign(['word_id']);
             $table->dropForeign(['post_id']);
             $table->dropForeign(['user_id']);
-        });
-
-        Schema::table('words', function (Blueprint $table) {
-            $table->dropForeign(['language_id']);
         });
     }
 }

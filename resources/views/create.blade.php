@@ -88,8 +88,8 @@ if ( isset( $word ) ) {
     @else
         <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
     @endif
-    <form method="POST" class="ligeform" id="opret_tegn" action="{{ URL::action('SignController@saveSign') }}">
-        <input type="submit" value="Ret" id="btnEdit" style="float:right">
+    <form method="POST" class="ligeform" id="opret_tegn" action="{{ route('newPost') }}">
+        <button type="submit"  id="btnEdit" style="float:right">Ret</button>
         {{ csrf_field() }}
 
         @if( empty( old('wign01_uuid') ) )

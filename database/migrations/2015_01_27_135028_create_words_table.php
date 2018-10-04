@@ -14,7 +14,6 @@ class CreateWordsTable extends Migration {
 	public function up() {
 		Schema::create( 'words', function ( Blueprint $table ) {
 			$table->increments( 'id' );
-			$table->integer( 'language_id' )->unsigned()->unique();
 			$table->string( 'word' )->unique();
 			$table->timestamps();
 			$table->softDeletes();
