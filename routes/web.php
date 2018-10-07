@@ -31,13 +31,11 @@ Route::get( 'policy',   ['uses' => 'IndexController@policy', 'as' => 'index.poli
 // POST
 Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
 Route::get( 'post/{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
+Route::get( config( 'wign.urlPath.all' ), 'PostController@showAll' );
+Route::get( 'recent',   ['uses' => 'PostController@showRecent', 'as' => 'post.recent']);
+Route::post( 'postNewPost', ['uses' => 'PostController@postNewPost', 'as' => 'newPost'] );
 //----
-Route::get( 'recent',   ['uses' => 'SignController@showRecent', 'as' => 'post.recent']);
-Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
-Route::get( config( 'wign.urlPath.recent' ), 'SignController@showRecent' );
-Route::get( config( 'wign.urlPath.all' ), 'SignController@showAll' );
 Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' );
-Route::post( 'postNewPost', ['uses' => 'PostController@saveSign', 'as' => 'newPost'] );
 Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 // SEARCH
@@ -45,9 +43,8 @@ Route::post( 'redirect', 'SearchController@redirect' );
 Route::get( 'autocomplete', 'SearchController@autocomplete' );
 
 // REQUEST
-Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
+Route::get( 'ask',  ['uses' => 'RequestController@showList', 'as' => 'request.index'] );
 Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestController@store' );
-Route::get( config( 'wign.urlPath.request' ), 'RequestController@showList' );
 
 // TAG
 Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );

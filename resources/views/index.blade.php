@@ -45,6 +45,6 @@ $(function() {
     @include('layout.search', ['randomWord' => $randomWord])
     </div>
 
-    {{--@include('layout.footer',['signCount' => $signCount])--}}
+    @include('layout.footer',['signCount' => $signCount])
 
 @stop

@@ -2,7 +2,7 @@
 $title = $word;
 $desc = __( 'text.wign.got.sign', [ 'word' => $word ] ) . ' ' . __( 'text.wign.journey' );
 $url = isset( $hashtag ) ? url( config( 'wign.urlPath.tags' ) . '/' . substr( $word, 1 ) ) : url( config( 'wign.urlPath.sign' ) . '/' . $word );
-$video = $signs[0]->video_uuid;
+$video = $posts[0]->video_uuid;
 $video_url = 'https://www.cameratag.com/videos/' . $video . '/360p-16x9/mp4.mp4';
 $image_url = 'https://www.cameratag.com/videos/' . $video . '/360p-16x9/thumb.png';
 $image_width = '640';
@@ -49,32 +49,32 @@ $image_height = '360';
 
     <div id="signs">
 		<?php $myIP = Request::getClientIp(); ?>
-        @foreach($signs as $sign)
+        @foreach($posts as $post)
 			<?php
-			if ( $sign->isTagged == true ) {
-				$description = \App\Services\TagService::replaceTagsToURL( e($sign->description) );
+			if ( $post->isTagged == true ) {
+				$description = \App\Services\TagService::replaceTagsToURL( e($post->description) );
 			} else {
-				$description = e($sign->description);
+				$description = e($post->description);
 			}
 			?>
 
 
-            <div class="sign" data-count="{{ $sign->num_votes }}" data-id="{{$sign->id}}">
+            <div class="sign" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
                 @isset($hashtag)
-                    <h2>{{ $sign->theWord }}</h2>
+                    <h2>{{ $post->theWord }}</h2>
                 @endisset
                 <player id="video_{{ $video->id }}"
-                        data-uuid="{{ $video->video_uuid }}"
+                        data-uuid="{{ $video_uuid }}"
                         data-controls="true"
                         data-displaytitle="false"
                         data-displaydescription="false"
                         data-mute="true"></player>
-                {{--<span class="count">{{ $sign->num_votes }}</span>--}}
-                {{--@if(isset($sign->voted) && $sign->voted == true)
+                <span class="count">{{ $sign->num_votes }}</span>
+                @if(isset($sign->voted) && $sign->voted == true)
                     <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
-                @endif --}}
+                @endif 
                 {{--<a href="{{ URL::to('/flagSignView')."/".$post->id }}" class="flagSign"--}}
                    {{--title="{{__('text.sign.report')}}"><img src="{{ asset('images/flag-black.png') }}"--}}
                                                            {{--class="anmeld"></a>--}}

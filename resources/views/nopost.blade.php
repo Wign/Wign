@@ -20,7 +20,7 @@ if ( isset( $word ) ) {
 @section('content')
     <h1>{{ $title }}</h1>
         @if (isset($word))
-            <p>@lang('text.sign.not.have.word', ['word' => $word])</p>
+            <p>@lang('text.sign.not.have.word', ['post->currentWord()' => $word])</p>
             @lang('text.sign.either')
             <ul>
                 <li><a href="{{ URL::to( config('wign.urlPath.create') . '/' . $word) }}"

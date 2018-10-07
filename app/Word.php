@@ -29,8 +29,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withPost()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withSign()
  * @method static \Illuminate\Database\Query\Builder|\App\Word withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
  * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
@@ -75,43 +73,7 @@ class Word extends Model {
 
 	// CREATE SCOPES -----------------------------------------------
 
-    //TODO: Scope request words
 
-    public function scopeWithPost()
-    {
-        return Post::words()->get();
-    }
-
-    public function scopeRequestWords()
-    {
-        return User::requestWords()->get();
-    }
-
-	/**
-	 * Scopes down to words WITH signs
-	 *
-	 * @param \Illuminate\Database\Eloquent\Builder $query
-	 *
-	 * @return \Illuminate\Database\Eloquent\Builder
-     * @deprecated
-	 */
-
-	public function scopeWithSign( $query ) {
-		return $query->has( 'signs' );
-	}
-
-	/**
-	 * Scope to words without signs
-	 *
-	 * @param \Illuminate\Database\Eloquent\Builder $query
-	 *
-	 * @return \Illuminate\Database\Eloquent\Builder
-     * @deprecated
-	 */
-
-	public function scopeWithoutSign( $query ) {
-		return $query->where( \DB::raw( '(SELECT count(*) FROM signs WHERE signs.word_id = words.id)' ), '<=', 0 );
-	}
 
 	/**
 	 * Scope to the latest $num words
@@ -138,7 +100,7 @@ class Word extends Model {
 	 */
 	public function scopeRandom( $query, $num = 1, $count = null ) {
 		if(empty($count)) {
-			$totalRows = static::withSign()->count() - 1;
+			$totalRows = static::with('posts')->count() - 1;
 		}
 		else {
 			$totalRows = $count - 1;

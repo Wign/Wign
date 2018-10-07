@@ -47,7 +47,7 @@ class PostController extends Controller
         return view( 'create' )->with( $data );
     }
 
-    public function saveSign( Request $request ) {
+    public function postNewPost( Request $request ) {
         // Validating the incoming request
         $request->validate( [
             'word'              => 'required|string',
@@ -129,7 +129,7 @@ class PostController extends Controller
      */
     public function getPosts( $word ) {
         $word      = Helper::underscoreToSpace( $word );
-        $wordModel = Word::whereWord( $word )->withPost()->first();
+        $wordModel = Word::whereWord( $word )->with('posts')->first();
 
         // If word exist in database
         if ( isset( $wordModel ) ) {
@@ -172,6 +172,30 @@ class PostController extends Controller
     //////////////////////
 
     /**
+     * Show the recent # words which have been assigned with a post
+     *
+     * @param int $number of recent results
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRecent( $number = 25 ) {
+        $recent = Word::with('posts')->latest( $number )->get();
+
+        return view( 'list' )->with( [ 'words' => $recent, 'number' => $number ] );
+    }
+
+    /**
+     * Show all words with assigned post, sorted by word ASC
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showAll() {
+        $words = Word::withCount('posts')->orderBy('posts_count')->get(['word', 'posts_count']);
+
+        return view( 'listAll' )->with( [ 'words' => $words ] );
+    }
+
+    /**
      * Searching for words that looks alike the queried $word
      * Current uses both "LIKE" mysql query and Levenshtein distance, and return $count words with the least distance to $word
      *
@@ -182,7 +206,7 @@ class PostController extends Controller
     private function getAlikeWords( string $word, int $count ) {
         $max_levenshtein = 5;
         $min_levenshtein = PHP_INT_MAX;
-        $words           = Word::withSign()->get();
+        $words           = Word::with('posts')->get();
         $tempArr         = array();
 
         foreach ( $words as $compareWord ) {

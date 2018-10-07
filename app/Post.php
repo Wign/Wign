@@ -148,7 +148,7 @@ class Post extends Model
     }
 
     public function getNumVotesAttribute() {
-        return $this->attributes['num_votes'];
+        return $this->likes()->count();
     }
 
     public function setNumVotesAttribute($count) {

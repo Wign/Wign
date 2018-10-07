@@ -5,7 +5,6 @@ use Helper;
 use App\RequestWord;
 use App\Word;
 use Request;
-use DB;
 use URL;
 
 class RequestController extends Controller {
@@ -16,14 +15,7 @@ class RequestController extends Controller {
 	 * @return \Illuminate\View\View of the list
 	 */
 	public function showList() {
-		$requests = DB::select( DB::raw( '
-            SELECT words.word, COUNT(request_words.id) AS request_count
-			FROM words INNER JOIN request_words
-			ON words.id = request_words.word_id
-			WHERE (SELECT count(*) FROM signs WHERE signs.word_id = words.id AND signs.deleted_at IS NULL AND signs.flag_reason IS NULL) <= 0
-			GROUP BY words.word
-			ORDER BY request_count DESC, words.word ASC
-        ' ) );
+		$requests = Word::withCount('requests')->orderBy('requests_count', 'desc')->paginate(50);
 
 		return view( 'requests' )->with( 'requests', $requests );
 	}

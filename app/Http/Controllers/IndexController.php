@@ -15,15 +15,11 @@ class IndexController extends Controller {
 	 * @return \Illuminate\View\View
 	 */
 	public function index() {
-		//$wordCount = $words; //$words::count();
-		//$randomWord = $words->random( 1, $wordCount )->first();
-		//$signCount = Sign::count();
-
 
 		return view( 'index' )->with( [
-			'randomWord' => null, //$randomWord,
-			'signCount'  => 0, //$signCount,
-			'wordCount'  => 0 //$wordCount
+			'randomWord' => Word::with('posts')->inRandomOrder()->first(),
+			'signCount'  => Post::count(),
+			'wordCount'  => Word::with('posts')->count()
 		] );
 	}
 

@@ -49,16 +49,7 @@ class WordService {
 		return Word::getQueriedWord( $search )->get();
 	}
 
-	/**
-	 * Get the recent # words which have been assigned with a sign
-	 *
-	 * @param int $number
-	 *
-	 * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
-	 */
-	public function getRecentWords( int $number ) {
-		return Word::withSign()->latest( $number )->get();
-	}
+
 
 	/**
 	 * Searching for words that looks alike the queried $word

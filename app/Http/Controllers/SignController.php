@@ -41,29 +41,9 @@ class SignController extends Controller {
 
 
 
-	/**
-	 * Show the recent # words which have been assigned with a sign
-	 *
-	 * @param int $number of recent results
-	 *
-	 * @return \Illuminate\View\View
-	 */
-	public function showRecent( $number = 25 ) {
-		$recent = $this->word_service->getRecentWords( $number );
 
-		return view( 'list' )->with( [ 'words' => $recent, 'number' => $number ] );
-	}
 
-	/**
-	 * Show all words with assigned sign, sorted by word ASC
-	 *
-	 * @return \Illuminate\View\View
-	 */
-	public function showAll() {
-		$words = $this->word_service->getAllWordsSortedWithCount();
 
-		return view( 'listAll' )->with( [ 'words' => $words ] );
-	}
 
 	/**
 	 * Display the "create a sign" view with the relevant data attached.
