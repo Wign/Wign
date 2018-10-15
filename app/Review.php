@@ -28,8 +28,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
  * @property int $IL_id
- * @property-read \App\IL $IL
+ * @property-read \App\Il $Il
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereILId($value)
+ * @property int $user_id
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review post()
+ * @property int $il_id
+ * @property-read \App\Il $IL
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereIlId($value)
  */
 class Review extends Model
 {
@@ -38,7 +45,7 @@ class Review extends Model
 
     protected $fillable = array(
         'IL_id',
-
+        'user_id'   // Requestor
     );
 
     protected $dates = ['deleted_at'];
@@ -51,9 +58,19 @@ class Review extends Model
 
     public function IL()
     {
-        return $this->belongsTo('App\IL', 'IL_id');
+        return $this->belongsTo('App\Il', 'IL_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     // CREATE SCOPES -----------------------------------------------
+
+    public function scopePost()
+    {
+        return Il::find($this->IL_id)->post()->get();
+    }
 
 }

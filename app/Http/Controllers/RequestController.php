@@ -15,9 +15,9 @@ class RequestController extends Controller {
 	 * @return \Illuminate\View\View of the list
 	 */
 	public function showList() {
-		$requests = Word::withCount('requests')->orderBy('requests_count', 'desc')->paginate(50);
+	    $requests = Word::has('requests')->withCount('requests')->orderBy('requests_count', 'desc')->paginate(50);
 
-		return view( 'requests' )->with( 'requests', $requests );
+		return view( 'requests' )->with( compact('requests') );
 	}
 
 	/**

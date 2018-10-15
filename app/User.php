@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 /**
  * App\User
  *
@@ -13,46 +14,52 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property int $blacklisted
+ * @property string|null $reason
  * @property string|null $remember_token
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property int $admin
- * @property string|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAdmin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeletedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\QCV[] $QCVs
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $descriptions
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $likes
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Qcv[] $qcvs
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Remotion[] $remotionAuthor
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Remotion[] $remotionVotings
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Remotion[] $remotions
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\RequestWord[] $requestWords
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $requestWords
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewAuthor
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewVotings
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $words
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Query\Builder|\App\User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User qcv()
  * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBlacklisted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
- * @property int $blacklisted
- * @property string $reason
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBlacklisted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereReason($value)
+ * @mixin \Eloquent
+ * @property string $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User isAdmin()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereType($value)
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
 	use Notifiable;
     use SoftDeletes;
+
+    const ADMIN_TYPE = 'admin';
+    const DEFAULT_TYPE = 'default';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -63,9 +70,9 @@ class User extends Authenticatable {
 		'name',
         'email',
         'password',
-        'admin',
         'blacklisted',
         'reason'
+        // inactive / passive state to exclude from the votings
 	];
 	/**
 	 * The attributes that should be hidden for arrays.
@@ -112,14 +119,19 @@ class User extends Authenticatable {
         return $this->belongsToMany('App\Remotion', 'remotion_votings', 'user_id', 'remotion_id');
     }
 
-    public function remotions()
+    public function reviewVotings()
+    {
+        return $this->belongsToMany('App\Review', 'review_votings', 'user_id', 'review_id');
+    }
+
+    public function remotionAuthor()    // Creator of this remotion
     {
         return $this->hasMany('App\Remotion', 'user_id');
     }
 
-    public function reviewVotings()
+    public function reviewAuthor()
     {
-        return $this->belongsToMany('App\Review', 'review_votings', 'user_id', 'review_id');
+        return $this->hasMany('App\Review', 'user_id');
     }
 
     public function requestWords()
@@ -127,11 +139,21 @@ class User extends Authenticatable {
         return $this->belongsToMany('App\Word', 'request_words', 'user_id', 'word_id');
     }
 
-    public function QCVs()
+    public function qcvs()
     {
-        return $this->hasMany('App\QCV', 'user_id');
+        return $this->hasMany('App\Qcv', 'user_id');
     }
 
     // CREATE SCOPES -----------------------------------------------
+
+    public function scopeIsAdmin()
+    {
+        return $this->type === self::ADMIN_TYPE;
+    }
+
+    public function scopeQcv()
+    {
+        return $this->qcvs()->first();
+    }
 
 }

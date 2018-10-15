@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class WordsTableSeeder extends Seeder
+class WordTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

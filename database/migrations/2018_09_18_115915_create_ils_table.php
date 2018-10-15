@@ -13,7 +13,7 @@ class CreateILsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ILs', function (Blueprint $table) {
+        Schema::create('ils', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'post_id' )->unsigned();
             $table->smallinteger( 'rank' )->unsigned();
@@ -29,6 +29,6 @@ class CreateILsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ILs');
+        Schema::dropIfExists('ils');
     }
 }

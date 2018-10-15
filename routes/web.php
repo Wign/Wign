@@ -29,18 +29,21 @@ Route::get( 'help',     ['uses' => 'IndexController@help', 'as' => 'index.help']
 Route::get( 'policy',   ['uses' => 'IndexController@policy', 'as' => 'index.policy'] );
 
 // POST
+Route::group(['prefix' => 'post'], function() {
+    Route::post( 'create', ['uses' => 'PostController@postNewPost', 'as' => 'post.create'] );
+    Route::get( '{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
+});
 Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
-Route::get( 'post/{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
 Route::get( config( 'wign.urlPath.all' ), 'PostController@showAll' );
 Route::get( 'recent',   ['uses' => 'PostController@showRecent', 'as' => 'post.recent']);
-Route::post( 'postNewPost', ['uses' => 'PostController@postNewPost', 'as' => 'newPost'] );
+
 //----
-Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' );
-Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
+//Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' );
+//Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 // SEARCH
-Route::post( 'redirect', 'SearchController@redirect' );
-Route::get( 'autocomplete', 'SearchController@autocomplete' );
+Route::post( 'redirect', ['uses' => 'SearchController@redirect', 'as' => 'redirect'] );
+Route::get( 'autocomplete', ['uses' => 'SearchController@autocomplete', 'as' => 'autocomplete'] );
 
 // REQUEST
 Route::get( 'ask',  ['uses' => 'RequestController@showList', 'as' => 'request.index'] );
@@ -49,9 +52,20 @@ Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestControll
 // TAG
 Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
 
-// VOTE
-Route::post( 'createVote', 'VoteController@createVote' );
-Route::post( 'deleteVote', 'VoteController@deleteVote' );
+// VOTING
+Route::group(['prefix' => 'review'], function() {
+    Route::post( 'new', ['uses' => 'VotingController@postNewReview', 'as' => 'review.new'] );
+    Route::post( 'update', ['uses' => 'VotingController@postUpdateReview', 'as' => 'review.update'] );
+});
+Route::group(['prefix' => 'remotion'], function() {
+    Route::post( 'new', ['uses' => 'VotingController@postNewRemotion', 'as' => 'remotion.new'] );
+    Route::post( 'update', ['uses' => 'VotingController@postUpdateRemotion', 'as' => 'review.update'] );
+});
+
+// USER
+Route::group(['prefix' => 'user'], function()  {
+    Route::get( 'profile', ['uses' => 'UserController@getIndex', 'as' => 'user.index']);
+});
 
 // HOME
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
@@ -61,5 +75,15 @@ Route::redirect( config( 'wign.urlPath.sign' ), '/' );
 Route::redirect( config( 'wign.urlPath.tags' ), '/' );
 Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
+// ADMIN
+Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function()  {
+    Route::get( 'index', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index']);
+});
 
+// AUTH
+Auth::routes();
+Route::get('profile', function () {
+    // Only authenticated users may enter...
+})->middleware('auth');
 
+Route::get('/home', 'HomeController@index')->name('home');

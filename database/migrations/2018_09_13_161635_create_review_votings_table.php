@@ -17,7 +17,7 @@ class CreateReviewVotingsTable extends Migration
             $table->increments('id');
             $table->integer( 'review_id' )->unsigned()->unique();
             $table->integer( 'user_id' )->unsigned()->unique();
-            $table->boolean( 'approve' );
+            $table->boolean( 'approve' )->nullable();
             $table->timestamps();
         });
     }

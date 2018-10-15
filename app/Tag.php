@@ -54,7 +54,7 @@ class Tag extends Model {
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public static function scopeGetQueriedTag( $query, string $search ) {
-		return $query->where( 'tag', 'like', $search . '%' );
+		return $query->where( 'literal', 'like', $search . '%' );
 	}
 
 }

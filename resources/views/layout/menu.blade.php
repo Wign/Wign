@@ -8,6 +8,36 @@
         <li><a href="{{ route('post.recent') }}">{{ __( 'common.latest.sign' ) }}</a></li>
         <li><a href="{{ URL::to( config('wign.urlPath.all')) }}">{{ __( 'common.all.sign' ) }}</a></li> {{-- Request fra Ragna. Bliver der indtil videre. Indtil der bliver til en alt for uoverskuelige liste --}}
         <li><a href="{{ URL::to( config('wign.urlPath.about')) }}">{{ __( 'common.Wign.About' ) }}</a></li>
-        <li><span class="brand">{{ config( 'wign.version' ) }}</span></li>
+        @guest
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">{{ __('common.login') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('register') }}">{{ __('common.signin') }}</a>
+            </li>
+        @else
+            <li><a href="{{ route('user.index') }}">{{ __( 'common.user.profile' ) }}</a></li>
+            <li class="nav-item dropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                        {{ __('common.logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+                {{--<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    {{ Auth::user()->name }} <span class="caret"></span>
+                </a> --}}
+            </li>
+        @endguest
+
+        @if (Auth::user()->type == 'admin')
+            <li><a style="color:#AFA" href="{{ route('admin.index') }}">{{ __( 'common.menu.admin' ) }}</a></li>
+        @endif
+        <li><span class="text">{{ config( 'wign.version' ) }}</span></li>
     </ul>
 </div>

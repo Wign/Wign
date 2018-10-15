@@ -13,10 +13,10 @@ class CreateQCVsTable extends Migration
      */
     public function up()
     {
-        Schema::create('QCVs', function (Blueprint $table) {
+        Schema::create('qcvs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
-            $table->smallinteger( 'rank' )->unsigned();
+            $table->smallinteger( 'rank' )->unsigned()->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +29,6 @@ class CreateQCVsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('QCVs');
+        Schema::dropIfExists('qcvs');
     }
 }

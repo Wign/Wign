@@ -29,5 +29,10 @@ return [
 	'wign.jargon'    => 'Social tegnsprogsencyklopædi',
 	'Guidelines'     => 'Retningslinjer',
 	'vote'           => 'stemme | stemmer',
+    'login'          => 'Log ind',
+    'signin'         => 'Meld ind',
+    'logout'         => 'Log af',
+    'user.profile'   => 'Brugerprofil',
+    'menu.admin'     => 'Admin-side'
 
 ];

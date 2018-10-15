@@ -17,7 +17,7 @@ class CreateRemotionVotingsTable extends Migration
             $table->increments('id');
             $table->integer( 'remotion_id' )->unsigned()->unique();
             $table->integer( 'user_id' )->unsigned()->unique();
-            $table->boolean( 'approve' )->nullable($value = true);
+            $table->boolean( 'approve' )->nullable();
             $table->timestamps();
         });
     }

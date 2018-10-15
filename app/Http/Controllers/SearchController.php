@@ -33,7 +33,7 @@ class SearchController extends Controller {
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function redirect( Request $request ) {
-		return Redirect::action( 'SignController@showSign', [ 'word' => $request->word ] );
+		return Redirect::action( 'PostController@getPosts', [ 'word' => $request->word ] );
 	}
 
 	/**

@@ -16,8 +16,8 @@ class CreateWordlinksTable extends Migration
         Schema::create('wordlinks', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('post_id')->unsigned();
-            $table->integer('word_id')->unsigned();
+            $table->integer('post_id')->unsigned()->unique();
+            $table->integer('word_id')->unsigned()->unique();
             $table->integer('user_id')->unsigned();
             $table->softDeletes();
         });

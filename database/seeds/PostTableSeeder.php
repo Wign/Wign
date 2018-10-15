@@ -2,15 +2,16 @@
 
 use Illuminate\Database\Seeder;
 
-class VoteTableSeeder extends Seeder
-{
-    /**
+class PostTableSeeder extends Seeder {
+
+	/**
      * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-	    //factory(\App\Vote::class, 250)->create();
+        factory(\App\Post::class, 100)->create()->each(function(\App\Post $sign) {
+        });
     }
 }

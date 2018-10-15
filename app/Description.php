@@ -31,6 +31,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Description withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Description withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description isTagged()
+ * @property string $text
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereText($value)
  */
 class Description extends Model
 {
@@ -40,7 +43,7 @@ class Description extends Model
     protected $fillable = [
         'user_id',
         'post_id',
-        'description'
+        'text'
     ];
 
     protected $dates = ['deleted_at'];
@@ -62,4 +65,9 @@ class Description extends Model
     }
 
     // CREATE SCOPES -----------------------------------------------
+
+    public function scopeIsTagged()
+    {
+        return is_null($this->tags());
+    }
 }

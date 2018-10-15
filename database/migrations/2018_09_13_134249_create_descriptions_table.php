@@ -17,7 +17,7 @@ class CreateDescriptionsTable extends Migration
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
             $table->integer( 'post_id' )->unsigned();
-            $table->text( 'description' );
+            $table->text( 'text' );
             $table->timestamps();
             $table->softDeletes();
         });

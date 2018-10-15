@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\SignService;
 use App\Services\TagService;
-use Redirect;
 
 class TagController extends Controller {
 	protected $tag;
@@ -21,6 +20,8 @@ class TagController extends Controller {
 		$this->tag  = $tag;
 		$this->sign = $sign;
 	}
+
+
 
 	public function findTags( $tag ) {
 		$theTag = $this->tag->findTagByName( $tag );

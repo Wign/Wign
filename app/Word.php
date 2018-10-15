@@ -72,9 +72,7 @@ class Word extends Model {
     }
 
 	// CREATE SCOPES -----------------------------------------------
-
-
-
+    
 	/**
 	 * Scope to the latest $num words
 	 *

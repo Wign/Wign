@@ -15,7 +15,8 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer( 'IL_id' )->unsigned();
+            $table->integer( 'il_id' )->unsigned();
+            $table->integer('user_id')->unsigned(); // Creator
             $table->timestamps();
             $table->softDeletes();
         });

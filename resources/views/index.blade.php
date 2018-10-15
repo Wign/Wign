@@ -44,7 +44,6 @@ $(function() {
     <h1 class="headline">@lang('common.wign.jargon')</h1>
     @include('layout.search', ['randomWord' => $randomWord])
     </div>
-
     @include('layout.footer',['signCount' => $signCount])
 
 @stop

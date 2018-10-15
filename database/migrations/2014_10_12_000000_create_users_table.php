@@ -18,9 +18,9 @@ class CreateUsersTable extends Migration
 			$table->string('name');
 			$table->string('email')->unique();
 			$table->string('password');
-			$table->boolean('admin');
-			$table->boolean('blacklisted');
-			$table->text('reason');
+			$table->boolean('blacklisted')->default(false);
+			$table->text('reason')->nullable();
+            $table->string('type')->default('default');
 			$table->rememberToken();
 			$table->timestamps();
 			$table->softDeletes();

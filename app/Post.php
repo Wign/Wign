@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 
+
 /**
  * App\Post
  *
@@ -12,24 +13,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\IL[] $ILs
  * @property-read \App\User $creator
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $descriptions
- * @property mixed $num_votes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Il[] $ils
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $likes
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $words
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post activeReviews()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post countVotes($signID)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post countLikes()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentDescription()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentVideo()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentWord()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deactiveReviews()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedVideos()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedWords()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post findByWordID($id)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post noFlagged()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post ilRank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
@@ -69,28 +67,21 @@ class Post extends Model
         return $this->belongsToMany('App\User', 'likes', 'post_id', 'user_id')->withTimestamps();
     }
 
-    public function ILs()
+    public function ils()
     {
-        return $this->hasMany('App\IL', 'post_id');
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany('App\Review', 'post_id');
+        return $this->hasMany('App\Il', 'post_id');
     }
 
     // CREATE SCOPES --------------------------------------------
-    //TODO: Count num likes
-    //TODO: bool pending review
 
-    public function ScopeCountLikes()
+    public function scopeCountLikes()
     {
         return $this->likes()->count();
     }
 
-    public function ScopeCurrentIL()
+    public function scopeIlRank()
     {
-        return $this->ILs()->first('rank');
+        return $this->ils()->first('rank');
     }
 
     public function scopeCurrentWord()
@@ -123,49 +114,8 @@ class Post extends Model
         return Description::onlyTrashed()->post()->find($this->id)->get();
     }
 
-    public function scopeActiveReviews()
+    public function scopeDeactiveReviews()
     {
-        return $this->reviews()->get();
-    }
-
-    /**
-     * Imported from old model "Sign" (combination of video and description)
-     */
-    /**
-     * @method static noFlagged($query)
-     * @deprecated
-     */
-    public function scopeNoFlagged( $query ) {
-        return $query->whereNull( 'flag_reason' );
-    }
-
-    /**
-     * @method static findByWordID($query, $id)
-     * @deprecated
-     */
-    public function scopeFindByWordID( $query, $id ) {
-        return $query->noFlagged()->where( 'word_id', $id );
-    }
-
-    public function getNumVotesAttribute() {
-        return $this->likes()->count();
-    }
-
-    public function setNumVotesAttribute($count) {
-        $this->attributes['num_votes'] = $count;
-    }
-
-    /**
-     * Count the number og votes assigned to $signID
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $signID the id of the sign
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     * @deprecated
-     */
-
-    public function scopeCountVotes( $query, $signID ) {
-        return $query->where( 'sign_id', $signID )->count();
+        return Review::onlyTrashed()->post()->get();
     }
 }

@@ -46,39 +46,36 @@ $image_height = '360';
             </a>
         @endif
     @endif
-
-    <div id="signs">
+    <div id="post">
 		<?php $myIP = Request::getClientIp(); ?>
         @foreach($posts as $post)
 			<?php
-			if ( $post->isTagged == true ) {
-				$description = \App\Services\TagService::replaceTagsToURL( e($post->description) );
-			} else {
-				$description = e($post->description);
-			}
+                $video = $post->currentVideo();
+                $descriptionText = $post->currentDescription()->text;
+			    if ( $post->currentDescription()->isTagged() === true ) {
+			         dd($descriptionText);
+                    $descriptionText = \App\Services\TagService::replaceTagsToURL( e($descriptionText) );
+			    }
 			?>
-
-
-            <div class="sign" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
+                <p><button type="submit"  id="btnEdit" style="float:right">Ret</button></p>
+                <div class="post" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
                 @isset($hashtag)
                     <h2>{{ $post->theWord }}</h2>
                 @endisset
+
                 <player id="video_{{ $video->id }}"
-                        data-uuid="{{ $video_uuid }}"
+                        data-uuid="{{ $video->video_uuid }}"
                         data-controls="true"
                         data-displaytitle="false"
                         data-displaydescription="false"
                         data-mute="true"></player>
-                <span class="count">{{ $sign->num_votes }}</span>
-                @if(isset($sign->voted) && $sign->voted == true)
+                <span class="count">{{ $post->num_votes }}</span>
+                @if(isset($post->voted) && $post->voted == true)
                     <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
-                @endif 
-                {{--<a href="{{ URL::to('/flagSignView')."/".$post->id }}" class="flagSign"--}}
-                   {{--title="{{__('text.sign.report')}}"><img src="{{ asset('images/flag-black.png') }}"--}}
-                                                           {{--class="anmeld"></a>--}}
-                <div class="desc">{!! nl2br($description) !!}</div>
+                @endif
+                <div class="desc">{!! nl2br($descriptionText) !!}</div>
             </div>
         @endforeach
     </div>

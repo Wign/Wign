@@ -81,15 +81,14 @@ if ( isset( $word ) ) {
     </span>
     @endif
 
-    @if(isset($hasSign) && $hasSign == 1)
+    @if(isset($hasPost) && $hasPost == 1)
         <p>@lang('text.create.already.exist', ['word' => $word, 'url' => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )] )</p>
     @elseif(isset($word))
         <p>@lang('text.create.nonexistent.word', ['word' => $word] ) @lang('text.create.help.us')<p>
     @else
-        <p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>
+        {{--<p>@lang('text.create.nonexistent') @lang('text.create.help.us')</p>--}}
     @endif
-    <form method="POST" class="ligeform" id="opret_tegn" action="{{ route('newPost') }}">
-        <button type="submit"  id="btnEdit" style="float:right">Ret</button>
+    <form method="POST" class="ligeform" id="opret_tegn" action="{{ route('post.create') }}">
         {{ csrf_field() }}
 
         @if( empty( old('wign01_uuid') ) )
@@ -114,7 +113,7 @@ if ( isset( $word ) ) {
         <br>
 
         <label for="word">{{ __( 'text.form.word' ) }}</label>
-        <input type="text" id="word" name="word" value="{{ $word or old('word') or "" }}"
+        <input type="text" id="word" name="word" value="{{ $word ?? old('word') ?? "" }}"
                placeholder="{{__('text.form.word.ph')}}"><br>
 
         <label for="description">{{__('text.form.desc')}}</label>

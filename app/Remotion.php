@@ -25,13 +25,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereDeletedAt($value)
  * @property int $QCV_id
- * @property-read \App\QCV $QCV
+ * @property-read \App\Qcv $Qcv
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Query\Builder|\App\Remotion onlyTrashed()
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereQCVId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Remotion withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Remotion withoutTrashed()
+ * @property-read \App\User $user
+ * @property int $qcv_id
+ * @property-read \App\Qcv $QCV
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereQcvId($value)
  */
 class Remotion extends Model
 {
@@ -40,6 +44,7 @@ class Remotion extends Model
 
     protected $fillable = array(
         'QCV_id',
+        'user_id',  // Requestor
         'promotion'
     );
 
@@ -53,7 +58,12 @@ class Remotion extends Model
 
     public function QCV()
     {
-        return $this->belongsTo('App\QCV', 'QCV_id');
+        return $this->belongsTo('App\Qcv', 'QCV_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     // CREATE SCOPES -----------------------------------------------

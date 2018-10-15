@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Il;
 use Illuminate\Http\Request;
 
 use App\Description;
@@ -10,6 +11,7 @@ use App\Word;
 use App\Post;
 use App\Tag;
 
+use Illuminate\Support\Facades\Auth;
 use URL;
 use App\Helpers\Helper;
 
@@ -17,15 +19,6 @@ define( 'REGEXP', config( 'wign.tagRegexp' ) );
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Display the "create a post" view with the relevant data attached.
@@ -49,7 +42,7 @@ class PostController extends Controller
 
     public function postNewPost( Request $request ) {
         // Validating the incoming request
-        $request->validate( [
+        $this->validate($request, [
             'word'              => 'required|string',
             'description'       => 'nullable|string',
             'wign01_uuid'       => 'required',
@@ -57,18 +50,24 @@ class PostController extends Controller
             'wign01_vga_thumb'  => 'required',
             'wign01_qvga_thumb' => 'required',
         ] );
-        $userID = 3306;    //Auth::check();
 
-        $post = new Post([      // Prepare the new post
-            'user_id' => $userID
+        $user = Auth::user();
+
+        $post = new Post([
+            'user_id' => $user->id
         ]);
         $post->save();
+        $il = new Il([
+            'rank' => $request->input('IlRank') === null ? 1 : $request->input('IlRank')
+        ]);
+        $post->ils()->save($il);
 
         $word = Word::firstOrCreate( [ 'word' => $request->input('word') ] );
-        $post->words()->attach($word, ['user_id' => $userID]);
+        $word->requests()->detach();
+        $post->words()->attach($word->id, ['user_id' => $user->id]);
 
         $video = new Video([
-            'user_id' => $userID,
+            'user_id' => $user->id,
             'post_id' => $post->id,
             'playings' => 0, //Unnecessary?
             'camera_uuid'         => config('wign.cameratag.id'),
@@ -81,41 +80,26 @@ class PostController extends Controller
         $video->save();
 
         $desc = new Description([
-            'user_id' => $userID,
+            'user_id' => $user->id,
             'post_id' => $post->id,
-            'description' => $request->input('description') === null ? "" : $request->input('description')
+            'text' => $request->input('description') === null ? "" : $request->input('description')
         ]);
         $desc->save();
 
         $desc->tags()->detach(); // Update the tag relations
         if ( !empty( $desc->description ) ) {
-            $tagArray = [];
-            $hashtags = preg_match_all( REGEXP, $desc->description, $tagArray );
+            preg_match_all( REGEXP, $desc, $hashtags ); //Store the unique tags in $hashtags
             if ( !empty( $hashtags ) ) {
-                foreach ( $hashtags as $hashtag ) {
+                foreach ( $hashtags[1] as $hashtag ) {
                     $tag = Tag::firstOrCreate( [ 'tag' => $hashtag ] );
                     $desc->tags()->attach( $tag );
                 }
             }
         }
 
-        /*
-        if ( $sign ) {
-            $this->sendSlack( $word, $sign );
-
-            $flash = [
-                'message' => __( 'flash.sign.created' ),
-            ];
-        } else {
-            // Something went wrong! The sign isn't created!
-            $flash = [
-                'message' => __( 'flash.sign.create.failed' ),
-            ];
-        }
-        */
         $flash['url'] = URL::to( config( 'wign.urlPath.create' ) );
 
-        return redirect( config( 'wign.urlPath.sign' ) . '/' . $word )->with( $flash );
+        return redirect( config( 'wign.urlPath.sign' ) . '/' . $word->word )->with( $flash );
     }
 
     /**
@@ -128,12 +112,16 @@ class PostController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function getPosts( $word ) {
+
         $word      = Helper::underscoreToSpace( $word );
         $wordModel = Word::whereWord( $word )->with('posts')->first();
 
         // If word exist in database
         if ( isset( $wordModel ) ) {
             $posts = $wordModel->posts()->get();
+            foreach( $posts as $post)   {
+                $post->currentDescription()->text = self::replaceTagsToURL($post->currentDescription()->text);
+            }
             // $posts = $this->sign_service->getVotedSigns( $wordModel );
             // $posts = $posts->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
 
@@ -141,9 +129,9 @@ class PostController extends Controller
         }
 
         // If no word exist in database; make a list of suggested word and display the 'no sign' view.
-        $suggestWords = $this->getAlikeWords( $word, 5 );
+        $suggestions = $this->getAlikeWords( $word, 5 );
 
-        return view( 'nopost' )->with( [ 'word' => $word, 'suggestions' => $suggestWords ] );
+        return view( 'nopost' )->with( compact([ 'word' , 'suggestions' ]) );
     }
 
     /**
@@ -152,9 +140,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        return null; // Trigger which part which is edited and perform the edit
+        $post = Post::find($id);
+        $user = 5; //Auth::check()->
+
+        return null;
     }
 
     public function delete($id)
@@ -171,6 +162,13 @@ class PostController extends Controller
 
     //////////////////////
 
+    private static function replaceTagsToURL( string $text ): string {
+        $replaceWith = '<a href="' . URL::to( config( "wign.urlPath.tags" ) ) . '/$1">$0</a>';
+        $text        = preg_replace( REGEXP, $replaceWith, $text );
+
+        return $text;
+    }
+
     /**
      * Show the recent # words which have been assigned with a post
      *
@@ -179,9 +177,9 @@ class PostController extends Controller
      * @return \Illuminate\View\View
      */
     public function showRecent( $number = 25 ) {
-        $recent = Word::with('posts')->latest( $number )->get();
+        $words = Word::with('posts')->latest( $number )->get();
 
-        return view( 'list' )->with( [ 'words' => $recent, 'number' => $number ] );
+        return view( 'list' )->with( compact([ 'words', 'number' ]) );
     }
 
     /**
@@ -191,8 +189,13 @@ class PostController extends Controller
      */
     public function showAll() {
         $words = Word::withCount('posts')->orderBy('posts_count')->get(['word', 'posts_count']);
+        //$word = $words->posts_count;
+        //$words->dd();
+        //++l0dd(compact($words));
+        //$count = $words->posts_count;
 
-        return view( 'listAll' )->with( [ 'words' => $words ] );
+
+        return view( 'listAll' )->with( compact('words') );
     }
 
     /**

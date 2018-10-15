@@ -1,5 +1,4 @@
 @extends('layout.main')
-
 @section('title', __('text.signs.all'))
 @section('open_graph')
     @include('layout.openGraph', [
@@ -14,7 +13,7 @@
 
     <ol>
     @foreach($words as $word)
-        <li><a href="{{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a> ({{{ $word->count }}})</li>
+        <li><a href="{{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}}">{{{ $word->word }}}</a> ({{{ $word->posts_count }}})</li>
     @endforeach
     </ol>
 

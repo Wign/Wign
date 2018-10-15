@@ -9,8 +9,16 @@ class DatabaseSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
-//		$this->call( SignsTableSeeder::class );
-//		$this->call( VoteTableSeeder::class );
-//		$this->call( RequestWordTableSeeder::class );
+        //Model::unguard();
+
+		$this->call( UserTableSeeder::class );
+        //$this->call( PostTableSeeder::class );
+		//$this->call( LikeTableSeeder::class );
+		//$this->call( RequestWordTableSeeder::class );
+        //$this->call( AliasTableSeeder::class );
+        //$this->call( ReviewTableSeeder::class );
+        //$this->call( RemotionTableSeeder::class );
+
+        //Model::reguard();
 	}
 }
