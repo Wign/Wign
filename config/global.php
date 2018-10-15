@@ -13,7 +13,6 @@ return [
     |
     */
 
-    'rank.max' => env( 'RANK_MAX', 5 ),
-
+    'rank_max' => env('RANK_MAX', 5 ),
 
 ];
