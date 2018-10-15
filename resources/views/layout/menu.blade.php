@@ -33,11 +33,11 @@
                     {{ Auth::user()->name }} <span class="caret"></span>
                 </a> --}}
             </li>
+            @if (Auth::user()->type == 'admin')
+                <li><a style="color:#AFA" href="{{ route('admin.index') }}">{{ __( 'common.menu.admin' ) }}</a></li>
+            @endif
         @endguest
 
-        @if (Auth::user()->type == 'admin')
-            <li><a style="color:#AFA" href="{{ route('admin.index') }}">{{ __( 'common.menu.admin' ) }}</a></li>
-        @endif
         <li><span class="text">{{ config( 'wign.version' ) }}</span></li>
     </ul>
 </div>

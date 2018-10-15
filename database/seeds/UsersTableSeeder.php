@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,17 +12,17 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         factory(App\User::class, 100)->create()->each(function($u) {
-            $u->descriptions()->save(factory(App\Description::class)->make());
+            $u->qcvs()->save(factory(App\Qcv::class)->make());
         });
 
         $user = new \App\User([
-            'name' => 'test',
+            'name' => 'admin',
             'email' => 'test@test.dk',
-            'password' => 'testtest',
+            'password' => bcrypt('admin'),
+            'remember_token' => str_random(10),
             'type' => 'admin'
         ]);
         $user->save();
-        $QCV = new \App\Qcv();
-        $user->QCVs()->save($QCV);
+        $user->qcvs()->save(factory(App\Qcv::class)->make(['rank' => 5]));
     }
 }

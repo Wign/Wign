@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Session;
 
 class Admin
 {
@@ -16,7 +17,7 @@ class Admin
     public function handle($request, Closure $next)
     {
         if (! auth()->user()->isAdmin()) {
-            return redirect('/')->withErrors('info', 'Adgangen ikke tilladt.');
+            return redirect('/')->withErrors('info', __('text.no.access'));
         }
 
         return $next($request);

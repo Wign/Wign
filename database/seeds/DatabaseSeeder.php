@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder {
 	public function run() {
         //Model::unguard();
 
-		$this->call( UserTableSeeder::class );
+		$this->call( UsersTableSeeder::class );
+        //$this->call( WordsTableSeeder::class );
         //$this->call( PostTableSeeder::class );
 		//$this->call( LikeTableSeeder::class );
 		//$this->call( RequestWordTableSeeder::class );

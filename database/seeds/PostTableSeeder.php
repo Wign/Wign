@@ -11,7 +11,7 @@ class PostTableSeeder extends Seeder {
      */
     public function run()
     {
-        factory(\App\Post::class, 100)->create()->each(function(\App\Post $sign) {
+        factory(\App\Post::class, 100)->create()->each(function(\App\Post $post) {
         });
     }
 }

@@ -64,6 +64,7 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
+	    dd(config('global.rank.max'));
 		$user = User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
