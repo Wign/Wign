@@ -11,7 +11,10 @@ class PostTableSeeder extends Seeder {
      */
     public function run()
     {
-        factory(\App\Post::class, 100)->create()->each(function(\App\Post $post) {
+        factory(App\Post::class, 1000)->create()->each(function($u) {
+            $u->ils()->save(factory(App\Il::class)->make());
+            $u->videos()->save(factory(\App\Video::class)->make(['user_id' => $u->user_id]));
+            $u->descriptions()->save(factory(\App\Description::class)->make(['user_id' => $u->user_id]));
         });
     }
 }

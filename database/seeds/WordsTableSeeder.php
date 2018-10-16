@@ -13,9 +13,11 @@ class WordsTableSeeder extends Seeder
     public function run()
     {
         factory(App\Word::class, 1000)->create()->each(function($u) {
+            $user = User::inRandomOrder()->first();
             if(random_int(0,4) == 0)    {
-                $user = User::inRandomOrder()->first();
                 $u->requests()->attach($user);
+            } else {
+                $u->posts()->attach(factory(\App\Post::class)->create(), ['user_id' => $user->id]);
             }
         });
 
@@ -26,7 +28,8 @@ class WordsTableSeeder extends Seeder
                 'word' => $word,
             ]);
             $w->save();
-            //$w->posts()->attach(factory(App\Post::class)->make());
+            $user = User::inRandomOrder()->first();
+            $w->posts()->attach(factory(App\Post::class)->create(), ['user_id' => $user->id]);
         }
 
 

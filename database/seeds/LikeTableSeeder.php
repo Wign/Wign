@@ -11,6 +11,8 @@ class LikeTableSeeder extends Seeder
      */
     public function run()
     {
-	    //factory(\App\Vote::class, 250)->create();
+        factory(App\Like::class, 1000)->create()->each(function($u) {
+            $u->ils()->save(factory(App\Il::class)->make());
+        });
     }
 }

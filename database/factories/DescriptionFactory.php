@@ -2,8 +2,8 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\description::class, function (Faker $faker) {
-    $user = App\User::orderByRaw('RAND()')->first();
+$factory->define(App\Description::class, function (Faker $faker) {
+    $user = App\User::inRandomOrder()->first();
 
     return [
         'text' => $faker->sentence(),
