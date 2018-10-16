@@ -1,0 +1,21 @@
+.btn {
+  background: $brand-green;
+  font-family: $base-font-family;
+  line-height: $base-line-height;
+  color: $black;
+  padding: 0px 10px;
+  border: 0px;
+  border-radius: $brand-round;
+  box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.50);
+  @extend %sass-margin-bottom;
+
+  &:active {
+    background-color: darken($brand-green, 25%);
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.50);
+    outline: none;
+  }
+  &:disabled {
+    background-color: desaturate($brand-green, 40%);
+    color: #999999;
+  }
+}

@@ -120,11 +120,11 @@ class PostController extends Controller
         if ( isset( $wordModel ) ) {
             $posts = $wordModel->posts()->get();
             foreach( $posts as $post)   {
-                $post->currentDescription()->text = self::replaceTagsToURL($post->currentDescription()->text);
+                $content = self::replaceTagsToURL($post->currentDescription()->text);
+                $post->descText = $content;
             }
             // $posts = $this->sign_service->getVotedSigns( $wordModel );
             // $posts = $posts->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
-
             return view( 'post' )->with( array( 'word' => $wordModel->word, 'posts' => $posts ) );
         }
 

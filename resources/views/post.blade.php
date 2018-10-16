@@ -51,11 +51,6 @@ $image_height = '360';
         @foreach($posts as $post)
 			<?php
                 $video = $post->currentVideo();
-                $descriptionText = $post->currentDescription()->text;
-			    if ( $post->currentDescription()->isTagged() === true ) {
-			         dd($descriptionText);
-                    $descriptionText = \App\Services\TagService::replaceTagsToURL( e($descriptionText) );
-			    }
 			?>
                 <p><button type="submit"  id="btnEdit" style="float:right">Ret</button></p>
                 <div class="post" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
@@ -75,7 +70,7 @@ $image_height = '360';
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
                 @endif
-                <div class="desc">{!! nl2br($descriptionText) !!}</div>
+                <div class="desc">{!! nl2br($post->descText) !!}</div>
             </div>
         @endforeach
     </div>

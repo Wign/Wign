@@ -52,6 +52,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $type
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User isAdmin()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereType($value)
+ * @property string|null $ban_reason
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBanReason($value)
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
@@ -111,17 +113,17 @@ class User extends Authenticatable {
 
     public function likes()
     {
-        return $this->belongsToMany('App\Post', 'likes', 'user_id', 'post_id');
+        return $this->belongsToMany('App\Post', 'likes', 'user_id', 'post_id')->withTimestamps();
     }
 
     public function remotionVotings()
     {
-        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'user_id', 'remotion_id');
+        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'user_id', 'remotion_id')->withTimestamps();
     }
 
     public function reviewVotings()
     {
-        return $this->belongsToMany('App\Review', 'review_votings', 'user_id', 'review_id');
+        return $this->belongsToMany('App\Review', 'review_votings', 'user_id', 'review_id')->withTimestamps();
     }
 
     public function remotionAuthor()    // Creator of this remotion
@@ -136,7 +138,7 @@ class User extends Authenticatable {
 
     public function requestWords()
     {
-        return $this->belongsToMany('App\Word', 'request_words', 'user_id', 'word_id');
+        return $this->belongsToMany('App\Word', 'request_words', 'user_id', 'word_id')->withTimestamps();
     }
 
     public function qcvs()

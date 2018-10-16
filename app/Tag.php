@@ -39,8 +39,9 @@ class Tag extends Model {
     protected $dates = ['deleted_at'];
 
 	// DEFINING RELATIONSHIPS -----------------------------------
-	public function descriptions() {
-		return $this->belongsToMany( 'App\Description', 'taggable', 'tag_id', 'description_id' );
+	public function descriptions()
+    {
+		return $this->belongsToMany( 'App\Description', 'taggable', 'tag_id', 'description_id' )->withTimestamps();
 	}
 
 	// CREATE SCOPES -----------------------------------------------

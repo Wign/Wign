@@ -51,22 +51,22 @@ class Word extends Model {
 
     public function alias_parents()
     {
-        return $this->belongsToMany('App\Word', 'aliases', 'parent_word_id', 'child_word_id');
+        return $this->belongsToMany('App\Word', 'aliases', 'parent_word_id', 'child_word_id')->withTimestamps();
     }
 
     public function alias_children()
     {
-        return $this->belongsToMany('App\Word', 'aliases', 'child_word_id', 'parent_word_id');
+        return $this->belongsToMany('App\Word', 'aliases', 'child_word_id', 'parent_word_id')->withTimestamps();
     }
 
     public function posts()
     {
-        return $this->belongsToMany('App\Post', 'wordlinks', 'word_id', 'post_id');
+        return $this->belongsToMany('App\Post', 'wordlinks', 'word_id', 'post_id')->withTimestamps();
     }
 
     public function requests()
     {
-        return $this->belongsToMany('App\User', 'request_words', 'word_id', 'user_id');
+        return $this->belongsToMany('App\User', 'request_words', 'word_id', 'user_id')->withTimestamps();
     }
 
 	// CREATE SCOPES -----------------------------------------------
