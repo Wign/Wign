@@ -15,8 +15,8 @@ class CreateRequestWordsTable extends Migration
     {
         Schema::create('request_words', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer( 'word_id' )->unsigned()->unique();
-            $table->integer( 'user_id' )->unsigned()->unique();
+            $table->integer( 'word_id' )->unsigned();
+            $table->integer( 'user_id' )->unsigned();
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder {
         //Model::unguard();
 
 		$this->call( UsersTableSeeder::class );
-        //$this->call( WordsTableSeeder::class );
+        $this->call( WordsTableSeeder::class );
         //$this->call( PostTableSeeder::class );
 		//$this->call( LikeTableSeeder::class );
 		//$this->call( RequestWordTableSeeder::class );

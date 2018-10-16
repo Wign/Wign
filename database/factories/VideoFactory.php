@@ -5,6 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Video::class, function (Faker $faker) {
     $faker->addProvider( new App\Helpers\FakerProvider( $faker ) );
     $url = $faker->url;
+    $user = App\User::orderByRaw('RAND()')->first();
 
     return [
         'video_uuid'          => "v-" . $faker->uuid,
@@ -12,6 +13,8 @@ $factory->define(App\Video::class, function (Faker $faker) {
         'video_url'           => $url . "mp4.mp4",
         'thumbnail_url'       => $url . "vga_thumb.png",
         'small_thumbnail_url' => $url . "qvga_thumb.jpg",
-        'playings'            => rand(0,10000)
+        'playings'            => rand(0,10000),
+
+        'user_id'             => $user->id,
     ];
 });

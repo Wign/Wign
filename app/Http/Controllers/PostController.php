@@ -177,7 +177,7 @@ class PostController extends Controller
      * @return \Illuminate\View\View
      */
     public function showRecent( $number = 25 ) {
-        $words = Word::with('posts')->latest( $number )->get();
+        $words = Word::has('posts')->latest( $number )->get();
 
         return view( 'list' )->with( compact([ 'words', 'number' ]) );
     }
@@ -188,12 +188,7 @@ class PostController extends Controller
      * @return \Illuminate\View\View
      */
     public function showAll() {
-        $words = Word::withCount('posts')->orderBy('posts_count')->get(['word', 'posts_count']);
-        //$word = $words->posts_count;
-        //$words->dd();
-        //++l0dd(compact($words));
-        //$count = $words->posts_count;
-
+        $words = Word::has('posts')->withCount('posts')->orderBy('posts_count')->get(['word', 'posts_count']);
 
         return view( 'listAll' )->with( compact('words') );
     }

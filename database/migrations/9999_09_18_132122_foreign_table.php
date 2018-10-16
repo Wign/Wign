@@ -16,6 +16,7 @@ class ForeignTable extends Migration
         Schema::table('aliases', function (Blueprint $table) {
             $table->foreign('child_word_id')->references('id')->on('words');
             $table->foreign('parent_word_id')->references('id')->on('words');
+            $table->unique(['child_word_id', 'parent_word_id']);
         });
 
         Schema::table('descriptions', function (Blueprint $table) {
@@ -30,6 +31,7 @@ class ForeignTable extends Migration
         Schema::table('likes', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('post_id')->references('id')->on('posts');
+            $table->unique(['post_id', 'user_id']);
         });
 
         Schema::table('posts', function (Blueprint $table) {
@@ -47,11 +49,13 @@ class ForeignTable extends Migration
         Schema::table('remotion_votings', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('remotion_id')->references('id')->on('remotions');
+            $table->unique(['remotion_id', 'user_id']);
         });
 
         Schema::table('request_words', function (Blueprint $table) {
             $table->foreign('word_id')->references('id')->on('words');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['word_id', 'user_id']);
         });
 
         Schema::table('reviews', function (Blueprint $table) {
@@ -61,11 +65,13 @@ class ForeignTable extends Migration
         Schema::table('review_votings', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('review_id')->references('id')->on('reviews');
+            $table->unique(['review_id', 'user_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {
             $table->foreign('tag_id')->references('id')->on('tags');
             $table->foreign('description_id')->references('id')->on('descriptions');
+            $table->unique(['tag_id', 'description_id']);
         });
 
         Schema::table('videos', function (Blueprint $table) {
@@ -77,6 +83,7 @@ class ForeignTable extends Migration
             $table->foreign('word_id')->references('id')->on('words');
             $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['word_id', 'post_id']);
         });
     }
 
