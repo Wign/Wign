@@ -7,7 +7,6 @@ $factory->define(\App\Word::class, function (Faker $faker) {
 
     return [
         'word' => $faker->unique()->wignWords(),
-
-        //'user_id' => $user->id
+        'user_id' => $user->id,
     ];
 });

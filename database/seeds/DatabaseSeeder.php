@@ -12,14 +12,14 @@ class DatabaseSeeder extends Seeder {
         //Model::unguard();
 
 		$this->call( UsersTableSeeder::class );
-        $this->call( WordsTableSeeder::class );
         $this->call( PostTableSeeder::class );
-		//$this->call( LikeTableSeeder::class );
-		//$this->call( RequestWordTableSeeder::class );
+		$this->call( RequestWordTableSeeder::class );
+        //$this->call( LikeTableSeeder::class );
         //$this->call( AliasTableSeeder::class );
         //$this->call( ReviewTableSeeder::class );
         //$this->call( RemotionTableSeeder::class );
         //$this->call( DeletedTableSeeder::class ); // Video + Desc + Word (husk wordlink)
+        //$this->call( OldRankTableSeeder::class ); // IL + QCV
 
         //Model::reguard();
 	}

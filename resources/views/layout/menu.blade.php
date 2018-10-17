@@ -33,7 +33,7 @@
                 </a> --}}
             </li>
             @if (Auth::user()->type == 'admin')
-                <li><a style="color:#AFA" href="{{ route('admin.index') }}">{{ __( 'common.menu.admin' ) }}</a></li>
+                <li><a style="color:#f1a899" href="{{ route('admin.index') }}">{{ __( 'common.menu.admin' ) }}</a></li>
             @endif
         @endguest
         <li><a href="{{ URL::to( config('wign.urlPath.about')) }}">{{ __( 'common.Wign.About' ) }}</a></li>

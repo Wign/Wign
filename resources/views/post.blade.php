@@ -52,8 +52,9 @@ $image_height = '360';
 			<?php
                 $video = $post->currentVideo();
 			?>
-                <p><button type="submit"  id="btnEdit" style="float:right">Ret</button></p>
                 <div class="post" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
+                    <p>{{ $post->ilRank() }}</p>
+                    <button id="btnEdit" class="btn">Ret</button>
                 @isset($hashtag)
                     <h2>{{ $post->theWord }}</h2>
                 @endisset

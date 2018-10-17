@@ -79,6 +79,10 @@ class ForeignTable extends Migration
             $table->foreign('post_id')->references('id')->on('posts');
         });
 
+        Schema::table('words', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+
         Schema::table('wordlinks', function (Blueprint $table) {
             $table->foreign('word_id')->references('id')->on('words');
             $table->foreign('post_id')->references('id')->on('posts');
@@ -152,6 +156,10 @@ class ForeignTable extends Migration
         Schema::table('videos', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['post_id']);
+        });
+
+        Schema::table('words', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('wordlinks', function (Blueprint $table) {

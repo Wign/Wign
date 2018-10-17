@@ -72,8 +72,7 @@ class User extends Authenticatable {
 		'name',
         'email',
         'password',
-        'blacklisted',
-        'reason'
+        'ban_reason'
         // inactive / passive state to exclude from the votings
 	];
 	/**
@@ -89,7 +88,6 @@ class User extends Authenticatable {
     protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
-    //TODO: bool pending remotion
 
     public function words()
     {
@@ -147,6 +145,7 @@ class User extends Authenticatable {
     }
 
     // CREATE SCOPES -----------------------------------------------
+    //TODO: bool pending remotion
 
     public function scopeIsAdmin()
     {
