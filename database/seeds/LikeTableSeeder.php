@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Post;
+use App\User;
 
 class LikeTableSeeder extends Seeder
 {
@@ -11,8 +13,14 @@ class LikeTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Like::class, 1000)->create()->each(function($u) {
-            $u->ils()->save(factory(App\Il::class)->make());
-        });
+        $n = random_int(10, Post::count()/2);
+        $posts = Post::inRandomOrder()->limit($n)->get();
+        foreach ($posts as $post)   {
+            $n = random_int(0, User::count()/2);
+            $users = User::inRandomOrder()->limit($n)->get();
+            foreach ($users as $user)   {
+                $post->likes()->attach($user);
+            }
+        }
     }
 }

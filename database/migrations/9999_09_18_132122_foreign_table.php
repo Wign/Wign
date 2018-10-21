@@ -44,6 +44,7 @@ class ForeignTable extends Migration
 
         Schema::table('remotions', function (Blueprint $table) {
             $table->foreign('qcv_id')->references('id')->on('qcvs');
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
@@ -60,6 +61,7 @@ class ForeignTable extends Migration
 
         Schema::table('reviews', function (Blueprint $table) {
             $table->foreign('il_id')->references('id')->on('ils');
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
         Schema::table('review_votings', function (Blueprint $table) {

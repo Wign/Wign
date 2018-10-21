@@ -53,5 +53,8 @@ class Il extends Model
     }
 
     // CREATE SCOPES -----------------------------------------------
-
+    public function awaitingReviews()
+    {
+        return $this->has('reviews')->get();
+    }
 }

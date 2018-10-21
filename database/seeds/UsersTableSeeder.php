@@ -13,6 +13,17 @@ class UsersTableSeeder extends Seeder
     {
         factory(App\User::class, 100)->create()->each(function($u) {
             $u->qcvs()->save(factory(App\Qcv::class)->make());
+
+            $q = $u->qcv()->rank;
+            while ($q > 0) {
+                if (random_int(0, 9) == 0 && $q <= config('global.rank_max'))  {
+                    $q++;
+                    $u->qcvs()->save(factory(App\Qcv::class)->make(['rank' => $q, 'deleted_at' => now()]));
+                } else {
+                    $q--;
+                    $u->qcvs()->save(factory(\App\Qcv::class)->make(['rank' => $q, 'deleted_at' => now()]));
+                }
+            }
         });
 
         $user = new \App\User([

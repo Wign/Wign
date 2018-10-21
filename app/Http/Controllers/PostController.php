@@ -123,8 +123,7 @@ class PostController extends Controller
                 $content = self::replaceTagsToURL($post->currentDescription()->text);
                 $post->descText = $content;
             }
-            // $posts = $this->sign_service->getVotedSigns( $wordModel );
-            // $posts = $posts->sortByDesc( 'num_votes' ); // Sort the signs according to the number of votes
+            //$posts = Post::withCount('votes')->orderBy('votes_count', 'DESC')->orderBy('created_at')->get(['post', 'post_count']);
             return view( 'post' )->with( array( 'word' => $wordModel->word, 'posts' => $posts ) );
         }
 
@@ -143,7 +142,7 @@ class PostController extends Controller
     public function edit($id, Request $request)
     {
         $post = Post::find($id);
-        $user = 5; //Auth::check()->
+        $user = Auth::user();
 
         return null;
     }
@@ -156,9 +155,9 @@ class PostController extends Controller
         $description = Description::find('post_id', $id);
         $description->delete();
         $post->delete();
+
         return redirect()->route('index')->with('info', 'Tegnet er fjernet.');
     }
-
 
     //////////////////////
 
@@ -188,7 +187,7 @@ class PostController extends Controller
      * @return \Illuminate\View\View
      */
     public function showAll() {
-        $words = Word::has('posts')->withCount('posts')->orderBy('posts_count')->get(['word', 'posts_count']);
+        $words = Word::withCount('posts')->orderBy('posts_count', 'DESC')->orderBy('word')->get(['word', 'posts_count']);
 
         return view( 'listAll' )->with( compact('words') );
     }

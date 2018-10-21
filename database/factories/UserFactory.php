@@ -15,6 +15,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
 	static $password;
+
 	$banned = random_int(0,19) == 0 ? true : false;
     $updated_at = $faker->dateTime();
     $tempDate = $faker->dateTime();
@@ -23,6 +24,11 @@ $factory->define(App\User::class, function (Faker $faker) {
     } else {
         $created_at = $updated_at;
         $updated_at = $tempDate;
+    }
+    if (!$banned && random_int(0,99) == 0) {
+        $type = 'admin';
+    } else {
+        $type = 'default';
     }
 
 	return [
@@ -34,5 +40,8 @@ $factory->define(App\User::class, function (Faker $faker) {
         'updated_at' => $banned ? $updated_at : $created_at,
         'deleted_at' => $banned ? $updated_at : null,
         'ban_reason' => $reason = $banned ? $faker->sentence : null,
+        'type' => $type,
 	];
+
+
 });

@@ -15,7 +15,11 @@ class PostTableSeeder extends Seeder {
             $Il = factory(App\Il::class)->make();
             $video = factory(\App\Video::class)->make(['user_id' => $u->user_id]);
             $desc = factory(\App\Description::class)->make(['user_id' => $u->user_id]);
-            $word = factory(\App\Word::class)->create(['user_id' => $u->user_id]);
+            if (random_int(0, 19) == 0 && \App\Word::count() !== 0)   {
+                $word = \App\Word::inRandomOrder()->first();
+            } else {
+                $word = factory(\App\Word::class)->create(['user_id' => $u->user_id]);
+            }
 
             $u->ils()->save($Il);
             $u->videos()->save($video);

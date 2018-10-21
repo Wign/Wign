@@ -5,46 +5,45 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 /**
  * App\Review
  *
  * @property int $id
- * @property int $post_id
- * @property string|null $effective_date
+ * @property int $il_id
+ * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Il $il
+ * @property-read \App\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $voters
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Query\Builder|\App\Review onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review post()
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereEffectiveDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review wherePostId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereIlId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
  * @mixin \Eloquent
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
- * @property int $IL_id
- * @property-read \App\Il $Il
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereILId($value)
- * @property int $user_id
- * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review post()
- * @property int $il_id
- * @property-read \App\Il $IL
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereIlId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review rank()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review postRank()
  */
 class Review extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     use SoftDeletes;
 
+    const BALLOTS_DIST_2 = [.6, .4];
+    const BALLOTS_DIST_3 = [.5, .3, .2];
+
     protected $fillable = array(
-        'IL_id',
+        'il_id',
         'user_id'   // Requestor
     );
 
@@ -53,15 +52,15 @@ class Review extends Model
     // DEFINING RELATIONSHIPS -----------------------------------
     public function voters()
     {
-        return $this->belongsToMany('App\User', 'review_voting', 'review_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'review_votings', 'review_id', 'user_id')->withTimestamps();
     }
 
-    public function IL()
+    public function il()
     {
-        return $this->belongsTo('App\Il', 'IL_id');
+        return $this->belongsTo('App\Il', 'il_id');
     }
 
-    public function user()
+    public function user()  // Creator
     {
         return $this->belongsTo('App\User', 'user_id');
     }
@@ -70,7 +69,12 @@ class Review extends Model
 
     public function scopePost()
     {
-        return Il::find($this->IL_id)->post()->get();
+        return Il::find($this->il_id)->post()->get();
+    }
+
+    public function scopePostRank()
+    {
+        return $this->il()->first()->rank;
     }
 
 }

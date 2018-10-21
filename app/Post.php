@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post il()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post inReview()
  */
 class Post extends Model
 {
@@ -84,6 +86,11 @@ class Post extends Model
         return $this->ils()->first('rank');
     }
 
+    public function scopeIl()
+    {
+        return $this->ils()->first();
+    }
+
     public function scopeCurrentWord()
     {
         return $this->words()->first();
@@ -117,5 +124,10 @@ class Post extends Model
     public function scopeDeactiveReviews()
     {
         return Review::onlyTrashed()->post()->get();
+    }
+
+    public function scopeInReview()
+    {
+        return $this->ils()->reviews()->first();
     }
 }

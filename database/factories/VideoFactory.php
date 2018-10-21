@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Video::class, function (Faker $faker) {
     $faker->addProvider( new App\Helpers\FakerProvider( $faker ) );
     $url = $faker->url;
-    $user = \App\User::withTrashed()->take(random_int(0, 100))->first();
+    $user = \App\User::withTrashed()->take(random_int(0, \App\User::count()))->first();
 
     return [
         'video_uuid'          => "v-" . $faker->uuid,

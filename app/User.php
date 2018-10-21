@@ -54,6 +54,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereType($value)
  * @property string|null $ban_reason
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBanReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User postRank()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User ranks()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User userRank()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User rank()
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
@@ -72,7 +76,8 @@ class User extends Authenticatable {
 		'name',
         'email',
         'password',
-        'ban_reason'
+        'ban_reason',
+        'type',
         // inactive / passive state to exclude from the votings
 	];
 	/**
@@ -155,6 +160,11 @@ class User extends Authenticatable {
     public function scopeQcv()
     {
         return $this->qcvs()->first();
+    }
+
+    public function scopeRank()
+    {
+        return $this->qcv()->rank;
     }
 
 }

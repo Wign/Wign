@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
  * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
  * @mixin \Eloquent
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUserId($value)
  */
 class Word extends Model {
 
@@ -51,12 +53,12 @@ class Word extends Model {
 
     public function alias_parents()
     {
-        return $this->belongsToMany('App\Word', 'aliases', 'parent_word_id', 'child_word_id')->withTimestamps();
+        return $this->belongsToMany('App\Word', 'aliases', 'child_word_id', 'parent_word_id')->withTimestamps();
     }
 
     public function alias_children()
     {
-        return $this->belongsToMany('App\Word', 'aliases', 'child_word_id', 'parent_word_id')->withTimestamps();
+        return $this->belongsToMany('App\Word', 'aliases', 'parent_word_id', 'child_word_id')->withTimestamps();
     }
 
     public function posts()

@@ -2,31 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SignService;
-use App\Services\TagService;
+use App\Description;
+Use App\Tag;
 
 class TagController extends Controller {
-	protected $tag;
-	protected $sign;
 
+    /**
+     * @param Description $desc
+     * @return bool
+     */
+    public function storeTags( Description $desc ): bool {
+        $desc->tags()->detach(); // Delete all tags relations from the sign (Begin on fresh)
 
-	/**
-	 * TagController constructor.
-	 *
-	 * @param TagService $tag
-	 * @param SignService $sign
-	 */
-	public function __construct( TagService $tag, SignService $sign ) {
-		$this->tag  = $tag;
-		$this->sign = $sign;
-	}
+        $text = $desc->text;
 
+        if ( empty( $text ) ) {
+            return false;
+        }
 
+        $hashtags = self::findTagsInText( $text );
+
+        if ( empty( $hashtags ) ) {
+            return false;
+        }
+
+        foreach ( $hashtags as $hashtag ) {
+            $tag = Tag::firstOrCreate( [ 'tag' => $hashtag ] );
+            $desc->tags()->attach( $tag );
+        }
+
+        return true;
+    }
 
 	public function findTags( $tag ) {
-		$theTag = $this->tag->findTagByName( $tag );
+		$theTag = self::findTagByName( $tag );
 
-		$signs = $this->tag->getTaggedSigns( $theTag );
+		$signs = self::getTaggedSigns( $theTag );
 		if ( empty( $signs ) ) {
 			abort( 404, __( 'text.sign.not.have' ) );
 		}
@@ -42,6 +53,26 @@ class TagController extends Controller {
 		} );
 
 		return view( 'sign' )->with( array( 'word' => '#' . $theTag->tag, 'signs' => $signs, 'hashtag' => true ) );
-
 	}
+
+	/////////////////////////
+
+    private function getTaggedSigns( Tag $tag ) {
+        return $tag->descriptions()->get();
+    }
+
+    private function findTagByName( string $tag ): Tag {
+        return Tag::where( 'tag', $tag )->first();
+    }
+
+    /**
+     * @param String $text
+     * @return array
+     */
+    private static function findTagsInText( String $text ): array {
+        $tagArray = [];
+        preg_match_all( REGEXP, $text, $tagArray );
+
+        return $tagArray['tags'];
+    }
 }

@@ -53,7 +53,7 @@ class Remotion extends Model
     // DEFINING RELATIONSHIPS -----------------------------------
     public function voters()
     {
-        return $this->belongsToMany('App\User', 'remotion_voting', 'remotion_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'remotion_votings', 'remotion_id', 'user_id')->withTimestamps();
     }
 
     public function QCV()
