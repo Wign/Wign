@@ -37,7 +37,10 @@ class ReviewTableSeeder extends Seeder
                 $mixedUsers = User::where('type', 'default')->inRandomOrder();
                 //
                 $dist = [.6, .4];
-                $users = $mixedUsers->with('rank', $il)->take($n * $dist[0])->get();
+                $users = $mixedUsers->whereExists(function($query) use ($il) {
+                	$query->select(DB::raw(1))->from('qcvs')->whereRaw('qcvs.user_id=users.id and qcvs.rank='.$il);
+                })->take($n * $dist[0])->get();
+
                 //
                 /*$rankMax = config('global.rank_max');
                 if (true) { //$il > $rankMax - 2)    {
