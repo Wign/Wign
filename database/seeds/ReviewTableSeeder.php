@@ -24,38 +24,39 @@ class ReviewTableSeeder extends Seeder
                     $u->voters()->attach($admin);   // Trigger all admins, but only one will decide the review
                 }
             } else {
-                echo 'NEW';
                 $n = log($numUsers);
                 $n = intval($n * $n);
-                if ($n < 5) {
-                    $n = 5;
+                if ($n < 6) {
+                    $n = 6;
                 } elseif ($n > 200) {
                     $n = 200;
                 }
                 $il = $u->postRank();
                 $users = null;
-                $mixedUsers = User::where('type', 'default')->inRandomOrder();
-                //
-                $dist = [.6, .4];
-                $users = $mixedUsers->whereExists(function($query) use ($il) {
-                	$query->select(DB::raw(1))->from('qcvs')->whereRaw('qcvs.user_id=users.id and qcvs.rank='.$il);
-                })->take($n * $dist[0])->get();
+                $rankMax = config('global.rank_max');
+                if ($il > $rankMax - 2)    {
+                    $dist = [.6, .4];
+                    $qcvs = \App\Qcv::whereRank($rankMax-1)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
+                    $users = User::findMany($qcvs);
 
-                //
-                /*$rankMax = config('global.rank_max');
-                if (true) { //$il > $rankMax - 2)    {
-                    $dist = config('global.ballot_2_dist');
-                    $users = $mixedUsers->has('rank()', 4)->take($n * $dist[0])->get();
-                    $users->merge($mixedUsers->with('rank()', $rankMax)->take($n * $dist[1])->get());
+                    $qcvs = \App\Qcv::whereRank($rankMax)->inRandomOrder()->take($n * $dist[1])->pluck('user_id')->toArray();
+                    $users2 = User::findMany($qcvs);
+
+                    $allUsers = $users->merge($users2);
                 } else {
-                    $dist = config('global.ballot_3_dist');
-                    $users = $mixedUsers->with('rank()', $rankMax - 1);
-                    $users = $users->take($n * $dist[0])->get();
-                    $users->merge($mixedUsers->where('postRank()', ($il + 1))->take($n * $dist[1])->get());
-                    $users->merge($mixedUsers->where('postRank()', ($il + 2))->take($n * $dist[2])->get());
-                }*/
-                foreach ($users as $user)   {
-                    echo 'Do';
+                    $dist = [.5, .3, .2];
+                    $qcvs = \App\Qcv::whereRank($il)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
+                    $users = User::findMany($qcvs);
+
+                    $qcvs = \App\Qcv::whereRank($il+1)->inRandomOrder()->take($n * $dist[1])->pluck('user_id')->toArray();
+                    $users2 = User::findMany($qcvs);
+
+                    $qcvs = \App\Qcv::whereRank($il+2)->inRandomOrder()->take($n * $dist[2])->pluck('user_id')->toArray();
+                    $users3 = User::findMany($qcvs);
+
+                    $allUsers = $users->merge($users2)->merge($users3);
+                }
+                foreach ($allUsers as $user) {  //TODO: Check if the admins do not include in the allocation of ballots
                     $u->voters()->attach($user);
                 }
             }

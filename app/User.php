@@ -119,16 +119,6 @@ class User extends Authenticatable {
         return $this->belongsToMany('App\Post', 'likes', 'user_id', 'post_id')->withTimestamps();
     }
 
-    public function remotionVotings()
-    {
-        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'user_id', 'remotion_id')->withTimestamps();
-    }
-
-    public function reviewVotings()
-    {
-        return $this->belongsToMany('App\Review', 'review_votings', 'user_id', 'review_id')->withTimestamps();
-    }
-
     public function remotionAuthor()    // Creator of this remotion
     {
         return $this->hasMany('App\Remotion', 'user_id');
@@ -165,6 +155,11 @@ class User extends Authenticatable {
     public function scopeRank()
     {
         return $this->qcv()->rank;
+    }
+
+    public function scopeRanks($value)
+    {
+        return User::qcvs()->where('rank', $value);
     }
 
 }

@@ -48,9 +48,9 @@ class ForeignTable extends Migration
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('qcv_id')->references('id')->on('qcvs');
             $table->foreign('remotion_id')->references('id')->on('remotions');
-            $table->unique(['remotion_id', 'user_id']);
+            $table->unique(['remotion_id', 'qcv_id']);
         });
 
         Schema::table('request_words', function (Blueprint $table) {
@@ -65,9 +65,9 @@ class ForeignTable extends Migration
         });
 
         Schema::table('review_votings', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('qcv_id')->references('id')->on('qcvs');
             $table->foreign('review_id')->references('id')->on('reviews');
-            $table->unique(['review_id', 'user_id']);
+            $table->unique(['review_id', 'qcv_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {
@@ -133,7 +133,7 @@ class ForeignTable extends Migration
 
         Schema::table('remotion_votings', function (Blueprint $table) {
             $table->dropForeign(['remotion_id']);
-            $table->dropForeign(['user_id']);
+            $table->dropForeign(['qcv_id']);
         });
 
         Schema::table('request_words', function (Blueprint $table) {
@@ -147,7 +147,7 @@ class ForeignTable extends Migration
 
         Schema::table('review_votings', function (Blueprint $table) {
             $table->dropForeign(['review_id']);
-            $table->dropForeign(['user_id']);
+            $table->dropForeign(['qcv_id']);
         });
 
         Schema::table('taggables', function (Blueprint $table) {

@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Qcv whereRank($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Qcv whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Qcv whereUserId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Remotion[] $remotionVotings
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewVotings
  */
 class Qcv extends Model
 {
@@ -50,6 +52,16 @@ class Qcv extends Model
     public function remotions()
     {
         return $this->hasMany('App\Remotion', 'user_id');
+    }
+
+    public function remotionVotings()
+    {
+        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'qcv_id', 'remotion_id')->withTimestamps();
+    }
+
+    public function reviewVotings()
+    {
+        return $this->belongsToMany('App\Review', 'review_votings', 'qcv_id', 'review_id')->withTimestamps();
     }
 
     // CREATE SCOPES -----------------------------------------------

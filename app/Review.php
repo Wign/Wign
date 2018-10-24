@@ -41,6 +41,10 @@ class Review extends Model
 
     const BALLOTS_DIST_2 = [.6, .4];
     const BALLOTS_DIST_3 = [.5, .3, .2];
+    const VOTE_WEIGHT = [0, 1, 2, 3, 5, 8]; // Fibonacci
+    // const VOTE_WEIGHT = [0, 1, 2, 3, 4, 5]; // Linear
+    // const VOTE_WEIGHT = [0, 1, 2, 4, 8, 16]; // Doubling
+    const APPROVE_THRESHOLD = [.5, .6, .7, .8, .9];
 
     protected $fillable = array(
         'il_id',
@@ -52,7 +56,7 @@ class Review extends Model
     // DEFINING RELATIONSHIPS -----------------------------------
     public function voters()
     {
-        return $this->belongsToMany('App\User', 'review_votings', 'review_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany('App\QCV', 'review_votings', 'review_id', 'qcv_id')->withTimestamps();
     }
 
     public function il()
