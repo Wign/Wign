@@ -72,4 +72,5 @@ return [
 	'sign.suggest.word'       => 'Lav en ny tegnforslag af :word',
 	'hash.count.signs'        => 'Vi har :count tegn med hashtagget',
     'no.access'               => 'Adgangen nægtet',
+    'post.edit'
 ];

@@ -18,6 +18,7 @@ class CreateTaggablesTable extends Migration
             $table->integer('tag_id')->unsigned();
             $table->integer('description_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

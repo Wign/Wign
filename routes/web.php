@@ -33,6 +33,7 @@ Route::group(['prefix' => 'post'], function() {
     Route::post( 'create', ['uses' => 'PostController@postNewPost', 'as' => 'post.create'] );
     Route::get( '{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
 });
+Route::get( 'edit', ['uses' => 'PostController@getEdit', 'as' => 'post.edit']);
 Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
 Route::get( config( 'wign.urlPath.all' ), 'PostController@showAll' );
 Route::get( 'recent',   ['uses' => 'PostController@showRecent', 'as' => 'post.recent']);
@@ -77,7 +78,7 @@ Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
 // ADMIN
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function()  {
-    Route::get( 'index', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index']);
+    Route::get( 'index', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index'])->middleware('admin');
 });
 
 // AUTH

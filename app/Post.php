@@ -4,8 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-
 /**
  * App\Post
  *
@@ -27,14 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedVideos()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedWords()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post ilRank()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post il()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post inReview()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post rank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post il()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post inReview()
  */
 class Post extends Model
 {
@@ -78,10 +76,10 @@ class Post extends Model
 
     public function scopeCountLikes()
     {
-        return $this->likes()->count();
+        return Post::likes()->count();
     }
 
-    public function scopeIlRank()
+    public function scopeRank()
     {
         return $this->ils()->first('rank');
     }

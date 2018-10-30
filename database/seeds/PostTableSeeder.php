@@ -4,6 +4,17 @@ use Illuminate\Database\Seeder;
 
 class PostTableSeeder extends Seeder {
 
+    protected $TC;
+
+    /**
+     * PostTableSeeder constructor.
+     *
+     * @param $TC
+     */
+    public function __construct( \App\Http\Controllers\TagController $TC ) {
+        $this->TC = $TC;
+    }
+
 	/**
      * Run the database seeds.
      *
@@ -15,6 +26,7 @@ class PostTableSeeder extends Seeder {
             $Il = factory(App\Il::class)->make();
             $video = factory(\App\Video::class)->make(['user_id' => $u->user_id]);
             $desc = factory(\App\Description::class)->make(['user_id' => $u->user_id]);
+            //$this->TC->storeTags($desc);
             if (random_int(0, 19) == 0 && \App\Word::count() !== 0)   {
                 $word = \App\Word::inRandomOrder()->first();
             } else {
@@ -26,6 +38,7 @@ class PostTableSeeder extends Seeder {
             $u->descriptions()->save($desc);
             $u->words()->attach($word, ['user_id' => $u->user_id]);
 
+            // Generate previous ILs
             if (random_int(0, 4) == 0)  {
                 $n = random_int(1, 10);
                 for ($i = 0; $i < $n; $i++) {
@@ -77,6 +90,14 @@ class PostTableSeeder extends Seeder {
             } else {
                 $word = factory(\App\Word::class)->create(['user_id' => $u->user_id]);
             }
+
+            // Collection of tags in this description text
+           /* $tags = [];
+            preg_match_all( config('wign.tagRegexp'), $desc->text, $tags );
+            foreach ( $tags as $tag ) {
+                $t = \App\Tag::firstOrCreate( [ 'tag' => $tag ] );
+                $desc->tags()->attach( $t, ['deleted_at' => now()] );
+            }*/
 
             $u->ils()->save($Il);
             $u->videos()->save($video);

@@ -34,7 +34,7 @@ class RemotionTableSeeder extends Seeder
                 $qcv = $u->userRank();
                 $users = null;
                 $rankMax = config('global.rank_max');
-                if ($qcv > $rankMax - 2)    {   //TODO: Need to exclude the admins
+                if ($qcv > $rankMax - 2)    {   //TODO: Need to exclude the admins + ensure that the allocation reaches to everyone
                     $dist = [.6, .4];
                     $qcvs = \App\Qcv::whereRank($rankMax-1)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
                     $users = User::findMany($qcvs);
@@ -59,9 +59,10 @@ class RemotionTableSeeder extends Seeder
 
                     $allUsers = $users->merge($users2)->merge($users3);
                 }
-                foreach ($allUsers as $user) {
-                    echo 'Do'.$user->rank();
-                    if ($user->type == 'admin') echo 'ALERT';
+                foreach ($allUsers as $user) {  //TODO: Temporally
+                    if ($user->type == 'admin') {
+                        continue;
+                    }
                     $u->voters()->attach($user);
                 }
             }

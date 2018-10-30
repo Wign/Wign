@@ -15,8 +15,8 @@ class CreateAliasesTable extends Migration
     {
         Schema::create('aliases', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_word_id')->unsigned();
             $table->integer('child_word_id')->unsigned();
+            $table->integer('parent_word_id')->unsigned();
             $table->timestamps();
         });
     }

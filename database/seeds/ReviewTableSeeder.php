@@ -34,7 +34,7 @@ class ReviewTableSeeder extends Seeder
                 $il = $u->postRank();
                 $users = null;
                 $rankMax = config('global.rank_max');
-                if ($il > $rankMax - 2)    {
+                if ($il > $rankMax - 2)    {    //TODO: Need to exclude the admins + ensure that the allocation reaches to everyone
                     $dist = [.6, .4];
                     $qcvs = \App\Qcv::whereRank($rankMax-1)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
                     $users = User::findMany($qcvs);
@@ -56,12 +56,13 @@ class ReviewTableSeeder extends Seeder
 
                     $allUsers = $users->merge($users2)->merge($users3);
                 }
-                foreach ($allUsers as $user) {  //TODO: Check if the admins do not include in the allocation of ballots
+                foreach ($allUsers as $user) {  //TODO: Temporally
+                    if ($user->type == 'admin') {
+                        continue;
+                    }
                     $u->voters()->attach($user);
                 }
             }
         });
-
-        // factory of terminated reviews
     }
 }

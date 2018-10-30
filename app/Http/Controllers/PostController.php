@@ -12,6 +12,7 @@ use App\Post;
 use App\Tag;
 
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Constraint\IsEmpty;
 use URL;
 use App\Helpers\Helper;
 
@@ -114,16 +115,16 @@ class PostController extends Controller
     public function getPosts( $word ) {
 
         $word      = Helper::underscoreToSpace( $word );
-        $wordModel = Word::whereWord( $word )->with('posts')->first();
+        $wordModel = Word::whereWord( $word )->has('posts')->first();
 
         // If word exist in database
         if ( isset( $wordModel ) ) {
-            $posts = $wordModel->posts()->get();
+            $posts = $wordModel->posts()->withCount('likes')->get();
             foreach( $posts as $post)   {
                 $content = self::replaceTagsToURL($post->currentDescription()->text);
                 $post->descText = $content;
+                $post->liked = $post->likes->contains(Auth::user()->id);
             }
-            //$posts = Post::withCount('votes')->orderBy('votes_count', 'DESC')->orderBy('created_at')->get(['post', 'post_count']);
             return view( 'post' )->with( array( 'word' => $wordModel->word, 'posts' => $posts ) );
         }
 
@@ -139,12 +140,36 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function getEdit()
     {
-        $post = Post::find($id);
-        $user = Auth::user();
+        if (Auth::user()->rank == 0)    {
+            return back()->with('error', 'Du har ikke rette-rettighed');
+        }
+        //$post = Post::find($request->input('word'));
+        return view('form.editPost');
+    }
 
-        return null;
+    public function postEdit($id, Request $request) //TODO: Complete the edit method
+    {
+        $user = Auth::user();
+        $post = Post::find($id);
+        $edited = false;
+
+        if ($request->input('word') != $post->currentWord()->word) {
+            $edited = true;
+        }
+        if ($request->input('video') != $post->currentVideo()->uuid) {
+            $edited = true;
+        }
+        if ($request->input('description') != $post->currentDescription()->text) {
+            $edited = true;
+        }
+
+        if ($edited && $post->rank() > $user->rank)    {
+            return redirect()->route('review.new');
+        }
+
+        return redirect( config( 'wign.urlPath.sign' ) . '/' . $word->word )->with( $flash );
     }
 
     public function delete($id)
@@ -203,7 +228,7 @@ class PostController extends Controller
     private function getAlikeWords( string $word, int $count ) {
         $max_levenshtein = 5;
         $min_levenshtein = PHP_INT_MAX;
-        $words           = Word::with('posts')->get();
+        $words           = Word::has('posts')->get();
         $tempArr         = array();
 
         foreach ( $words as $compareWord ) {

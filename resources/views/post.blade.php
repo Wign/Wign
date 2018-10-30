@@ -47,25 +47,26 @@ $image_height = '360';
         @endif
     @endif
     <div id="post">
-		<?php $myIP = Request::getClientIp(); ?>
+		<?php $user = Auth::user(); ?>
         @foreach($posts as $post)
 			<?php
                 $video = $post->currentVideo();
 			?>
-                <div class="post" data-count="{{ $post->num_votes }}" data-id="{{$post->id}}">
-                    <button id="btnEdit" class="btn">Ret</button>
+                <div class="post" data-count="{{ $post->likes_count }}" data-id="{{$post->id}}">
+                    <button id="btnEdit" class="btn" onclick="location.href='{{ route('post.edit') }}'">
+                        Ret
+                    </button>
                 @isset($hashtag)
                     <h2>{{ $post->theWord }}</h2>
                 @endisset
-
                 <player id="video_{{ $video->id }}"
                         data-uuid="{{ $video->video_uuid }}"
                         data-controls="true"
                         data-displaytitle="false"
                         data-displaydescription="false"
                         data-mute="true"></player>
-                <span class="count">{{ $post->num_votes }}</span>
-                @if(isset($post->voted) && $post->voted == true)
+                <span class="count">{{ $post->likes_count }}</span>
+                @if( $post->liked )
                     <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>

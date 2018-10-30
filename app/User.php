@@ -58,6 +58,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User ranks()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User userRank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User rank()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User voted()
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
@@ -162,4 +163,8 @@ class User extends Authenticatable {
         return User::qcvs()->where('rank', $value);
     }
 
+    public function scopeVoted($value)
+    {
+        return self::has($this->likes()->find($value));
+    }
 }

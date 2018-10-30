@@ -12,7 +12,7 @@ class TagController extends Controller {
      * @return bool
      */
     public function storeTags( Description $desc ): bool {
-        $desc->tags()->detach(); // Delete all tags relations from the sign (Begin on fresh)
+        $desc->tags()->detach(); // Delete all tags relations from the post (Begin on fresh)
 
         $text = $desc->text;
 
@@ -47,7 +47,7 @@ class TagController extends Controller {
 			$sign->theWord = $this->sign->getWordBySign( $sign );
 		}
 
-		// Sorts the signs according to the words (And not according to number of votes as in "sign" page)
+		// Sorts the posts according to the words (And not according to number of votes as in "post" page)
 		$signs = $signs->sortBy( function ( $sign ) {
 			return strtolower( $sign->theWord );
 		} );
@@ -71,7 +71,7 @@ class TagController extends Controller {
      */
     private static function findTagsInText( String $text ): array {
         $tagArray = [];
-        preg_match_all( REGEXP, $text, $tagArray );
+        preg_match_all( config_path('wign.tagRegexp'), $text, $tagArray );
 
         return $tagArray['tags'];
     }

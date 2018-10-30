@@ -38,7 +38,7 @@ class RequestController extends Controller {
 
 		$hasWord = Word::firstOrCreate( [ 'word' => $word ] );
 
-		$hasSign = $hasWord->signs->first();
+		$hasSign = $hasWord->posts->first();
 		if ( $hasSign ) {
 			$flash = array(
 				'message' => __('flash.sign.already', ['word' => $word]),
@@ -48,16 +48,16 @@ class RequestController extends Controller {
 			return redirect( config( 'wign.urlPath.request' ) )->with( $flash );
 		}
 
-		$hasVote = $hasWord->request->where( 'ip', $myIP )->first();
-		if ( $hasVote ) {
+		$hasVote = $hasWord->requests()->find(\Auth::user());
+		if ( empty($hasVote) ) {
 			return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.already', ['word' => $word]));
 		} else {
 			// Check if client is bot. If true, reject the creation!
 			if ( Helper::detect_bot() ) {
 				return redirect( config( 'wign.urlPath.request' ) )->with( 'message', __('flash.bot.refuse') );
 			} else {
-				$requestID = RequestWord::create( [ 'word_id' => $hasWord['id'], 'ip' => $myIP ] );
-				if ( $requestID ) {
+				$request = $hasWord->requests()->attach(\Auth::user());
+				if ( $request ) {
 					$flash = [
 						'message' => __('flash.request.successful', ['word' => $word]),
 						'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
