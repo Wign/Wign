@@ -33,7 +33,8 @@ Route::group(['prefix' => 'post'], function() {
     Route::post( 'create', ['uses' => 'PostController@postNewPost', 'as' => 'post.create'] );
     Route::get( '{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
 });
-Route::get( 'edit', ['uses' => 'PostController@getEdit', 'as' => 'post.edit']);
+Route::get( 'edit' . '/{id}', ['uses' => 'PostController@getEdit', 'as' => 'post.edit'])->middleware('auth');
+Route::post( 'save' . '/{id}', ['uses' => 'PostController@postEdit', 'as' => 'post.edit.save'])->middleware('auth');
 Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
 Route::get( config( 'wign.urlPath.all' ), 'PostController@showAll' );
 Route::get( 'recent',   ['uses' => 'PostController@showRecent', 'as' => 'post.recent']);

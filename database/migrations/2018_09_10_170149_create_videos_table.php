@@ -16,7 +16,6 @@ class CreateVideosTable extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
-            $table->integer( 'post_id' )->unsigned();
             $table->string( 'video_uuid' )->unique();
             $table->string( 'camera_uuid' );
             $table->string( 'video_url' );
@@ -24,7 +23,6 @@ class CreateVideosTable extends Migration
             $table->string( 'small_thumbnail_url' );
             $table->integer( 'playings' )->default(0);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

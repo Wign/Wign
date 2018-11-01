@@ -8,7 +8,6 @@ $factory->define(App\Description::class, function (Faker $faker) {
 
     return [
         'text' => $text,
-
         'user_id' => $user->id,
     ];
 });

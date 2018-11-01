@@ -1,49 +1,38 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * App\Word
  *
  * @property int $id
  * @property string $word
+ * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $alias_children
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $alias_parents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $requests
  * @property-read \App\User $user
- * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word getQueriedWord($word = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word latest($num = 25)
- * @method static \Illuminate\Database\Query\Builder|\App\Word onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word random($num = 1, $count = null)
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Word withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Word withoutSign()
- * @method static \Illuminate\Database\Query\Builder|\App\Word withoutTrashed()
- * @mixin \Eloquent
- * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
+ * @mixin \Eloquent
  */
 class Word extends Model {
 
 	// MASS ASSIGNMENT ------------------------------------------
-	use SoftDeletes;
     protected $fillable = [
         'user_id',
         'word'
     ];
-
-    protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
     public function user()
@@ -63,7 +52,7 @@ class Word extends Model {
 
     public function posts()
     {
-        return $this->belongsToMany('App\Post', 'wordlinks', 'word_id', 'post_id')->withTimestamps();
+        return $this->hasMany('App\Post', 'word_id');
     }
 
     public function requests()

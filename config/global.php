@@ -20,4 +20,6 @@ return [
     'min_ballots' => env('MIN_BALLOTS', 5),
     'max_ballots' => env('MAX_BALLOTS', 200),
 
+    'debug' => env('DEBUG', true),
+
 ];

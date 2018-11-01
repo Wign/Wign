@@ -33,6 +33,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review rank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review postRank()
+ * @property int $new_post_il_id
+ * @property int $old_post_il_id
+ * @property-read \App\Il $newIl
+ * @property-read \App\Il $oldIl
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereNewPostIlId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereOldPostIlId($value)
  */
 class Review extends Model
 {
@@ -47,7 +53,8 @@ class Review extends Model
     const APPROVE_THRESHOLD = [.5, .6, .7, .8, .9];
 
     protected $fillable = array(
-        'il_id',
+        'new_post_il_id',
+        'old_post_il_id',
         'user_id'   // Requestor
     );
 
@@ -59,9 +66,14 @@ class Review extends Model
         return $this->belongsToMany('App\QCV', 'review_votings', 'review_id', 'qcv_id')->withTimestamps();
     }
 
-    public function il()
+    public function newIl()
     {
-        return $this->belongsTo('App\Il', 'il_id');
+        return $this->belongsTo('App\Il', 'new_post_il_id');
+    }
+
+    public function oldIl()
+    {
+        return $this->belongsTo('App\Il', 'old_post_il_id');
     }
 
     public function user()  // Creator
@@ -73,12 +85,12 @@ class Review extends Model
 
     public function scopePost()
     {
-        return Il::find($this->il_id)->post()->get();
+        return Il::find($this->new_post_il_id)->post()->get();
     }
 
     public function scopePostRank()
     {
-        return $this->il()->first()->rank;
+        return $this->newIl()->first()->rank;
     }
 
 }

@@ -3,43 +3,58 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * App\Post
  *
  * @property int $id
  * @property int $user_id
+ * @property int $word_id
+ * @property int $video_id
+ * @property int $description_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\User $creator
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $descriptions
+ * @property-read \App\Description $description
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Il[] $ils
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $likes
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $words
+ * @property-read \App\Video $video
+ * @property-read \App\Word $word
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post countLikes()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentDescription()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentVideo()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post currentWord()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deactiveReviews()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedDescriptions()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedVideos()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Post deletedWords()
+ * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post il()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post inReview()
+ * @method static \Illuminate\Database\Query\Builder|\App\Post onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post rank()
+ * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereDescriptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereVideoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereWordId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Post withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Post withoutTrashed()
  * @mixin \Eloquent
  */
 class Post extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
+    use SoftDeletes;
     protected $fillable = [
         'user_id',
+        'word_id',
+        'video_id',
+        'description_id',
     ];
+
+    protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
     public function creator()
@@ -47,19 +62,19 @@ class Post extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function words()
+    public function word()
     {
-        return $this->belongsToMany('App\Word', 'wordlinks', 'post_id', 'word_id')->withTimestamps();
+        return $this->belongsTo('App\Word', 'word_id');
     }
 
-    public function videos()
+    public function video()
     {
-        return $this->hasMany('App\Video', 'post_id');
+        return $this->belongsTo('App\Video', 'video_id');
     }
 
-    public function descriptions()
+    public function description()
     {
-        return $this->hasMany('App\Description', 'post_id');
+        return $this->belongsTo('App\Description', 'description_id');
     }
 
     public function likes()
@@ -74,11 +89,19 @@ class Post extends Model
 
     // CREATE SCOPES --------------------------------------------
 
+    /**
+     * @return int
+     * @deprecated
+     */
     public function scopeCountLikes()
     {
         return Post::likes()->count();
     }
 
+    /**
+     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|null|object
+     * @deprecated
+     */
     public function scopeRank()
     {
         return $this->ils()->first('rank');
@@ -87,36 +110,6 @@ class Post extends Model
     public function scopeIl()
     {
         return $this->ils()->first();
-    }
-
-    public function scopeCurrentWord()
-    {
-        return $this->words()->first();
-    }
-
-    public function scopeDeletedWords()
-    {
-        return Word::onlyTrashed()->posts()->find($this->id)->get();
-    }
-
-    public function scopeCurrentVideo()
-    {
-        return $this->videos()->first();
-    }
-
-    public function scopeDeletedVideos()
-    {
-        return Video::onlyTrashed()->post()->find($this->id)->get();
-    }
-    
-    public function scopeCurrentDescription()
-    {
-        return $this->descriptions()->first();
-    }
-
-    public function scopeDeletedDescriptions()
-    {
-        return Description::onlyTrashed()->post()->find($this->id)->get();
     }
 
     public function scopeDeactiveReviews()

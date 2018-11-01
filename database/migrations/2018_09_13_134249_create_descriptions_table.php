@@ -16,10 +16,8 @@ class CreateDescriptionsTable extends Migration
         Schema::create('descriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer( 'user_id' )->unsigned();
-            $table->integer( 'post_id' )->unsigned();
             $table->text( 'text' );
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -19,8 +19,8 @@ $image_height = '360';
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-        var addUrl = "{{ URL::to('/createVote') }}"; // Used in another script file
-        var delUrl = "{{ URL::to('/deleteVote') }}"; // Used in another script file
+        var addUrl = "{{ URL::to('/createLike') }}"; // Used in another script file
+        var delUrl = "{{ URL::to('/deleteLike') }}"; // Used in another script file
 
         $(function () {
             $(document).tooltip({
@@ -33,6 +33,8 @@ $image_height = '360';
 @stop
 
 @section('content')
+    {{$DEBUG = config('global.debug')}}
+
     <h1>{{ $title }}</h1>
     @isset($hashtag)
         <p>@lang('text.hash.count.signs', ['count' => $signs->count()])</p>
@@ -50,11 +52,11 @@ $image_height = '360';
 		<?php $user = Auth::user(); ?>
         @foreach($posts as $post)
 			<?php
-                $video = $post->currentVideo();
+                $video = $post->video;
 			?>
                 <div class="post" data-count="{{ $post->likes_count }}" data-id="{{$post->id}}">
-                    <button id="btnEdit" class="btn" onclick="location.href='{{ route('post.edit') }}'">
-                        Ret
+                    <button id="btnEdit" class="btn" onclick="location.href='{{ route('post.edit', $post->id) }}'">
+                        Ret @if($DEBUG)({{$post->id}})@endif
                     </button>
                 @isset($hashtag)
                     <h2>{{ $post->theWord }}</h2>
@@ -66,7 +68,7 @@ $image_height = '360';
                         data-displaydescription="false"
                         data-mute="true"></player>
                 <span class="count">{{ $post->likes_count }}</span>
-                @if( $post->liked )
+                @if( $post->liked ) {{--TODO: Ordne like-funktion ved klik i scriptet--}}
                     <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
                     <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>

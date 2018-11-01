@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder {
         echo "Model: visible / trashed / total seeded\n";
         echo "Users: " . \App\User::count() . " / " . \App\User::onlyTrashed()->count() . " / " .\App\User::withTrashed()->count() . "\n";
         echo "QCVs: "  . \App\Qcv::count() . " / " . \App\Qcv::onlyTrashed()->count() . " / " .\App\Qcv::withTrashed()->count() . "\n";
-        echo "Posts: "  . \App\Post::count() . "\n";
+        echo "Posts: "  . \App\Post::count() . " / " . \App\Post::onlyTrashed()->count() . " / " . \App\Post::withTrashed()->count() . "\n";
         echo "ILs: "  . \App\Il::count() . " / " . \App\Il::onlyTrashed()->count() . " / " .\App\Il::withTrashed()->count() . "\n";
-        echo "Videos: "  . \App\Video::count() . " / " . \App\Video::onlyTrashed()->count() . " / " .\App\Video::withTrashed()->count() . "\n";
-        echo "Descriptions: "  . \App\Description::count() . " / " . \App\Description::onlyTrashed()->count() . " / " .\App\Description::withTrashed()->count() . "\n";
+        echo "Videos: "  . \App\Video::count() . "\n";
+        echo "Descriptions: "  . \App\Description::count() . "\n";
         echo "Tags: "  . \App\Tag::count() . " / " . \App\Tag::onlyTrashed()->count() . " / " .\App\Tag::withTrashed()->count() . "\n";
-        echo "Words: "  . \App\Word::count() . " / " . \App\Word::onlyTrashed()->count() . " / " .\App\Word::withTrashed()->count() . "\n";
+        echo "Words: "  . \App\Word::count() . "\n";
         echo "Reviews: "  . \App\Review::count() . " / " . \App\Review::onlyTrashed()->count() . " / " .\App\Review::withTrashed()->count() . "\n";
         echo "Remotions: "  . \App\Remotion::count() . " / " . \App\Remotion::onlyTrashed()->count() . " / " .\App\Remotion::withTrashed()->count() . "\n";
 

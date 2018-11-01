@@ -59,6 +59,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User userRank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User rank()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User voted()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User remotionVotings()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User reviewVotings()
  */
 class User extends Authenticatable {
     // MASS ASSIGNMENT ------------------------------------------
@@ -142,6 +144,15 @@ class User extends Authenticatable {
 
     // CREATE SCOPES -----------------------------------------------
     //TODO: bool pending remotion
+    public function scopeReviewVotings()
+    {
+        return $this->qcv()->reviewVotings()->get();
+    }
+
+    public function scopeRemotionVotings()
+    {
+        return $this->qcv()->remotionVotings()->get();
+    }
 
     public function scopeIsAdmin()
     {
@@ -153,6 +164,10 @@ class User extends Authenticatable {
         return $this->qcvs()->first();
     }
 
+    /**
+     * @return mixed
+     * @deprecated
+     */
     public function scopeRank()
     {
         return $this->qcv()->rank;
@@ -162,6 +177,7 @@ class User extends Authenticatable {
     {
         return User::qcvs()->where('rank', $value);
     }
+
 
     public function scopeVoted($value)
     {

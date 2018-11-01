@@ -20,7 +20,6 @@ class ForeignTable extends Migration
         });
 
         Schema::table('descriptions', function (Blueprint $table) {
-            $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
         });
 
@@ -36,6 +35,9 @@ class ForeignTable extends Migration
 
         Schema::table('posts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('word_id')->references('id')->on('words');
+            $table->foreign('video_id')->references('id')->on('videos');
+            $table->foreign('description_id')->references('id')->on('descriptions');
         });
 
         Schema::table('qcvs', function (Blueprint $table) {
@@ -60,7 +62,8 @@ class ForeignTable extends Migration
         });
 
         Schema::table('reviews', function (Blueprint $table) {
-            $table->foreign('il_id')->references('id')->on('ils');
+            $table->foreign('new_post_il_id')->references('id')->on('ils');
+            $table->foreign('old_post_il_id')->references('id')->on('ils');
             $table->foreign('user_id')->references('id')->on('users');
         });
 
@@ -78,18 +81,10 @@ class ForeignTable extends Migration
 
         Schema::table('videos', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
         });
 
         Schema::table('words', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-        });
-
-        Schema::table('wordlinks', function (Blueprint $table) {
-            $table->foreign('word_id')->references('id')->on('words');
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unique(['word_id', 'post_id']);
         });
     }
 
@@ -106,7 +101,6 @@ class ForeignTable extends Migration
         });
 
         Schema::table('descriptions', function (Blueprint $table) {
-            $table->dropForeign(['post_id']);
             $table->dropForeign(['user_id']);
         });
 
@@ -121,6 +115,9 @@ class ForeignTable extends Migration
 
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
+            $table->dropForeign(['word_id']);
+            $table->dropForeign(['video_id']);
+            $table->dropForeign(['description_id']);
         });
 
         Schema::table('qcvs', function (Blueprint $table) {
@@ -129,6 +126,7 @@ class ForeignTable extends Migration
 
         Schema::table('remotions', function (Blueprint $table) {
             $table->dropForeign(['qcv_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('remotion_votings', function (Blueprint $table) {
@@ -142,7 +140,9 @@ class ForeignTable extends Migration
         });
 
         Schema::table('reviews', function (Blueprint $table) {
-            $table->dropForeign(['il_id']);
+            $table->dropForeign(['new_post_il_id']);
+            $table->dropForeign(['old_post_il_id']);
+            $table->dropForeign(['user_id']);
         });
 
         Schema::table('review_votings', function (Blueprint $table) {
@@ -157,16 +157,9 @@ class ForeignTable extends Migration
 
         Schema::table('videos', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['post_id']);
         });
 
         Schema::table('words', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
-
-        Schema::table('wordlinks', function (Blueprint $table) {
-            $table->dropForeign(['word_id']);
-            $table->dropForeign(['post_id']);
             $table->dropForeign(['user_id']);
         });
     }

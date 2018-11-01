@@ -6,12 +6,13 @@ use App\Qcv;
 use App\Review;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VotingController extends Controller
 {
-    public function postNewReview( Request $request)
+    public function postNewReview( Post $oldId, Request $request)
     {
-        $userID = 3308; //Auth::check();
+        $userID = Auth::user();
         $post = $request->input('post');
 
         $review = new Review([

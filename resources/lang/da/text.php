@@ -71,6 +71,12 @@ return [
 	'sign.alt.suggest'        => 'Foreslå et alternativt tegn',
 	'sign.suggest.word'       => 'Lav en ny tegnforslag af :word',
 	'hash.count.signs'        => 'Vi har :count tegn med hashtagget',
+    /* NEW TRANSLATIONS  */
     'no.access'               => 'Adgangen nægtet',
-    'post.edit'
+    'edit.word'               => 'Nuværende ord:',
+    'edit.video'              => 'Nuværende video:',
+    'edit.video.change'       => 'Indsæt ny video',
+    'edit.submit'             => 'Indsend',
+    'edit.video.new'          => 'Ny video',
+    'edit.il'                 => 'Troværdigsniveau',
 ];

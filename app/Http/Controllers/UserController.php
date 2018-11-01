@@ -9,14 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function getIndex() //TODO: udvid med Auth!
+    public function getIndex()
     {
         $user = Auth::user();
+        $coll1 = null; //$user->qcvs()->reviewVotings()->get();
+        foreach ($user->qcvs()->get() as $qcv)  {
 
-        $coll1 = $user->reviewVotings()->get();
-        $coll2 = $user->remotionVotings()->get();
+            $coll1->;
+    }
+        //$coll2 = $user->qcvs()->remotionVotings()->get();
 
-        $awaitings = $coll1->merge($coll2)->sortBy('created_at');
+        //$votings = $coll1->merge($coll2)->sortBy('created_at');
 
         return view('profile', compact(['user', 'awaitings']));
     }

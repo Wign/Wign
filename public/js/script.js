@@ -7,7 +7,7 @@ $.ajaxSetup({
 $(function () {
     const _DEBUG = false;
 
-    $('.sign a.delVote, .sign a.addVote').on('click', function (event) {
+    $('.post a.delVote, .post a.addVote').on('click', function (event) {
         event.preventDefault();
         if (_DEBUG) console.log("Click detected!");
 

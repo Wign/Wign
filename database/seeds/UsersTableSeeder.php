@@ -28,12 +28,27 @@ class UsersTableSeeder extends Seeder
 
         $user = new \App\User([
             'name' => 'admin',
-            'email' => 'test@test.dk',
+            'email' => 'a@a.dk',
             'password' => bcrypt('admin'),
             'remember_token' => str_random(10),
             'type' => 'admin'
         ]);
         $user->save();
         $user->qcvs()->save(factory(App\Qcv::class)->make(['rank' => 5]));
+
+        for ($i = 0; $i <= config('global.rank_max'); $i++) {
+            $user = new \App\User([
+                'name' => 'user',
+                'email' => $i . '@u.dk',
+                'password' => bcrypt('user'),
+                'remember_token' => str_random(10),
+                'type' => 'default'
+            ]);
+            $user->save();
+            $user->qcvs()->save(factory(App\Qcv::class)->make(['rank' => $i]));
+        }
+
+
+
     }
 }

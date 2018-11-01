@@ -59,7 +59,7 @@ class PostController extends Controller
         ]);
         $post->save();
         $il = new Il([
-            'rank' => $request->input('IlRank') === null ? 1 : $request->input('IlRank')
+            'rank' => $request->input('il')
         ]);
         $post->ils()->save($il);
 
@@ -121,9 +121,9 @@ class PostController extends Controller
         if ( isset( $wordModel ) ) {
             $posts = $wordModel->posts()->withCount('likes')->get();
             foreach( $posts as $post)   {
-                $content = self::replaceTagsToURL($post->currentDescription()->text);
+                $content = self::replaceTagsToURL($post->description->text);
                 $post->descText = $content;
-                $post->liked = $post->likes->contains(Auth::user()->id);
+                $post->liked = $post->likes->contains(Auth::user());
             }
             return view( 'post' )->with( array( 'word' => $wordModel->word, 'posts' => $posts ) );
         }
@@ -140,13 +140,19 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getEdit()
+    public function getEdit($id)
     {
-        if (Auth::user()->rank == 0)    {
-            return back()->with('error', 'Du har ikke rette-rettighed');
+        $post = Post::findOrFail($id);
+        $post->rank = $post->il()->rank;
+
+        if (Auth::user()->rank() == 0)    {
+            return back()->with('info', 'Du har ikke rette-rettighed');
         }
-        //$post = Post::find($request->input('word'));
-        return view('form.editPost');
+        $word = $post->word;
+        $video = $post->video;
+        $desc = $post->description;
+
+        return view('form.editPost')->with(compact(['word', 'video', 'desc', 'post']));
     }
 
     public function postEdit($id, Request $request) //TODO: Complete the edit method
@@ -155,18 +161,30 @@ class PostController extends Controller
         $post = Post::find($id);
         $edited = false;
 
-        if ($request->input('word') != $post->currentWord()->word) {
+        $word = $request->input('word');
+        $video = $request->input('video');
+        $desc = $request->input('description');
+
+        if ($word != $post->word->word) {
             $edited = true;
         }
-        if ($request->input('video') != $post->currentVideo()->uuid) {
+        if ($video != $post->video->uuid) {
             $edited = true;
         }
-        if ($request->input('description') != $post->currentDescription()->text) {
+        if ($desc != $post->description->text) {
             $edited = true;
         }
 
-        if ($edited && $post->rank() > $user->rank)    {
-            return redirect()->route('review.new');
+        if ( !$edited ) {
+            return redirect()->back()->with('info', 'Nothing has changed');
+        } else {
+            $newPost = new Post([
+
+            ]);
+        }
+        if ($user->isAdmin() || $edited && $post->rank() > $user->rank)    {
+
+            return redirect()->route('review.new', []);
         }
 
         return redirect( config( 'wign.urlPath.sign' ) . '/' . $word->word )->with( $flash );
@@ -185,6 +203,13 @@ class PostController extends Controller
     }
 
     //////////////////////
+
+    private function create(Word $word, Video $video, Description $desc, Il $il)    {
+        $post = new Post([
+
+        ]);
+
+    }
 
     private static function replaceTagsToURL( string $text ): string {
         $replaceWith = '<a href="' . URL::to( config( "wign.urlPath.tags" ) ) . '/$1">$0</a>';

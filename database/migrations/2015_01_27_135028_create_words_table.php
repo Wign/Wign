@@ -17,7 +17,6 @@ class CreateWordsTable extends Migration {
 			$table->string( 'word' )->unique();
 			$table->integer( 'user_id')->unsigned();
 			$table->timestamps();
-			$table->softDeletes();
 		} );
 	}
 

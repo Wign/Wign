@@ -61,6 +61,8 @@ if ( isset( $word ) ) {
 @stop
 
 @section('content')
+    {{$DEBUG = config('global.debug')}}
+
     <h1>{{ $title }}</h1>
     @if(Session::has('message'))
         @if(Session::has('url'))
@@ -119,7 +121,19 @@ if ( isset( $word ) ) {
         <label for="description">{{__('text.form.desc')}}</label>
         <textarea id="description" name="description"
                   placeholder="{{__('text.form.desc.ph')}}">{{ old('description') }}</textarea><br>
-
+        <br>
+        <label for="il">{{__('text.edit.il')}}</label>
+        <select class="btn btn-secondary" id="il" name="il">
+            {{ $rank = Auth::user()->rank() > 0 ? Auth::user()->rank() : 1 }}
+            @for( $i = 1; $i <= $rank; $i++)
+                @if($rank)
+                    <option selected value="{{$i}}">{{$i}}</option>
+                @else
+                    <option>{{$i}}</option>
+                @endif
+            @endfor
+        </select>
+        <br>
         <input type="submit" value="{{__('text.form.submit.sign')}}" id="btnSubmit">
         <p>
             <small>@lang('text.submit.accept.terms', ['url' => URL::to( config( 'wign.urlPath.policy' ))])</small>
