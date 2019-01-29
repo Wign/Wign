@@ -1,4 +1,4 @@
-.vote {
+.like {
     height: 24px;
     height: 2.4rem;
     width: 16px;
@@ -10,8 +10,8 @@
     margin: 4px 0px 5px 0px;
 }
 
-.delVote {
-    @extend .vote;
+.delLike {
+    @extend .like;
     background-image: url("/images/thumbs-up-black.png");
     top: 0px;
 
@@ -20,8 +20,8 @@
     }
 }
 
-.addVote {
-    @extend .vote;
+.addLike {
+    @extend .like;
     background-image: url('/images/hands-up-black.png');
     top: 0px;
 
@@ -30,14 +30,14 @@
     }
 }
 
-.loadingVote {
-    @extend .vote;
+.loadingLike {
+    @extend .like;
     width: 24px;
     background-image: url('/images/loading-black.png');
     background-size: cover;
     animation: spin 2s linear infinite;
 }
 
-.voted {
+.liked {
     background-image: url('/images/thumbs-up-black.png');
 }
