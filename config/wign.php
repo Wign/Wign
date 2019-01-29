@@ -12,7 +12,7 @@ return [
 	'version'   => 'v1.6',
 	'email'     => 'wign@wign.dk',
 	'cameratag' => [
-		'id' => 'a-49088bd0-39cc-0132-ccc4-12313914f10b'
+		'id' => env('CT_KEY')
 	],
 
 	'tagRegexp' => '/#(?P<tags>[\p{L}\p{N}][\w]+)/ui',
