@@ -14,8 +14,9 @@ class RequestController extends Controller {
 	 *
 	 * @return \Illuminate\View\View of the list
 	 */
-	public function showList() {
-	    $requests = Word::has('requests')->withCount('requests')->orderBy('requests_count', 'desc')->orderBy('word')->paginate(50);
+	public function showList() {    //TODO: fix query bec it does not exclude word with no requests
+	    $limit = config('global.list_limit');
+	    $requests = Word::doesntHave('posts')->has('requests')->withCount('requests')->orderBy('requests_count', 'desc')->orderBy('word')->paginate($limit);
 
 		return view( 'requests' )->with( compact('requests') );
 	}
@@ -34,12 +35,17 @@ class RequestController extends Controller {
 		}
 
 		$word = Helper::underscoreToSpace( $word );
-		$myIP = Request::getClientIp();
+		$user = \Auth::user();
 
-		$hasWord = Word::firstOrCreate( [ 'word' => $word ] );
+		$hasWord = Word::firstOrCreate( [
+		    'word' => $word
+        ], [
+            'creator_id' => $user->id,
+            'editor_id' => $user->id,
+        ] );
 
-		$hasSign = $hasWord->posts->first();
-		if ( $hasSign ) {
+		$hasPost = $hasWord->posts->first();
+		if ( $hasPost ) {
 			$flash = array(
 				'message' => __('flash.sign.already', ['word' => $word]),
 				'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
@@ -48,26 +54,25 @@ class RequestController extends Controller {
 			return redirect( config( 'wign.urlPath.request' ) )->with( $flash );
 		}
 
-		$hasVote = $hasWord->requests()->find(\Auth::user());
-		if ( empty($hasVote) ) {
+		$hasVote = $hasWord->requests()->find($user->id);
+		if ( !empty($hasVote) ) {
 			return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.already', ['word' => $word]));
 		} else {
 			// Check if client is bot. If true, reject the creation!
 			if ( Helper::detect_bot() ) {
 				return redirect( config( 'wign.urlPath.request' ) )->with( 'message', __('flash.bot.refuse') );
 			} else {
-				$request = $hasWord->requests()->attach(\Auth::user());
-				if ( $request ) {
-					$flash = [
-						'message' => __('flash.request.successful', ['word' => $word]),
-						'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
-					];
+			    try {
+                    $request = $hasWord->requests()->attach($user);
+                } catch (\Exception $e)  {
+                    return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.failed'));
+                }
+                $flash = [
+                    'message' => __('flash.request.successful', ['word' => $word]),
+                    'url'     => URL::to( config( 'wign.urlPath.sign' ) . '/' . $word )
+                ];
 
-					return redirect( config( 'wign.urlPath.request' ) )->with( $flash );
-				} else {
-					// Something went wrong...
-					return redirect( config( 'wign.urlPath.request' ) )->with( 'message',  __('flash.request.failed'));
-				}
+                return redirect( config( 'wign.urlPath.request' ) )->with( $flash );
 			}
 		}
 	}

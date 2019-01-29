@@ -19,7 +19,7 @@ if ( isset( $word ) ) {
 
 @section('content')
     <h1>{{ $title }}</h1>
-        @if (isset($word))
+        @if (isset($word) && !Auth::user()->isEntry())
             <p>@lang('text.sign.not.have.word', ['word' => $word])</p>
             @lang('text.sign.either')
             <ul>

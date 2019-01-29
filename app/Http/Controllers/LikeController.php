@@ -8,7 +8,7 @@ use Response;
 class LikeController extends Controller
 {
     /**
-     * Insert a vote (like) of the sign into database, linked to the IP address of the user.
+     * Insert a like of the sign into database, linked to the IP address of the user.
      * It utilize the POST input to gain the sign id.
      *
      * @param \Illuminate\Http\Request $request
@@ -16,24 +16,21 @@ class LikeController extends Controller
      * @return \Illuminate\Http\JsonResponse a JSON response with status,
      * message and resulting number of signs if it succeed
      */
-    public function createLike( Request $request ) {
-
+    public function create( Request $request ) {
         $post = $request->input('post');
         $user = \Auth::user();
+        $like = $post->video->likes()->attach($user);
 
-        $vote = $post->likes()->attach($user);
-
-        if ( $vote ) {
-
+        if ( $like ) {
             $response = array(
                 'status' => 'success',
-                'msg'    => __('flash.vote.insert.success'),
-                'votes'  => $post->likes()->count(),
+                'msg'    => __('flash.like.insert.success'),
+                'likes'  => $post->video->likes()->count(),
             );
         } else {
             $response = array(
                 'status' => 'failed',
-                'msg'    => __('flash.vote.insert.failed')
+                'msg'    => __('flash.like.insert.failed')
             );
         }
 
@@ -41,7 +38,7 @@ class LikeController extends Controller
     }
 
     /**
-     * Removes a vote (like) of the sign from database, linked to the IP address of the user.
+     * Removes a like  of the sign from database, linked to the IP address of the user.
      * It utilize the POST input to gain the sign id.
      *
      * @param Request $request
@@ -50,23 +47,21 @@ class LikeController extends Controller
      * message and resulting number of signs if it succeed
      * @throws \Exception
      */
-    public function deleteLike( Request $request ) {
+    public function delete( Request $request ) {
         $post = $request->input( 'post' );
         $user = \Auth::user();
+        $like = $post->video->likes()->detach($user);
 
-        $vote = $post->likes()->detach($user);
-
-        if ( $vote ) {
-
+        if ( $like ) {
             $response = array(
                 'status' => 'success',
-                'msg'    => __('flash.vote.delete.success'),
-                'votes'  => $post->likes()->count(),
+                'msg'    => __('flash.like.delete.success'),
+                'likes'  => $post->video->likes()->count(),
             );
         } else {
             $response = array(
                 'status' => 'failed',
-                'msg'    => __('flash.vote.delete.failed')
+                'msg'    => __('flash.like.delete.failed')
             );
         }
 

@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
 			$table->string('email')->unique();
 			$table->string('password');
             $table->string('type')->default('default');
+            $table->timestamp('last_login')->default(\Carbon\Carbon::now()->toDateTimeString());
 			$table->rememberToken();
 			$table->timestamps();
 			$table->softDeletes();

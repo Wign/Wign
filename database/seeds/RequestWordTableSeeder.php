@@ -13,12 +13,12 @@ class RequestWordTableSeeder extends Seeder
     public function run()
     {
         factory(App\Word::class, 50)->create()->each(function($u) {
-            $numUsers = 100; //User::count();
+            $numUsers = User::count();
             $n1 = random_int(0, $numUsers/2);
             $n2 = random_int(0, $numUsers/2);
             $n = $n1 < $n2 ? $n1 : $n2;
 
-            $users = User::whereNull('deleted_at')->inRandomOrder()->limit($n)->get();
+            $users = User::inRandomOrder()->limit($n)->get();
             foreach ($users as $user)   {
                 $u->requests()->attach($user);
             }

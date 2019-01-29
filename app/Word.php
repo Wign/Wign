@@ -25,19 +25,31 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereWord($value)
  * @mixin \Eloquent
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property-read \App\User $creator
+ * @property-read \App\User $editor
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Word whereEditorId($value)
  */
 class Word extends Model {
 
 	// MASS ASSIGNMENT ------------------------------------------
     protected $fillable = [
-        'user_id',
+        'creator_id',
+        'editor_id',
         'word'
     ];
 
     // DEFINING RELATIONSHIPS -----------------------------------
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'creator_id');
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo('App\User', 'editor_id');
     }
 
     public function alias_parents()
@@ -69,6 +81,7 @@ class Word extends Model {
 	 * @param int $num the number of latest signs
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
 	 */
 
 	public function scopeLatest( $query, $num = 25 ) {
@@ -84,6 +97,7 @@ class Word extends Model {
 	 * @param null $count
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
 	 */
 	public function scopeRandom( $query, $num = 1, $count = null ) {
 		if(empty($count)) {
@@ -105,6 +119,7 @@ class Word extends Model {
 	 * @param string $word the query word
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
+     * @deprecated
 	 */
 	public function scopeGetQueriedWord( $query, $word = null ) {
 		if ( isset( $word ) ) {

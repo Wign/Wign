@@ -61,102 +61,132 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User voted()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User remotionVotings()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User reviewVotings()
+ * @property string $last_login
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $creatorDescriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $creatorWords
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Description[] $editorDescriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Word[] $editorWords
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $postsCreator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $postsEditor
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User isEntry()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastLogin($value)
  */
-class User extends Authenticatable {
+class User extends Authenticatable
+{
     // MASS ASSIGNMENT ------------------------------------------
-	use Notifiable;
+    use Notifiable;
     use SoftDeletes;
 
     const ADMIN_TYPE = 'admin';
     const DEFAULT_TYPE = 'default';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $fillable = [
-		'name',
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
         'email',
         'password',
         'ban_reason',
         'type',
         // inactive / passive state to exclude from the votings
-	];
-	/**
-	 * The attributes that should be hidden for arrays.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password',
+    ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
         'remember_token',
-	];
+    ];
 
     protected $dates = ['deleted_at'];
 
     // DEFINING RELATIONSHIPS -----------------------------------
 
-    public function words()
+    public function creatorWords ()
     {
-        return $this->hasMany('App\Word', 'user_id');
+        return $this->hasMany('App\Word', 'creator_id');
     }
 
-    public function videos()
+    public function editorWords ()
+    {
+        return $this->hasMany('App\Word', 'edit_id');
+    }
+
+    public function videos ()
     {
         return $this->hasMany('App\Video', 'user_id');
     }
 
-    public function descriptions()
+    public function creatorDescriptions ()
     {
-        return $this->hasMany('App\Description', 'user_id');
+        return $this->hasMany('App\Description', 'creator_id');
     }
 
-    public function posts()
+    public function editorDescriptions ()
     {
-        return $this->hasMany('App\Post', 'user_id');
+        return $this->hasMany('App\Description', 'editor_id');
     }
 
-    public function likes()
+    public function postsCreator ()
     {
-        return $this->belongsToMany('App\Post', 'likes', 'user_id', 'post_id')->withTimestamps();
+        return $this->hasMany('App\Post', 'creator_id');
     }
 
-    public function remotionAuthor()    // Creator of this remotion
+    public function postsEditor ()
+    {
+        return $this->hasMany('App\Post', 'editor_id');
+    }
+
+    public function likes ()
+    {
+        return $this->belongsToMany('App\Video', 'likes', 'user_id', 'video_id')->withTimestamps();
+    }
+
+    public function remotionAuthor ()    // Creator of this remotion
     {
         return $this->hasMany('App\Remotion', 'user_id');
     }
 
-    public function reviewAuthor()
+    public function reviewAuthor ()
     {
         return $this->hasMany('App\Review', 'user_id');
     }
 
-    public function requestWords()
+    public function requestWords ()
     {
         return $this->belongsToMany('App\Word', 'request_words', 'user_id', 'word_id')->withTimestamps();
     }
 
-    public function qcvs()
+    public function qcvs ()
     {
         return $this->hasMany('App\Qcv', 'user_id');
     }
 
     // CREATE SCOPES -----------------------------------------------
     //TODO: bool pending remotion
-    public function scopeReviewVotings()
+    public function scopeReviewVotings ()
     {
         return $this->qcv()->reviewVotings()->get();
     }
 
-    public function scopeRemotionVotings()
+    public function scopeRemotionVotings ()
     {
         return $this->qcv()->remotionVotings()->get();
     }
 
-    public function scopeIsAdmin()
+    public function scopeIsAdmin ()
     {
         return $this->type === self::ADMIN_TYPE;
+    }
+
+    public function scopeIsEntry ()
+    {
+        return $this->qcv()->rank == 0;
     }
 
     public function scopeQcv()

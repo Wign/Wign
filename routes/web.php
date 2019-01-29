@@ -33,15 +33,18 @@ Route::group(['prefix' => 'post'], function() {
     Route::post( 'create', ['uses' => 'PostController@postNewPost', 'as' => 'post.create'] );
     Route::get( '{word}', ['uses' => 'PostController@getPosts', 'as' => 'post.get'] );
 });
-Route::get( 'edit' . '/{id}', ['uses' => 'PostController@getEdit', 'as' => 'post.edit'])->middleware('auth');
+Route::get( 'edit' . '/{id}', ['uses' => 'PostController@getEdit', 'as' => 'post.edit'])->middleware(['auth']);
 Route::post( 'save' . '/{id}', ['uses' => 'PostController@postEdit', 'as' => 'post.edit.save'])->middleware('auth');
 Route::get( 'new' . '/{word?}',  ['uses' => 'PostController@getPostIndex', 'as' => 'post.new'] );
 Route::get( config( 'wign.urlPath.all' ), 'PostController@showAll' );
 Route::get( 'recent',   ['uses' => 'PostController@showRecent', 'as' => 'post.recent']);
 
-//----
-//Route::get( config( 'wign.urlPath.flagSign' ) . '/{id}', 'SignController@flagSignView' )->where( 'id', '[0-9]+' );
-//Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
+
+// LIKE
+Route::group(['prefix' => 'like'], function ()  {
+    Route::post( 'create', ['uses' => 'LikeController@create', 'as' => 'like.create'])->middleware('auth');
+    Route::post( 'delete', ['uses' => 'LikeController@delete', 'as' => 'like.delete'])->middleware('auth');
+});
 
 // SEARCH
 Route::post( 'redirect', ['uses' => 'SearchController@redirect', 'as' => 'redirect'] );
@@ -55,18 +58,23 @@ Route::get( config( 'wign.urlPath.createRequest' ) . '/{word}', 'RequestControll
 Route::get( config( 'wign.urlPath.tags' ) . '/{tag}', 'TagController@findTags' );
 
 // VOTING
-Route::group(['prefix' => 'review'], function() {
-    Route::post( 'new', ['uses' => 'VotingController@postNewReview', 'as' => 'review.new'] );
-    Route::post( 'update', ['uses' => 'VotingController@postUpdateReview', 'as' => 'review.update'] );
+Route::get( 'vote', ['uses' => 'VotingController@getVote', 'as' => 'vote.index'])->middleware('auth');
+Route::group(['prefix' => 'review', 'middelware' => ['auth']], function() {
+    Route::get( 'new', ['uses' => 'VotingController@postNewReview', 'as' => 'review.new'] );
+    Route::post( 'update' . '/{id}', ['uses' => 'VotingController@postUpdateReview', 'as' => 'review.update'] );
 });
-Route::group(['prefix' => 'remotion'], function() {
-    Route::post( 'new', ['uses' => 'VotingController@postNewRemotion', 'as' => 'remotion.new'] );
-    Route::post( 'update', ['uses' => 'VotingController@postUpdateRemotion', 'as' => 'review.update'] );
+Route::group(['prefix' => 'remotion', 'middelware' => ['auth']], function() {
+    Route::get( 'promote' . '/{id}', ['uses' => 'VotingController@newPromotion', 'as' => 'promotion.new'] );
+    Route::get( 'demote'. '/{id}', ['uses' => 'VotingController@newDemotion', 'as' => 'demotion.new'] );
+    Route::post( 'update' . '/{id}', ['uses' => 'VotingController@postUpdateRemotion', 'as' => 'remotion.update'] );
 });
 
 // USER
-Route::group(['prefix' => 'user'], function()  {
+Route::group(['prefix' => 'user', 'middelware' => ['auth']], function()  {
     Route::get( 'profile', ['uses' => 'UserController@getIndex', 'as' => 'user.index']);
+    Route::get( 'guest' . '/{id}', ['uses' => 'UserController@getGuest', 'as' => 'user.guest']);
+    Route::get( 'promote' . '/{id}', ['uses' => 'UserController@promoteUser', 'as' => 'user.promote']);
+    Route::get( 'demote' . '/{id}', ['uses' => 'UserController@demoteUser', 'as' => 'user.demote']);
 });
 
 // HOME
@@ -78,8 +86,12 @@ Route::redirect( config( 'wign.urlPath.tags' ), '/' );
 Route::redirect( config( 'wign.urlPath.createRequest' ), '/' );
 
 // ADMIN
-Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function()  {
-    Route::get( 'index', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index'])->middleware('admin');
+Route::group(['prefix' => 'admin', 'auth' => ['admin']], function()  {
+    Route::get( 'index', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index']);
+    Route::get('vote', ['uses' => 'AdminController@getVote', 'as' => 'admin.vote']);
+    Route::post('review' . '/{id}', ['uses' => 'AdminController@decideReview', 'as' => 'admin.review']);
+    Route::post('remotion' . '/{id}', ['uses' => 'AdminController@decideRemotion', 'as' => 'admin.remotion']);
+    Route::get('ban' . '/{id}', ['uses' => 'AdminController@banUser', 'as' => 'admin.ban']);
 });
 
 // AUTH

@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Qcv whereUserId($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Remotion[] $remotionVotings
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewVotings
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Qcv entitled()
  */
 class Qcv extends Model
 {
@@ -49,21 +50,26 @@ class Qcv extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function remotions()
+    public function remotions() // Target user
     {
-        return $this->hasMany('App\Remotion', 'user_id');
+        return $this->hasMany('App\Remotion', 'qcv_id');
     }
 
-    public function remotionVotings()
+    public function remotionVotings()   //Voter
     {
-        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'qcv_id', 'remotion_id')->withTimestamps();
+        return $this->belongsToMany('App\Remotion', 'remotion_votings', 'qcv_id', 'remotion_id')->withTimestamps()->withPivot('approve');
     }
 
-    public function reviewVotings()
+    public function reviewVotings() //Voter
     {
-        return $this->belongsToMany('App\Review', 'review_votings', 'qcv_id', 'review_id')->withTimestamps();
+        return $this->belongsToMany('App\Review', 'review_votings', 'qcv_id', 'review_id')->withTimestamps()->withPivot('approve');
     }
 
     // CREATE SCOPES -----------------------------------------------
+
+    public function scopeEntitled()
+    {
+        $this->has('user')->where('rank', '!=', 0);
+    }
 
 }

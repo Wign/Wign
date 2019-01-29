@@ -13,11 +13,13 @@ $factory->define(App\Post::class, function (Faker $faker) {
     $description = factory(\App\Description::class)->create();
 
     $user = \App\User::inRandomOrder()->first();
+    $editor = random_int(0,2) == 0 ? $user : \App\User::inRandomOrder()->first();
 
     return [
         'word_id' => $word->id,
         'video_id' => $video->id,
         'description_id' => $description->id,
-        'user_id' => $user->id,
+        'creator_id' => $user->id,
+        'editor_id' => $editor->id,
     ];
 });

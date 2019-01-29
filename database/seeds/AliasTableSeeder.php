@@ -14,10 +14,11 @@ class AliasTableSeeder extends Seeder
     {
         $n = random_int(1, Word::has('posts')->count()/20);
         $words = Word::inRandomOrder()->limit($n)->get();
+        $user = \App\User::withTrashed()->inRandomOrder()->first();
         foreach ($words as $word)   {
             $words->forget($word->id);
             $parent = $words->random();
-            $word->alias_parents()->attach($parent);
+            $word->alias_parents()->attach($parent, ['user_id' => $user->id]);
         }
     }
 }

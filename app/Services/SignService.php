@@ -6,32 +6,70 @@ use App\Sign;
 use App\Word;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Class SignService
+ * @package App\Services
+ * @deprecated
+ */
 class SignService {
 
+    /**
+     * @return mixed
+     * @deprecated
+     */
 	public function getAllSigns() {
 		return Sign::noFlagged()->get(); // Need -get for "maketags.php"
 	}
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @deprecated
+     */
 	public function getSignByID( int $id ) {
 		return Sign::all()->find( $id );
 	}
 
+    /**
+     * @param string $word
+     * @return mixed
+     * @deprecated
+     */
 	public function getSignByWord( string $word ) {
 		return Word::whereWord( $word )->first()->signs;
 	}
 
+    /**
+     * @param integer $wordID
+     * @return mixed
+     * @deprecated
+     */
 	public function getSignByWordID( integer $wordID ) {
 		return Word::whereID( $wordID )->signs;
 	}
 
+    /**
+     * @return mixed
+     * @deprecated
+     */
 	public function countSigns() {
 		return $this->getAllSigns()->count();
 	}
 
+    /**
+     * @param Sign $sign
+     * @return mixed
+     * @deprecated
+     */
 	public function getTags( Sign $sign ) {
 		return $sign->tags()->get();
 	}
 
+    /**
+     * @param Sign $sign
+     * @return Sign
+     * @deprecated
+     */
 	public function isSignTagged( Sign $sign ) {
 		if ( $sign->tags()->count() > 0 ) {
 			$sign->isTagged = true;
@@ -51,6 +89,7 @@ class SignService {
 	 * @param Sign $sign
 	 *
 	 * @return Sign
+     * @deprecated
 	 */
 	public function assignVotesToSign( Sign $sign ) {
 		$myIP            = \Request::getClientIp();
@@ -75,6 +114,7 @@ class SignService {
 	 * @param Word $word
 	 *
 	 * @return Collection|static[]
+     * @deprecated
 	 */
 	public function getVotedSigns( Word $word ) {
 		$signs = Sign::whereWordId( $word->id )->get();
@@ -86,10 +126,20 @@ class SignService {
 		return $signs;
 	}
 
+    /**
+     * @param int $id
+     * @return string
+     * @deprecated
+     */
 	public function getWordBySignID( int $id ): string {
 		return Sign::all()->find( $id )->word->word;
 	}
 
+    /**
+     * @param Sign $sign
+     * @return string
+     * @deprecated
+     */
 	public function getWordBySign( Sign $sign ): string {
 		return $sign->word->word;
 	}

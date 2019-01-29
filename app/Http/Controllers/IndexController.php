@@ -18,7 +18,7 @@ class IndexController extends Controller {
 
 		return view( 'index' )->with( [
 			'randomWord' => Word::with('posts')->inRandomOrder()->first(),
-			'signCount'  => Post::count(),
+			'signCount'  => Post::withoutTrashed()->count(),
 			'wordCount'  => Word::has('posts')->count()
 		] );
 	}

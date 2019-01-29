@@ -32,35 +32,28 @@ class ReviewTableSeeder extends Seeder
                     $n = 200;
                 }
                 $il = $u->postRank();
-                $users = null;
+                $qcvs = null;
                 $rankMax = config('global.rank_max');
-                if ($il > $rankMax - 2)    {    //TODO: Need to exclude the admins + ensure that the allocation reaches to everyone
+                if ($il > $rankMax - 2)    {    //TODO: Need to exclude the admins
                     $dist = [.6, .4];
-                    $qcvs = \App\Qcv::whereRank($rankMax-1)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
-                    $users = User::findMany($qcvs);
+                    $qcvs1 = \App\Qcv::inRandomOrder()->where('rank', $rankMax - 1)->take($dist[0] * $n)->get();
+                    $qcvs2 = \App\Qcv::inRandomOrder()->where('rank', $rankMax)->take($dist[1] * $n)->get();
 
-                    $qcvs = \App\Qcv::whereRank($rankMax)->inRandomOrder()->take($n * $dist[1])->pluck('user_id')->toArray();
-                    $users2 = User::findMany($qcvs);
-
-                    $allUsers = $users->merge($users2);
+                    $qcvs = $qcvs1->merge($qcvs2);
                 } else {
                     $dist = [.5, .3, .2];
-                    $qcvs = \App\Qcv::whereRank($il)->inRandomOrder()->take($n * $dist[0])->pluck('user_id')->toArray();
-                    $users = User::findMany($qcvs);
+                    $qcvs1 = \App\Qcv::inRandomOrder()->where('rank', $il)->take($dist[0] * $n)->get();
+                    $qcvs2 = \App\Qcv::inRandomOrder()->where('rank', $il+1)->take($dist[1] * $n)->get();
+                    $qcvs3 = \App\Qcv::inRandomOrder()->where('rank', $il+2)->take($dist[2] * $n)->get();
 
-                    $qcvs = \App\Qcv::whereRank($il+1)->inRandomOrder()->take($n * $dist[1])->pluck('user_id')->toArray();
-                    $users2 = User::findMany($qcvs);
-
-                    $qcvs = \App\Qcv::whereRank($il+2)->inRandomOrder()->take($n * $dist[2])->pluck('user_id')->toArray();
-                    $users3 = User::findMany($qcvs);
-
-                    $allUsers = $users->merge($users2)->merge($users3);
+                    $qcvs = $qcvs1->merge($qcvs2)->merge($qcvs3);
                 }
-                foreach ($allUsers as $user) {  //TODO: Temporally
-                    if ($user->type == 'admin') {
+                foreach ($qcvs as $qcv) { //TODO: Fix 'qcv->user->type'
+                    /*
+                    if ($qcv->user->type == 'admin') {
                         continue;
-                    }
-                    $u->voters()->attach($user);
+                    }*/
+                    $u->voters()->attach($qcv);
                 }
             }
         });

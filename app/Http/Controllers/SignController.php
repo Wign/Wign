@@ -38,13 +38,6 @@ class SignController extends Controller {
 		$this->word_service = $word_service;
 	}
 
-
-
-
-
-
-
-
 	/**
 	 * Display the "create a sign" view with the relevant data attached.
 	 * If a word is set, it's checked if it already has a sign to it.
@@ -71,6 +64,7 @@ class SignController extends Controller {
 	 * @param Request $request
 	 *
 	 * @return Response
+     * @deprecated
 	 */
 	public function saveSign( Request $request ) {
 		// Validating the incoming request
@@ -124,6 +118,7 @@ class SignController extends Controller {
 	 * @param integer $id
 	 *
 	 * @return \Illuminate\View\View
+     * @deprecated
 	 */
 	public function flagSignView( $id ) {
 		$sign = $this->sign_service->getSignByID( $id );
@@ -144,6 +139,7 @@ class SignController extends Controller {
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
+     * @deprecated
 	 */
 	public function flagSign( Request $request ) {
 		// Check if client is bot. If true, reject the flagging!
@@ -188,32 +184,6 @@ class SignController extends Controller {
 		}
 	}
 
-	/**
-	 * Nice little function to send a Slack greet using webhook each time a new sign is posted on Wign.
-	 * It's to keep us busy developers awake! Thank you for your contribution!
-	 *
-	 * @param String $word
-	 * @param \Illuminate\Database\Eloquent\Model $sign - the $sign object, from which we can extract the information from.
-	 */
-	private function sendSlack( $word, $sign ) {
-		$url     = URL::to( config( 'wign.urlPath.sign' ) . '/' . $word );
-		$video   = 'https:' . $sign->video_url;
-		$message = [
-			"attachments" => [
-				[
-					"fallback"     => "Videoen kan ses her: " . $video . "!",
-					"color"        => "good",
-					"pretext"      => "Et ny tegn er kommet!",
-					"title"        => $word,
-					"title_link"   => $url,
-					"text"         => "Se <" . $video . "|videoen>!",
-					"unfurl_links" => true,
-					"image_url"    => "https:" . $sign->thumbnail_url,
-					"thumb_url"    => "https:" . $sign->small_thumbnail_url,
-				]
-			],
-		];
-		Helper::sendJSON( $message, config( 'social.slack.webHook' ) );
-	}
+
 
 }

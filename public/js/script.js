@@ -7,24 +7,24 @@ $.ajaxSetup({
 $(function () {
     const _DEBUG = false;
 
-    $('.post a.delVote, .post a.addVote').on('click', function (event) {
+    $('.post a.delLike, .post a.addLike').on('click', function (event) {
         event.preventDefault();
         if (_DEBUG) console.log("Click detected!");
 
         let mode = $(this).attr('class');
         let ajaxURL = '';
-        if (mode === 'addVote') {
+        if (mode === 'addLike') {
             ajaxURL = addUrl;
         }
-        else if (mode === 'delVote') {
+        else if (mode === 'delLike') {
             ajaxURL = delUrl;
         }
         else {
-            console.log("We got a error with &lt;a&gt; class of the add/delete vote button!");
+            console.log("We got a error with &lt;a&gt; class of the add/delete like button!");
         }
 
         // Spinning animation!
-        $(this).addClass('loadingVote');
+        $(this).addClass('loadingLike');
 
         // Saving this element to later usage
         let signDiv = $(this).parent();
@@ -48,14 +48,14 @@ $(function () {
                         if (_DEBUG) {
                             console.log("Ajax request succeed! Result:");
                             console.log(result.msg);
-                            console.log(result.votes);
+                            console.log(result.likes);
                         }
 
-                        signDiv.attr('data-count', result.votes); // Update data-count in parent div
-                        signDiv.find('span.count').text(result.votes); // Change the text inside the div
-                        if (signDiv.find('a').hasClass('delVote')) {
+                        signDiv.attr('data-count', result.likes); // Update data-count in parent div
+                        signDiv.find('span.count').text(result.likes); // Change the text inside the div
+                        if (signDiv.find('a').hasClass('delLike')) {
                             // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
-                            signDiv.find('a.delVote').addClass('addVote').removeClass('delVote loadingVote').removeAttr("href").css({
+                            signDiv.find('a.delLike').addClass('addLike').removeClass('delLike loadingLike').removeAttr("href").css({
                                 'cursor': 'pointer',
                                 'pointer-events': 'none'
                             });
@@ -63,7 +63,7 @@ $(function () {
                         }
                         else {
                             // Change the overall text to "done" and unwrap the <a> tag, making them unable to click it again
-                            signDiv.find('a.addVote').addClass('delVote').removeClass('addVote loadingVote').removeAttr("href").css({
+                            signDiv.find('a.addLike').addClass('delLike').removeClass('addLike loadingLike').removeAttr("href").css({
                                 'cursor': 'pointer',
                                 'pointer-events': 'none'
                             });

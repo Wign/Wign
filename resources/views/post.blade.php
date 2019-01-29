@@ -19,8 +19,8 @@ $image_height = '360';
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-        var addUrl = "{{ URL::to('/createLike') }}"; // Used in another script file
-        var delUrl = "{{ URL::to('/deleteLike') }}"; // Used in another script file
+        var addUrl = "{{ route('like.create') }}"; // Used in another script file
+        var delUrl = "{{ route('like.delete') }}"; // Used in another script file
 
         $(function () {
             $(document).tooltip({
@@ -37,7 +37,7 @@ $image_height = '360';
 
     <h1>{{ $title }}</h1>
     @isset($hashtag)
-        <p>@lang('text.hash.count.signs', ['count' => $signs->count()])</p>
+        <p>@lang('text.hash.count.signs', ['count' => $posts->count()])</p>
     @endisset
     @if(Session::has('message'))
         @if(Session::has('url'))
@@ -55,9 +55,11 @@ $image_height = '360';
                 $video = $post->video;
 			?>
                 <div class="post" data-count="{{ $post->likes_count }}" data-id="{{$post->id}}">
-                    <button id="btnEdit" class="btn" onclick="location.href='{{ route('post.edit', $post->id) }}'">
-                        Ret @if($DEBUG)({{$post->id}})@endif
-                    </button>
+                    @if( !$user->isEntry() )
+                        <button id="btnEdit" class="btn" onclick="location.href='{{ route('post.edit', $post->id) }}'">
+                            {{__('text.edit.go')}} @if($DEBUG)({{$post->id}})@endif
+                        </button>
+                    @endif
                 @isset($hashtag)
                     <h2>{{ $post->theWord }}</h2>
                 @endisset
@@ -69,11 +71,23 @@ $image_height = '360';
                         data-mute="true"></player>
                 <span class="count">{{ $post->likes_count }}</span>
                 @if( $post->liked ) {{--TODO: Ordne like-funktion ved klik i scriptet--}}
-                    <a href="#" class="delVote" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
+                    <a href="#" class="delLike" title="{{__('text.I.use.sign.not')}}">&nbsp;</a>
                 @else
-                    <a href="#" class="addVote" title="{{__('text.I.use.sign')}}">&nbsp;</a>
+                    <a href="#" class="addLike" title="{{__('text.I.use.sign')}}">&nbsp;</a>
                 @endif
                 <div class="desc">{!! nl2br($post->descText) !!}</div>
+                @if( !$user->isEntry() )
+                    <small>
+                    <i>
+                        af <a href="{{ route('user.guest', ['id' => $post->creator->id]) }}">{{$post->creator->name}}</a>
+                        @if($post->creator != $post->editor)
+                            <br>
+                            opdateret af <a href="{{ route('user.guest', $post->editor->id) }}">{{$post->editor->name}}</a>
+                        @endif
+
+                    </i>
+                </small>
+                @endif
             </div>
         @endforeach
     </div>

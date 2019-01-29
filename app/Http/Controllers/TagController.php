@@ -37,7 +37,7 @@ class TagController extends Controller {
 	public function findTags( $tag ) {
 		$theTag = self::findTagByName( $tag );
 
-		$signs = self::getTaggedSigns( $theTag );
+		$signs = self::getTaggedPosts( $theTag );
 		if ( empty( $signs ) ) {
 			abort( 404, __( 'text.sign.not.have' ) );
 		}
@@ -57,7 +57,7 @@ class TagController extends Controller {
 
 	/////////////////////////
 
-    private function getTaggedSigns( Tag $tag ) {
+    private function getTaggedPosts( Tag $tag ) {
         return $tag->descriptions()->get();
     }
 

@@ -39,23 +39,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Il $oldIl
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereNewPostIlId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereOldPostIlId($value)
+ * @property int $decided
+ * @property-read mixed $score
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review fetchOld()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDecided($value)
  */
 class Review extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     use SoftDeletes;
 
-    const BALLOTS_DIST_2 = [.6, .4];
-    const BALLOTS_DIST_3 = [.5, .3, .2];
-    const VOTE_WEIGHT = [0, 1, 2, 3, 5, 8]; // Fibonacci
-    // const VOTE_WEIGHT = [0, 1, 2, 3, 4, 5]; // Linear
-    // const VOTE_WEIGHT = [0, 1, 2, 4, 8, 16]; // Doubling
-    const APPROVE_THRESHOLD = [.5, .6, .7, .8, .9];
-
     protected $fillable = array(
         'new_post_il_id',
         'old_post_il_id',
-        'user_id'   // Requestor
+        'user_id',   // Requestor
+        'decided'
     );
 
     protected $dates = ['deleted_at'];
@@ -63,7 +61,7 @@ class Review extends Model
     // DEFINING RELATIONSHIPS -----------------------------------
     public function voters()
     {
-        return $this->belongsToMany('App\QCV', 'review_votings', 'review_id', 'qcv_id')->withTimestamps();
+        return $this->belongsToMany('App\QCV', 'review_votings', 'review_id', 'qcv_id')->withTimestamps()->withPivot('approve');
     }
 
     public function newIl()
@@ -83,6 +81,12 @@ class Review extends Model
 
     // CREATE SCOPES -----------------------------------------------
 
+    public function getScoreAttribute($value)
+    {
+
+        return ucfirst($value);
+    }
+
     public function scopePost()
     {
         return Il::find($this->new_post_il_id)->post()->get();
@@ -91,6 +95,10 @@ class Review extends Model
     public function scopePostRank()
     {
         return $this->newIl()->first()->rank;
+    }
+
+    public function scopeFetchOld()  {
+        return $this->oldIl()->withTrashed()->first();
     }
 
 }

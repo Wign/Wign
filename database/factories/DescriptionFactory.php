@@ -3,11 +3,14 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Description::class, function (Faker $faker) {
-    $user = \App\User::withTrashed()->take(random_int(0, 100))->first();
+    $users = \App\User::withTrashed()->inRandomOrder();
+    $u1 = $users->first();
+    $u2 = random_int(0, 4) == 0 ? $users->skip(1)->first() : $u1;
     $text = $faker->textWithHashtag . $faker->sentence();
 
     return [
         'text' => $text,
-        'user_id' => $user->id,
+        'creator_id' => $u1->id,
+        'editor_id' => $u2->id,
     ];
 });

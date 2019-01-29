@@ -12,9 +12,10 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         factory(App\User::class, 100)->create()->each(function($u) {
+
             $u->qcvs()->save(factory(App\Qcv::class)->make());
 
-            $q = $u->qcv()->rank;
+            $q = $u->qcvs()->first()->rank;
             while ($q > 0) {
                 if (random_int(0, 9) == 0 && $q <= config('global.rank_max'))  {
                     $q++;
@@ -31,7 +32,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'a@a.dk',
             'password' => bcrypt('admin'),
             'remember_token' => str_random(10),
-            'type' => 'admin'
+            'type' => 'admin',
+            'last_login' => now(),
         ]);
         $user->save();
         $user->qcvs()->save(factory(App\Qcv::class)->make(['rank' => 5]));
@@ -42,7 +44,8 @@ class UsersTableSeeder extends Seeder
                 'email' => $i . '@u.dk',
                 'password' => bcrypt('user'),
                 'remember_token' => str_random(10),
-                'type' => 'default'
+                'type' => 'default',
+                'last_login' => now(),
             ]);
             $user->save();
             $user->qcvs()->save(factory(App\Qcv::class)->make(['rank' => $i]));

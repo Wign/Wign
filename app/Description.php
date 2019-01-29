@@ -22,12 +22,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereUserId($value)
  * @mixin \Eloquent
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property-read \App\User $creator
+ * @property-read \App\User $editor
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Description whereEditorId($value)
  */
 class Description extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     protected $fillable = [
-        'user_id',
+        'creator_id',
+        'editor_id',
         'text'
     ];
 
@@ -42,9 +49,14 @@ class Description extends Model
         return $this->hasMany('App\Post', 'description_id');
     }
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'creator_id');
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo('App\User', 'editor_id');
     }
 
     // CREATE SCOPES -----------------------------------------------

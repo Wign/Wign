@@ -34,11 +34,14 @@ $title = trans_choice( 'text.requested.sign', $count );
     @endif
     <ul>
         @foreach($requests as $request)
-            <li><a href="{{ URL::to( config( 'wign.urlPath.sign' ) . '/' . Helper::makeUrlString( $request->word )) }}"
-                   title="{{ $request->word }}">{{ $request->word }}</a>
-                - {{ $request->requests_count }} {{ trans_choice('common.vote', $request->request_count) }}
-            </li>
+            @if($request->requests_count > 0)
+                <li><a href="{{ URL::to( config( 'wign.urlPath.sign' ) . '/' . Helper::makeUrlString( $request->word )) }}"
+                       title="{{ $request->word }}">{{ $request->word }}</a>
+                    - {{ $request->requests_count }} {{ trans_choice('common.vote', $request->request_count) }}
+                </li>
+            @endif
         @endforeach
     </ul>
 
+>
 @stop

@@ -42,13 +42,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Post withoutTrashed()
  * @mixin \Eloquent
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property-read \App\User $editor
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereEditorId($value)
  */
 class Post extends Model
 {
     // MASS ASSIGNMENT ------------------------------------------
     use SoftDeletes;
     protected $fillable = [
-        'user_id',
+        'creator_id',
+        'editor_id',
         'word_id',
         'video_id',
         'description_id',
@@ -59,7 +65,12 @@ class Post extends Model
     // DEFINING RELATIONSHIPS -----------------------------------
     public function creator()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'creator_id');
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo('App\User', 'editor_id');
     }
 
     public function word()
@@ -77,26 +88,12 @@ class Post extends Model
         return $this->belongsTo('App\Description', 'description_id');
     }
 
-    public function likes()
-    {
-        return $this->belongsToMany('App\User', 'likes', 'post_id', 'user_id')->withTimestamps();
-    }
-
     public function ils()
     {
         return $this->hasMany('App\Il', 'post_id');
     }
 
     // CREATE SCOPES --------------------------------------------
-
-    /**
-     * @return int
-     * @deprecated
-     */
-    public function scopeCountLikes()
-    {
-        return Post::likes()->count();
-    }
 
     /**
      * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|null|object
@@ -119,6 +116,6 @@ class Post extends Model
 
     public function scopeInReview()
     {
-        return $this->ils()->reviews()->first();
+        return $this->il()->reviews()->exists();
     }
 }

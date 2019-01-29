@@ -6,12 +6,18 @@ use App\Helpers\Helper;
 use App\Word;
 use DB;
 
+/**
+ * Class WordService
+ * @package App\Services
+ * @deprecated
+ */
 class WordService {
 
 	/**
 	 * Get all words with assigned sign
 	 *
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @deprecated
 	 */
 	public function getAllWords() {
 		return Word::withSign()->get();
@@ -21,6 +27,7 @@ class WordService {
 	 * Get all words with assigned sign, sorted by word ASC
 	 *
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @deprecated
 	 */
 	public function getAllWordsSorted() {
 		return Word::withSign()->orderBy( 'word' )->get();
@@ -44,6 +51,7 @@ class WordService {
 	 * @param string $search
 	 *
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @deprecated
 	 */
 	public function getQueriedWords( string $search ) {
 		return Word::getQueriedWord( $search )->get();
@@ -98,6 +106,7 @@ class WordService {
 	 * @param Word $word
 	 *
 	 * @return bool
+     * @deprecated
 	 */
 	public function hasSign( Word $word ): bool {
 		return $word->signs->count() > 0;
@@ -112,6 +121,7 @@ class WordService {
 	 * @param string $s
 	 *
 	 * @return string
+     * @deprecated
 	 */
 	public function underscoreToSpace( string $s ): string {
 		return Helper::underscoreToSpace( $s );
@@ -126,11 +136,16 @@ class WordService {
 	 * @param string $s
 	 *
 	 * @return string
+     * @deprecated
 	 */
 	public static function makeUrlString( string $s ): string {
 		return Helper::makeUrlString( $s );
 	}
 
+    /**
+     * @return \Illuminate\Support\Collection
+     * @deprecated
+     */
 	public function getAllWordsSortedwithCount() {
 		return DB::table( 'words' )
 		         ->join( 'signs', 'words.id', '=', 'signs.word_id' )

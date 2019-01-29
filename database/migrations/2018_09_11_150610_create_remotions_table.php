@@ -18,6 +18,7 @@ class CreateRemotionsTable extends Migration
             $table->integer( 'qcv_id' )->unsigned();
             $table->integer('user_id')->unsigned();     // Creator
             $table->boolean( 'promotion' );
+            $table->boolean( 'decided' )->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

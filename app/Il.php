@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Il wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Il whereRank($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Il whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewsNewIl
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviewsOldIl
  */
 class Il extends Model
 {
@@ -47,9 +49,14 @@ class Il extends Model
         return $this->belongsTo('App\Post', 'post_id');
     }
 
-    public function reviews()
+    public function reviewsOldIl()
     {
-        return $this->hasMany('App\Review', 'post_id');
+        return $this->hasMany('App\Review', 'old_post_il_id');
+    }
+
+    public function reviewsNewIl()
+    {
+        return $this->hasMany('App\Review', 'new_post_il_id');
     }
 
     // CREATE SCOPES -----------------------------------------------

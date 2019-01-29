@@ -23,6 +23,7 @@ class PostTableSeeder extends Seeder {
                     $u->ils()->save($il);
                 }
             }
+
         });
 
     }

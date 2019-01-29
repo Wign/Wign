@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Video whereVideoUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Video whereVideoUuid($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $likes
  */
 class Video extends Model
 {
@@ -55,6 +56,11 @@ class Video extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany('App\User', 'likes', 'video_id', 'user_id')->withTimestamps();
     }
 
     // CREATE SCOPES --------------------------------------------

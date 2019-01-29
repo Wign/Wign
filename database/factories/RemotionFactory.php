@@ -11,5 +11,6 @@ $factory->define(App\Remotion::class, function (Faker $faker) {
         'qcv_id' => $qcv->id,
         'user_id' => $user->id,
         'promotion' => $promotion,
+        'decided' => false,
     ];
 });

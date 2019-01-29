@@ -29,6 +29,20 @@ $image_height = '360';
                 rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
                 this.rows = minRows + rows;
             });
+
+        function switchWindow() {
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoEdit = document.getElementById("videoEdit");
+
+            if(videoPlayer.style.display === "none") {
+                videoPlayer.style.display = "block";
+                videoEdit.style.display = "none";
+            }
+            else {
+                videoPlayer.style.display = "none";
+                videoEdit.style.display = "block";
+            }
+        };
     </script>
 @stop
 
@@ -43,51 +57,50 @@ $image_height = '360';
         IL: {{$post->rank}} <br>
         QCV: {{Auth::user()->rank()}} <br>
     @endif
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <form method="POST" class="ligeform" id="opret_tegn" action="{{ route('post.create') }}">
+    <form method="POST" class="ligeform" id="opret_tegn" action="{{ route('post.edit.save', ['id' => $post->id])}}">
         <label for="word">{{ __( 'text.edit.word' ) }}</label>
         <input type="text" id="word" name="word" value="{{ old('word') ?? $word->word }}"
-               placeholder="{{__('text.form.word.ph')}}"><br>
-        <br>
-        @if( true ) {{-- Show current video TODO: Lav script til det--}}
-            <label for="video">{{ __( 'text.edit.video' ) }}</label>
-            <player id="video_{{ $video->id }}"
-                    data-uuid="{{ $video->video_uuid }}"
-                    data-controls="true"
-                    data-displaytitle="false"
-                    data-displaydescription="false"
-                    data-mute="true">
-            </player>
-            <button id="btnEdit" class="btn" onclick="location.href='{{ back() }}'">
-                {{__('text.edit.video.new')}}
-            </button>
-            <br>
-        @else   {{-- If want new video --}}
-            {{ csrf_field() }}
-            @if( empty( old('wign01_uuid') ) )
-                <camera id="wign01"
-                        data-app-id="{{ config('wign.cameratag.id') }}"
-                        data-maxlength="15"
-                        data-txt-message="{{ __( 'text.create.sms.url' ) }}"
-                        data-default-sms-country="{{ config('app.country_code') }}"
-                        style="width:580px;height:326px;"></camera>
-            @else
-                <input type="hidden" name="wign01_uuid" value="{{ old('wign01_uuid') }}">
-                <input type="hidden" name="wign01_vga_mp4" value="{{ old('wign01_vga_mp4') }}">
-                <input type="hidden" name="wign01_vga_thumb" value="{{ old('wign01_vga_thumb') }}">
-                <input type="hidden" name="wign01_qvga_thumb" value="{{ old('wign01_qvga_thumb') }}">
-                <player id="video01"
-                        data-uuid="{{ old('wign01_uuid') }}"
+               placeholder="{{__('text.form.word.ph')}}">
+        <label for="switchButton">{{ __( 'text.edit.video' ) }}</label>
+        <button id="switchButton" type="button" class="btn" onclick="switchWindow()">    {{--TODO: Få det til at virke--}}
+            {{__('text.edit.video.new')}}
+        </button>
+            <div id="videoPlayer">
+                <player id="video_{{ $video->id }}"
+                        data-uuid="{{ $video->video_uuid }}"
                         data-controls="true"
                         data-displaytitle="false"
                         data-displaydescription="false"
-                        data-mute="true"></player>
-            @endif
-        @endif
+                        data-mute="true">
+                </player>
+                <br>
+            </div>
+            <div id="videoEdit" style="display:none;">
+                {{ csrf_field() }}
+                @if( empty( old('wign01_uuid') ) )
+                    <camera id="wign01"
+                            data-app-id="{{ config('wign.cameratag.id') }}"
+                            data-maxlength="15"
+                            data-txt-message="{{ __( 'text.create.sms.url' ) }}"
+                            data-default-sms-country="{{ config('app.country_code') }}"
+                            style="width:580px;height:326px;"></camera>
+                @else
+                    <input type="hidden" name="wign01_uuid" value="{{ old('wign01_uuid') }}">
+                    <input type="hidden" name="wign01_vga_mp4" value="{{ old('wign01_vga_mp4') }}">
+                    <input type="hidden" name="wign01_vga_thumb" value="{{ old('wign01_vga_thumb') }}">
+                    <input type="hidden" name="wign01_qvga_thumb" value="{{ old('wign01_qvga_thumb') }}">
+                    <player id="video01"
+                            data-uuid="{{ old('wign01_uuid') }}"
+                            data-controls="true"
+                            data-displaytitle="false"
+                            data-displaydescription="false"
+                            data-mute="true"></player>
+                @endif
+            </div>
         <br>
         <label for="description">{{__('text.form.desc')}}</label>
-        <textarea class='autoExpand' rows='3' data-min-rows='3' placeholder="{{__('text.form.desc.ph')}}">
+        <textarea class='autoExpand' name="description" rows='3' data-min-rows='3' placeholder="{{__('text.form.desc.ph')}}">
             {{ old('desc') ?? $desc->text }}
         </textarea>
         <br>
@@ -101,11 +114,9 @@ $image_height = '360';
                 @endif
             @endfor
         </select>
-
+        <small>Nuværende: {{$post->rank}}</small>
         <p>
-            <button id="btnEdit" class="btn" onclick="location.href='{{ back() }}'">
-                {{__('text.edit.submit')}}
-            </button>
+            <input type="submit" value="{{__('text.edit.submit')}}">
             <small>@lang('text.submit.accept.terms', ['url' => URL::to( config( 'wign.urlPath.policy' ))])</small>
         </p>
     </form>

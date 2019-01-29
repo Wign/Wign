@@ -36,6 +36,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 		'email' => $faker->unique()->safeEmail,
 		'password' => $password ?: $password = bcrypt('secret'),
 		'remember_token' => str_random(10),
+        'last_login' => $updated_at,
         'created_at' => $created_at,
         'updated_at' => $banned ? $updated_at : $created_at,
         'deleted_at' => $banned ? $updated_at : null,

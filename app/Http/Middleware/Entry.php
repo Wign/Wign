@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Session;
 
-class Admin
+class Entry
 {
     /**
      * Handle an incoming request.
@@ -16,8 +15,8 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (! auth()->user()->isAdmin()) {
-            return redirect('/')->with('message', __('text.no.access'));
+        if (auth()->user()->qcv->rank == 0) {
+            return redirect()->back()->with('message', __('text.no.access'));
         }
 
         return $next($request);

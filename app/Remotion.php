@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Remotion withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Remotion withoutTrashed()
  * @mixin \Eloquent
+ * @property int $decided
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Remotion whereDecided($value)
  */
 class Remotion extends Model
 {
@@ -40,29 +42,30 @@ class Remotion extends Model
     use SoftDeletes;
 
     const PROMOTE_THRESHOLD =   [.5, .6, .7, .8, .9];
-    const DEMOTE_THRESHOLD =    [.9, .8, .7, .6, .5];
-    //const DEMOTE_THRESHOLD =  [.5, .5, .5, .5, .5];
+    //const DEMOTE_THRESHOLD =    [.9, .8, .7, .6, .5];
+    const DEMOTE_THRESHOLD =  [.5, .5, .5, .5, .5];
 
     protected $fillable = array(
         'qcv_id',
         'user_id',  // Requestor
-        'promotion'
+        'promotion',
+        'decided'
     );
 
-    protected $dates = ['effective_dates'];
+    protected $dates = ['effective_dates']; //TODO Follow up if this is necessary
 
     // DEFINING RELATIONSHIPS -----------------------------------
     public function voters()
     {
-        return $this->belongsToMany('App\Qcv', 'remotion_votings', 'remotion_id', 'qcv_id')->withTimestamps();
+        return $this->belongsToMany('App\Qcv', 'remotion_votings', 'remotion_id', 'qcv_id')->withTimestamps()->withPivot('approve');
     }
 
-    public function qcv()
+    public function qcv()   //Target user
     {
         return $this->belongsTo('App\Qcv', 'qcv_id');
     }
 
-    public function user()
+    public function user()  //Author
     {
         return $this->belongsTo('App\User', 'user_id');
     }

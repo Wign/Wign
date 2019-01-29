@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(\App\Qcv::class, function (Faker $faker) {
+
     $faker->addProvider(new App\Helpers\FakerProvider($faker));
 
     // Distribution of QCV-level that likelihood: QCV(0) < QCV(1) < ... < QCV(5)

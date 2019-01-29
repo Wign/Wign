@@ -14,12 +14,13 @@ return [
     */
 
     'rank_max' => env('RANK_MAX', 5 ),
-    //'ballot_3_dist' => env('BALLOT_3_DIST', [.5, .3, .2]),
-    //'ballot_2_dist' => env('BALLOT_2_DIST'. [.6, .4]),
     'min_users' => env('MIN_USERS', 10),
     'min_ballots' => env('MIN_BALLOTS', 5),
-    'max_ballots' => env('MAX_BALLOTS', 200),
+    'vote_duration' => env('DURATION', 30),
+    'list_limit' => env('LIST_LIMIT', 50),  // For the use of pagination
 
-    'debug' => env('DEBUG', true),
+    // Arrays of threshold, share of distributions and so on, can be found in VotingController.php
+
+    'debug' => env('DEBUG', false),  // for the use of debug the views or identify the data on the view
 
 ];

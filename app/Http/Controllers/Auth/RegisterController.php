@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Qcv;
 use App\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -64,16 +65,14 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-	    dd(config('global.rank.max'));
 		$user = User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => Hash::make($data['password']),
-            'type' => User::DEFAULT_TYPE
+            'type' => User::DEFAULT_TYPE,
 		]);
 		$user->save();
-        $qcv = new Qcv();
-        $user->Qcvs()->save($qcv);
+        $user->qcvs()->save(new Qcv());
 
 		return $user;
 	}
