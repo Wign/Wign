@@ -17,7 +17,7 @@ class IndexController extends Controller {
 	public function index() {
 		$words = Word::withSign();
 		$wordCount = $words->count();
-		$randomWord = $words->random()->first();
+		$randomWord = $words->inRandomOrder()->first();
 		$signCount = Sign::count();
 
 		return view( 'index' )->with( [
