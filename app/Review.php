@@ -79,7 +79,7 @@ class Review extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    // CREATE SCOPES -----------------------------------------------
+    $
 
     public function getScoreAttribute($value)
     {
