@@ -75,7 +75,9 @@ class SignService {
 	 * @param Word $word
 	 *
 	 * @return Collection|static[]
+	 * @deprecated
 	 */
+
 	public function getVotedSigns( Word $word ) {
 		$signs = Sign::whereWordId( $word->id )->get();
 		foreach ( $signs as $sign ) {

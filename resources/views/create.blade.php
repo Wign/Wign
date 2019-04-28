@@ -113,7 +113,7 @@ if ( isset( $word ) ) {
         <br>
 
         <label for="word">{{ __( 'text.form.word' ) }}</label>
-        <input type="text" id="word" name="word" value="{{ $word or old('word') or "" }}"
+        <input type="text" id="word" name="word" value="{{ $word ?? old('word') ?? "" }}"
                placeholder="{{__('text.form.word.ph')}}"><br>
 
         <label for="description">{{__('text.form.desc')}}</label>
