@@ -20,12 +20,14 @@
         blog. Kenneth beskrev en fælles tegnbank, hvor alle er med til at bidrage med tegn. Navnet <span class="brand">Wign</span>
         er en akronym af <span class="brand">Wi</span>kipedia og Si<span class="brand">gn</span>.</p>
     <p>Projektet blev dengang gennemført af DDU og 12K, men fejlede desværre på grund af kompliceret setup og
-        kommunikationsproblemer med hjemmesideleverandøren. Wign blev lagt på hylden, indtil Troels Madsen tog over.
+        kommunikationsproblemer med hjemmesideleverandøren. Wign blev lagt på hylden, indtil Troels Madsen tog over og
+        senere kom Kenneth Andersen med i projektet.
         Målet med denne version er at gøre hele systemet transparant. Den underliggende kode er åbent, og selve
         processen er ikke hemmeligholdt. Du har som bruger en stor indblik i projektet, hjemmesiden og folket bag siden.
         Og du er med til at forme hjemmesiden ved at bidrage med indhold og/eller idéer og forslag.</p>
-    <p>Projektet er baseret på frivillige kræfter af Troels Madsen. Han gør det for at bidrage til en rigere tegnsprog
-        for dansk døve. Gennem fælleskab kan vi bevare vores værdifulde kulturarv: <span
+    <p>Projektet er blevet til en virksomhed som i dag ejer af Troels Madsen, Kenneth Andersen og ITU-BD, som brænder for at
+        berige adgang til tegnsprog på tvær af hverdag- og fagsamtaler. Gennem fælleskab kan vi bevare vores værdifulde
+        kulturarv: <span
                 class="brand">Dansk tegnsprog</span>. Projektet er støttet af <a
                 href="http://duf.dk/tilskud-og-stoette/dufs-initiativstoette/">DUFs InitiativStøtte</a>.
 
@@ -40,7 +42,7 @@
         er at gøre det let at dele kode og samarbejde om projekter. Du er mere end velkommen til at deltage og bidrage
         med kodestumper eller rettelser til <span class="brand">Wign</span>'s rygrad.</p>
     <p>Du kan følge os på vores <a href="{{ config('social.facebook.url') }}">Facebook side</a>.</p>
-    <p>Wign er ejet af <a href="http://www.ddu.dk">Danske Døves Ungdomsforbund</a>, og hovedmanden bag projektet er <a
-                href="mailto:{{ config('wign.email') }}" title="Send Troels en mail">Troels Madsen</a>.</p>
+    <p>Wign driver af  <a
+                href="mailto:{{ config('wign.email') }}" title="Send Kenneth og Troels en mail">Kenneth Andersen og Troels Madsen</a>.</p>
     <img src="{{asset('images/wign_logo_new.png')}}" alt="Wign logo" class="wign logo-index">
 @stop
