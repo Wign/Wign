@@ -29,4 +29,5 @@ Route::group( [
 		Route::get( 'hasSign/{word?}', 'ApiController@hasSign' );
 		Route::get( 'video/{word?}', 'ApiController@getSign' );
 		Route::get( 'words/{query?}', array( 'as' => 'words', 'uses' => 'ApiController@getWords' ) );
+		Route::get( 'requests', 'ApiController@getRequests' );
 	} );

@@ -3,6 +3,7 @@
 use App\Helpers\Helper;
 use App\Word;
 use Illuminate\Support\Collection;
+use DB;
 
 class ApiController extends Controller {
 
@@ -84,5 +85,19 @@ class ApiController extends Controller {
 		}
 
 		return response( Word::getQueriedWord( $word )->get( array( 'word as label' ) ) )->header( 'Access-Control-Allow-Origin', '*' );
+	}
+
+
+	public function getRequests() {
+		$requests = DB::select( DB::raw( '
+            SELECT words.word, COUNT(request_words.id) AS request_count
+			FROM words INNER JOIN request_words
+			ON words.id = request_words.word_id
+			WHERE (SELECT count(*) FROM signs WHERE signs.word_id = words.id AND signs.deleted_at IS NULL AND signs.flag_reason IS NULL) <= 0
+			GROUP BY words.word
+			ORDER BY request_count DESC, words.word ASC
+        ' ) );
+
+		return $requests;
 	}
 }
