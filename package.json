@@ -14,16 +14,9 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "axios": ">=0.21.2",
-    "bootstrap": "^4.3.0",
-    "cross-env": "^5.1.4",
-    "jquery": "^3.4.1",
     "laravel-mix": "^6.0.39",
-    "lodash": "^4.17.20",
-    "popper.js": "^1.14.0",
     "resolve-url-loader": "^4.0.0",
     "sass": "^1.45.0",
-    "sass-loader": "^12.4.0",
-    "vue": "^2.5.15"
+    "sass-loader": "^12.4.0"
   }
 }
