@@ -72,7 +72,7 @@ class Word extends Model {
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 
-	public function scopeLatest( $query, $num = 25 ) {
+	public function scopeLatestWords( $query, $num = 25 ) {
 		return $query->orderBy( 'updated_at', 'desc' )->take( $num );
 	}
 

@@ -1,16 +1,16 @@
-<link rel="canonical" href="{{$url or url('/')}}" />
+<link rel="canonical" href="{{$url ?? url('/')}}" />
 
 <meta property="og:site_name" content="Wign" />
-<meta property="og:title" content="Wign :: {{$title or __('common.social.encyl')}}" />
+<meta property="og:title" content="Wign :: {{$title ?? __('common.social.encyl')}}" />
 @if (isset($desc))
 <meta property="og:description" content="{{$desc}}" />
 @endif
-<meta property="og:url" content="{{$url or url('/')}}" />
+<meta property="og:url" content="{{$url ?? url('/')}}" />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="da_DK" />
 
-<meta property="og:image" content="{{$image or asset('images/wign-fb_image.png')}}" />
-<meta property="og:image:type" content="{{$image_type or 'image/png'}}" />
+<meta property="og:image" content="{{$image ?? asset('images/wign-fb_image.png')}}" />
+<meta property="og:image:type" content="{{$image_type ?? 'image/png'}}" />
 @if (isset($width))
 <meta property="og:image:width" content="{{$width}}" />
 @endif

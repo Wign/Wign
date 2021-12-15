@@ -56,7 +56,7 @@ class WordService {
 	 * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
 	 */
 	public function getRecentWords( int $number ) {
-		return Word::withSign()->latest( $number )->get();
+		return Word::withSign()->latestWords( $number )->get();
 	}
 
 	/**
