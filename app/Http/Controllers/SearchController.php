@@ -3,6 +3,7 @@
 use App\Services\TagService;
 use App\Services\WordService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Redirect;
 use Response;
 use URL;
@@ -58,7 +59,7 @@ class SearchController extends Controller {
 		}
 
 		$hash    = [ '#', '%23' ];
-		$hashtag = starts_with( $query, $hash );
+		$hashtag = Str::startsWith( $query, $hash );
 
 		if ( $hashtag ) {
 			$query = str_replace( $hash, '', $query );
