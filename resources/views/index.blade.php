@@ -42,6 +42,7 @@ $(function() {
 
     <img src="{{asset('images/wign_logo_new.png')}}" alt="{{__('common.Wign.logo')}}" class="wign logo-index">
     <h1 class="headline">@lang('common.wign.jargon')</h1>
+        <p class="msg--lukke">På grund af mangel på finanelle støtte er Wign nødsaget til at lukke ned ved udgang af 2022</p>
     @include('layout.search', ['randomWord' => $randomWord])
     </div>
 

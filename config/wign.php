@@ -9,7 +9,7 @@
 |
 */
 return [
-	'version'   => 'v1.6',
+	'version'   => 'v1.7',
 	'email'     => 'wign@wign.dk',
 	'cameratag' => [
 		'id' => env('CT_KEY')
