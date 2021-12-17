@@ -83,7 +83,7 @@ $image_height = '360';
         @endforeach
     </div>
     @empty($hashtag)
-        <a href="{{ URL::to( config('wign.urlPath.create'). '/' .  Helper::makeUrlString( $word ) ) }}"
+        <a href="{{ URL::to('new', ['word' => $word]) }}"
            class="float--right"
            title="{{__('text.sign.suggest.word', ['word' => $word])}}">@lang('text.sign.alt.suggest')</a>
     @endempty

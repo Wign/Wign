@@ -15,7 +15,7 @@
     <ul>
         @foreach($words as $word)
             <li>
-                <a href="{{ URL::to( config( 'wign.urlPath.sign' ) ).'/'.Helper::makeUrlString($word->word) }}">{{ $word->word }}</a>
+                <a href="{{ URL::to('sign', ['word' => Helper::makeUrlString($word->word)]) }}">{{ $word->word }}</a>
             </li>
         @endforeach
     </ul>
