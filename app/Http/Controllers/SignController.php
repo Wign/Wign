@@ -1,16 +1,20 @@
 <?php namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Services\SignService;
 use App\Services\TagService;
 use App\Services\WordService;
-use App\Word;
 use App\Sign;
-
-use App\Helpers\Helper;
-use Response;
-use URL;
-use Redirect;
+use App\Word;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
+use Redirect;
+use URL;
 
 class SignController extends Controller {
 
@@ -41,7 +45,7 @@ class SignController extends Controller {
 	 *
 	 * @param string $word - a nullable string with the query $word
 	 *
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 * @return RedirectResponse|View
 	 */
 	public function showSign( $word ) {
 		$word      = $this->word_service->underscoreToSpace( $word );
@@ -66,7 +70,7 @@ class SignController extends Controller {
 	 *
 	 * @param int $number of recent results
 	 *
-	 * @return \Illuminate\View\View
+	 * @return View
 	 */
 	public function showRecent( $number = 25 ) {
 		$recent = $this->word_service->getRecentWords( $number );
@@ -77,7 +81,7 @@ class SignController extends Controller {
 	/**
 	 * Show all words with assigned sign, sorted by word ASC
 	 *
-	 * @return \Illuminate\View\View
+	 * @return View
 	 */
 	public function showAll() {
 		$words = $this->word_service->getAllWordsSortedWithCount();
@@ -91,7 +95,7 @@ class SignController extends Controller {
 	 *
 	 * @param String $word the queried word. Nullable.
 	 *
-	 * @return \Illuminate\View\View of "create a sign"
+	 * @return View of "create a sign"
 	 */
 	public function createSign( $word = null ) {
 		if ( empty( $word ) ) {
@@ -110,8 +114,8 @@ class SignController extends Controller {
 	 *
 	 * @param Request $request
 	 *
-	 * @return Response
-	 */
+	 * @return Application|RedirectResponse|Redirector
+     */
 	public function saveSign( Request $request ) {
 		// Validating the incoming request
 		$request->validate( [
@@ -161,9 +165,9 @@ class SignController extends Controller {
 	/**
 	 * Show the view which the user can flag a certain sign for e.g. offensive content.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return \Illuminate\View\View
+	 * @return View
 	 */
 	public function flagSignView( $id ) {
 		$sign = $this->sign_service->getSignByID( $id );
@@ -182,8 +186,8 @@ class SignController extends Controller {
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 * @throws \Exception
+	 * @return RedirectResponse
+	 * @throws Exception
 	 */
 	public function flagSign( Request $request ) {
 		// Check if client is bot. If true, reject the flagging!
@@ -224,7 +228,7 @@ class SignController extends Controller {
 				'url'     => 'mailto:' . config( 'wign.email' )
 			];
 
-			return Redirect::to( config( 'wign.urlPath.sign' ) . '/' . $saved->word )->with( $flash );
+			return Redirect::to( config( 'wign.urlPath.sign' ) . '/' . $theSign->word )->with( $flash );
 		}
 	}
 
@@ -233,7 +237,7 @@ class SignController extends Controller {
 	 * It's to keep us busy developers awake! Thank you for your contribution!
 	 *
 	 * @param String $word
-	 * @param \Illuminate\Database\Eloquent\Model $sign - the $sign object, from which we can extract the information from.
+	 * @param Model $sign - the $sign object, from which we can extract the information from.
 	 */
 	private function sendSlack( $word, $sign ) {
 		$url     = URL::to( config( 'wign.urlPath.sign' ) . '/' . $word );

@@ -20,7 +20,7 @@ class SignService {
 		return Word::whereWord( $word )->first()->signs;
 	}
 
-	public function getSignByWordID( integer $wordID ) {
+	public function getSignByWordID( int $wordID ) {
 		return Word::whereID( $wordID )->signs;
 	}
 
@@ -74,8 +74,7 @@ class SignService {
 	 *
 	 * @param Word $word
 	 *
-	 * @return Collection|static[]
-	 * @deprecated
+	 * @return Collection
 	 */
 
 	public function getVotedSigns( Word $word ) {
