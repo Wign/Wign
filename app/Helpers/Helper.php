@@ -88,7 +88,7 @@ class Helper {
 		$s = preg_replace( '/\s/', '_', strtolower( $s ) );
 
 		//Removes "-" or "_" in the beginning or in the end of the string
-		$s = preg_replace( '/^(-|_)/', '', preg_replace( '/(-|_)$/', '', $s ) );
+		$s = preg_replace( '/^([-_])/', '', preg_replace( '/([-_])$/', '', $s ) );
 
 		return rawurlencode($s);
 	}

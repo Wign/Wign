@@ -2,8 +2,8 @@
 
 use App\Helpers\Helper;
 use App\Word;
-use Illuminate\Support\Collection;
 use DB;
+use Illuminate\Support\Collection;
 
 class ApiController extends Controller {
 
@@ -41,7 +41,7 @@ class ApiController extends Controller {
 	/**
 	 * Returns a list of video data for the signs of the queried $word.
 	 *
-	 * It finds all signs attached to $word, and for each signs it fetch their data and
+	 * It finds all signs attached to $word, and for each sign it fetches their data and
 	 * returns them. Returns empty array if no words is found, or no $word is provided.
 	 *
 	 * @link https://api.wign.dk/video/$word
@@ -77,8 +77,8 @@ class ApiController extends Controller {
 	 *
 	 * @param string $word
 	 *
-	 * @return Collection
-	 */
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
 	public function getWords( $word = "" ) {
 		if ( isset( $word ) ) {
 			$word = Helper::underscoreToSpace( $word );
@@ -89,15 +89,13 @@ class ApiController extends Controller {
 
 
 	public function getRequests() {
-		$requests = DB::select( DB::raw( '
-            SELECT words.word, COUNT(request_words.id) AS request_count
-			FROM words INNER JOIN request_words
-			ON words.id = request_words.word_id
-			WHERE (SELECT count(*) FROM signs WHERE signs.word_id = words.id AND signs.deleted_at IS NULL AND signs.flag_reason IS NULL) <= 0
-			GROUP BY words.word
-			ORDER BY request_count DESC, words.word ASC
-        ' ) );
-
-		return $requests;
+        return DB::raw('
+SELECT words.word, COUNT(request_words.id) AS request_count
+            FROM words INNER JOIN request_words
+            ON words.id = request_words.word_id
+            WHERE (SELECT count(*) FROM signs WHERE signs.word_id = words.id AND signs.deleted_at IS NULL) <= 0
+            GROUP BY words.word
+            ORDER BY request_count DESC, words.word
+' );
 	}
 }

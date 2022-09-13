@@ -139,7 +139,6 @@ class uploadVideo extends Command {
 		$word = str_replace("í", "Æ", $word);
 		$word = str_replace("_", "", $word);
 		$word = preg_replace('/\(\d+\)/', '', $word);
-		$word = trim($word);
-		return $word;
+        return trim($word);
 	}
 }

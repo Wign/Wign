@@ -9,7 +9,7 @@
     {{-- Opret oversættelsesfil --}}
     <h1>Om Wign</h1>
     <p>Nuværende version: <a href="{{ config('social.github.url') }}"
-                             alt="Wign hos Github">{{ config('wign.version') }}</a></p>
+                             title="Wign hos Github">{{ config('wign.version') }}</a></p>
     <p><span class="brand">Wign</span> er en social tegnsprogsencyklopædi. Formålet med siden er, at alle kan bidrage og
         dele tegn med hinanden: Tegn for fagbegreber, stednavn, bestemte personer og andre ord der ikke er hyppigt
         benyttet i døves dagligdag. Alt tegn, der ligger her kommer fra tegnsprogsbrugere, der gerne vil dele tegn med

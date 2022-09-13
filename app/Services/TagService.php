@@ -16,9 +16,7 @@ class TagService {
 
 	public static function replaceTagsToURL( string $text ): string {
 		$replaceWith = '<a href="' . URL::to( config( "wign.urlPath.tags" ) ) . '/$1">$0</a>';
-		$text        = preg_replace( REGEXP, $replaceWith, $text );
-
-		return $text;
+        return preg_replace( REGEXP, $replaceWith, $text );
 	}
 
 	public function storeTags( Sign $sign ): bool {

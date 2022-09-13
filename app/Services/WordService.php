@@ -84,7 +84,7 @@ class WordService {
 					$min_levenshtein = array_pop( $tempArr );
 				}
 			}
-		};
+		}
 
 		if ( empty( $tempArr ) ) {
 			return null; // There are none word with nearly the same "sounding" as $word

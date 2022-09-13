@@ -49,7 +49,8 @@ class SignController extends Controller {
 	 */
 	public function showSign( $word ) {
 		$word      = $this->word_service->underscoreToSpace( $word );
-		$wordModel = $this->word_service->getWordByWord( $word );
+		/** @var Word $wordModel */
+        $wordModel = $this->word_service->getWordByWord( $word );
 
 		// If word exist in database
 		if ( isset( $wordModel ) ) {

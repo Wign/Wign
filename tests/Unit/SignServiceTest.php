@@ -3,15 +3,14 @@
 namespace Tests\Unit;
 
 use App\Services\SignService;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SignServiceTest extends TestCase {
 
 	use RefreshDatabase;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 		// Adding some entries for test classes
 		factory(\App\Sign::class, 45)->create();

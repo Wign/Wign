@@ -56,7 +56,7 @@ class SignService {
 		$myIP            = \Request::getClientIp();
 		$votes           = $sign->votes;
 		$sign->num_votes = count( $votes );
-		$sign->hasVoted  = count( $votes ) > 0 ? true : false;
+		$sign->hasVoted  = count( $votes ) > 0;
 
 		$result = false;
 		foreach ( $votes as $vote ) {
