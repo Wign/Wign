@@ -13,7 +13,9 @@
     "laravel/framework": "^6.0",
     "laravel/slack-notification-channel": "^2.3",
     "laravel/tinker": "^2.5",
-    "spatie/laravel-cookie-consent": "^2.2"
+    "spatie/laravel-cookie-consent": "^2.2",
+    "ext-curl": "*",
+    "ext-http": "*"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.6",
