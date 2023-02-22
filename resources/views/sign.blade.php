@@ -68,7 +68,7 @@ $image_height = '360';
                         data-controls="true"
                         data-displaytitle="false"
                         data-displaydescription="false"
-			data-download='true'
+			data-download="true"
                         data-mute="true"></player>
                 <span class="count">{{ $sign->num_votes }}</span>
                 @if(isset($sign->voted) && $sign->voted == true)
