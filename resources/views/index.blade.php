@@ -42,6 +42,7 @@ $(function() {
 
     <img src="{{asset('images/wign_logo_new.png')}}" alt="{{__('common.Wign.logo')}}" class="wign logo-index">
     <h1 class="headline">@lang('common.wign.jargon')</h1>
+    <h3 class="headline" style="background-color: #FF0000; color: white; font-weight: bold;">WIGN.dk har tekniske udfordringer som vi arbejder på at få løst hurtigst. Vi beklager nedetiden.</h3>
     @include('layout.search', ['randomWord' => $randomWord])
     </div>
 
