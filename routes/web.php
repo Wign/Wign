@@ -64,3 +64,8 @@ Route::post( 'saveSign', 'SignController@saveSign' );
 Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
+
+Route::get('/testpage', function () {
+    // You can pass variables as needed, or leave as is for a static copy
+    return view('testpage');
+});
