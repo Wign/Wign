@@ -1,0 +1,16 @@
+.logo-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+.logo-row .partner-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}

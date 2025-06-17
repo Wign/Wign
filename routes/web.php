@@ -65,7 +65,14 @@ Route::post( 'flagSign', 'SignController@flagSign' ); // this too...
 
 Route::get( 'home', 'HomeController@index' ); // Login (Need?)
 
-Route::get('/testpage', function () {
-    // You can pass variables as needed, or leave as is for a static copy
-    return view('testpage');
+Route::get('/testpage-index', function () {
+    $words = \App\Word::withSign();
+    $wordCount = $words->count();
+    $randomWord = $words->inRandomOrder()->first();
+    $signCount = \App\Sign::count();
+    return view('testpage', [
+        'randomWord' => $randomWord,
+        'signCount' => $signCount,
+        'wordCount' => $wordCount
+    ]);
 });
