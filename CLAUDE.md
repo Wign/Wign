@@ -18,6 +18,24 @@ make clean     # rm .built to force a rebuild
 
 `docker-compose.yaml` services: `app` (Apache, port 8080), `db` (MySQL 5.7, host port 4306), `testdb` (MySQL 5.7, host port 5306), and `migrater` (waits for db, then runs `php artisan migrate:fresh --force --seed`). DB credentials and hosts come from `.env` (copy `.env.example`).
 
+> ## 🛑 BEFORE running ANY artisan DB command, check where `.env` points
+>
+> The repo's `.env` has historically held **production** credentials
+> (`APP_ENV=production`, `DB_HOST=<the live DigitalOcean droplet IP>`, `DB_DATABASE=forge`).
+> The `app` service has **no DB override in `docker-compose.yaml`** — it reads `.env`
+> verbatim — and `make up` / the `migrater` service run **`migrate:fresh --force --seed`**,
+> which **DROPS EVERY TABLE** and reseeds with ~100 fake signs.
+>
+> On 2026-06-23 this combination **wiped the live wign.dk database** (recovered from an
+> old dump — see [docs/incident-2026-06-23-db-wipe.md](docs/incident-2026-06-23-db-wipe.md)).
+>
+> **Rules:**
+> 1. For local work, `.env` MUST have `DB_HOST=db` and `APP_ENV=local`. Verify with
+>    `grep -E 'APP_ENV|DB_HOST' .env` and confirm it is **not** a public IP.
+> 2. Never run `migrate`, `migrate:fresh`, or `db:seed` — and never `docker compose up`
+>    the `migrater` service — until you've confirmed `.env` points at the local `db` container.
+> 3. Keep production credentials **out** of the repo `.env`; they live in Laravel Forge.
+
 > **Dev image runs PHP 8.0, not 7.2.** Laravel 6 cannot boot on PHP 8.1+ (it turns
 > their deprecations into fatal errors) and `composer install` fails on PHP 7.2
 > (`composer.json` requires `^8.0`). PHP **8.0** is the only version that satisfies
@@ -76,4 +94,26 @@ Tests run against the `testing` DB connection (`APP_ENV=testing` in `phpunit.xml
 
 ## Deployment
 
-Production runs on AWS Elastic Beanstalk (Docker, single EC2 + RDS, Apache + modsecurity). Deploys use the `eb` CLI from a tools container (`make aws-shell`) and require credentials distributed outside the repo (`aws-credentials.txt`, `.ssh/`). See `docs/devops.md` for the full deploy flow and console links.
+**Production runs on Laravel Forge → a single DigitalOcean droplet** (`weathered-haze`,
+nginx + PHP-FPM, app at `/home/forge/wign.dk`), with **MySQL 8 on the same droplet**
+(database `forge`). This is the current reality; the repo still contains older
+**AWS Elastic Beanstalk** tooling (`Dockerfile.aws`, the `aws` compose service, `make
+aws-shell`, `docs/devops.md`) from a previous hosting setup — treat AWS references as
+historical unless verified.
+
+### Database — hosting, backups, recovery
+
+- The live DB is MySQL on the droplet. It is reached via the credentials in production
+  `.env` (`DB_HOST` = droplet IP). **MySQL was internet-exposed on port 3306** — it
+  should be firewalled to localhost; verify before assuming it's locked down.
+- There is **no automated backup**: no binlog, no Forge DB backup job, no DigitalOcean
+  automated backups (only occasional manual droplet snapshots).
+- The data originally lived at **Gigahost** (`mysql9.gigahost.dk`, db `thanerik_wign`)
+  before the move to Forge/DigitalOcean. A migration export sits at
+  **`/home/forge/wign.dk/backup/backup.sql`** on the droplet (Dec 2024, ~6,000 signs) —
+  this is what the live site was restored from after the 2026-06-23 wipe.
+- **If you ever need to restore:** load a dump into the `forge` DB (the dump has no
+  `DROP TABLE`, so reset the DB first: `DROP DATABASE forge; CREATE DATABASE forge`),
+  then `php artisan config:clear && cache:clear`. **Never** `migrate:fresh` to "fix" prod.
+- The 2016→Nov-2024 sign history was recovered; anything added Nov 2024 → Jun 2026 was
+  lost in the wipe. Full story: [docs/incident-2026-06-23-db-wipe.md](docs/incident-2026-06-23-db-wipe.md).
