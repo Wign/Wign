@@ -39,9 +39,16 @@ make clean     # rm .built to force a rebuild
 > **Dev image runs PHP 8.0, not 7.2.** Laravel 6 cannot boot on PHP 8.1+ (it turns
 > their deprecations into fatal errors) and `composer install` fails on PHP 7.2
 > (`composer.json` requires `^8.0`). PHP **8.0** is the only version that satisfies
-> both, so `Dockerfile.dev` is pinned to `php:8.0-apache`. The production `Dockerfile`
-> is unchanged. See [docs/local-development.md](docs/local-development.md) for the full
-> setup walkthrough and [docs/maintenance-2026-06.md](docs/maintenance-2026-06.md) for
+> both, so `Dockerfile.dev` is pinned to `php:8.0-apache`. Confirmed via the Forge
+> dashboard (2026-07-14): **production also runs PHP 8.0**, so there is no real
+> version mismatch — the repo's root `Dockerfile` (`php:7.2-apache`) does **not**
+> reflect production. Forge doesn't use Docker at all (see Deployment below), and
+> even locally `make build` only reads that file's timestamp to decide whether to
+> rebuild — it never actually builds from it (see the Makefile rebuild caveat
+> below). Treat the root `Dockerfile` as stale/vestigial, likely left over from the
+> earlier AWS Elastic Beanstalk setup. See
+> [docs/local-development.md](docs/local-development.md) for the full setup
+> walkthrough and [docs/maintenance-2026-06.md](docs/maintenance-2026-06.md) for
 > what was changed and why.
 
 > **Makefile rebuild caveat:** the `.built` marker depends on the *production*
@@ -100,6 +107,17 @@ nginx + PHP-FPM, app at `/home/forge/wign.dk`), with **MySQL 8 on the same dropl
 **AWS Elastic Beanstalk** tooling (`Dockerfile.aws`, the `aws` compose service, `make
 aws-shell`, `docs/devops.md`) from a previous hosting setup — treat AWS references as
 historical unless verified.
+
+**Deploy script (confirmed 2026-07-14, from the Forge dashboard, not checked into
+this repo):** `git pull origin $FORGE_SITE_BRANCH` → `composer install
+--no-interaction --prefer-dist --optimize-autoloader` (installs exactly what's
+pinned in `composer.lock`; **never** `composer update`) → FPM reload → `php artisan
+migrate --force` (applies pending migrations forward; **never** `migrate:fresh`). A
+normal Forge deploy cannot drop tables — the wipe risk documented above is specific
+to the local `migrater` Docker service when `.env` points at prod, not to deploying
+this repo. Not verifiable from the repo/dashboard access so far: whether **Quick
+Deploy** (auto-deploy on push to `$FORGE_SITE_BRANCH`) is enabled — check before
+assuming a push to `master` deploys automatically.
 
 ### Database — hosting, backups, recovery
 

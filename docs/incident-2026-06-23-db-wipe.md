@@ -16,7 +16,7 @@ the real content loss is believed to be small.
 A chain of three things, none safe on its own:
 
 1. The repo's **`.env` held production credentials** (`APP_ENV=production`,
-   `DB_HOST=206.189.110.99` — the live droplet, `DB_DATABASE=forge`).
+   `DB_HOST=<the live DigitalOcean droplet IP>`, `DB_DATABASE=forge`).
 2. The Docker **`app` service has no DB override** in `docker-compose.yaml`; it reads
    that `.env` verbatim. Production MySQL was **reachable on port 3306 from the internet**,
    so a laptop could connect straight to it.
