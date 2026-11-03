@@ -7,16 +7,12 @@
     "url": "https://github.com/Wign/Wign.git"
   },
   "scripts": {
-    "development": "mix",
-    "watch": "mix watch",
-    "watch-poll": "mix watch -- --watch-options-poll=1000",
-    "hot": "mix watch --hot",
-    "production": "mix --production"
+    "development": "sass --no-source-map --silence-deprecation=import resources/assets/sass/app.scss public/css/style.css",
+    "watch": "sass --no-source-map --silence-deprecation=import --watch resources/assets/sass/app.scss public/css/style.css",
+    "watch-poll": "sass --no-source-map --silence-deprecation=import --watch --poll resources/assets/sass/app.scss public/css/style.css",
+    "production": "sass --no-source-map --silence-deprecation=import --style=compressed resources/assets/sass/app.scss public/css/style.css"
   },
   "devDependencies": {
-    "laravel-mix": "^6.0.39",
-    "resolve-url-loader": "^4.0.0",
-    "sass": "^1.45.0",
-    "sass-loader": "^12.4.0"
+    "sass": "^1.107.1"
   }
 }

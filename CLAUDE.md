@@ -55,7 +55,7 @@ make clean     # rm .built to force a rebuild
 > `Dockerfile`, so editing `Dockerfile.dev` does not trigger a rebuild — run
 > `make clean` (or `rm .built`) first.
 
-### Frontend assets (Laravel Mix)
+### Frontend assets (Sass CLI)
 
 ```bash
 npm run development   # one-off build
@@ -63,7 +63,9 @@ npm run watch         # rebuild on change
 npm run production    # minified build
 ```
 
-Mix compiles **only** `resources/assets/sass/app.scss` → `public/css/style.css` (see `webpack.mix.js`). The JS in `public/js/script.js` is hand-maintained, not bundled.
+The build compiles **only** `resources/assets/sass/app.scss` → `public/css/style.css`, using the plain `sass` CLI (scripts in `package.json`). The JS in `public/js/script.js` is hand-maintained, not bundled.
+
+Laravel Mix (webpack) was removed on 2026-11-03. It only ever compiled that one SCSS file, and its webpack/babel/dev-server dependency tree accounted for most of the repo's Dependabot alerts. Compared with the old Mix output, the `sass` output isn't run through cssnano or autoprefixer, so it's slightly larger, but it renders the same. `sass` prints deprecation warnings for `darken()`/`lighten()`; they're harmless until Sass 3.0.
 
 ### Tests
 
